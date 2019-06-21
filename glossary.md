@@ -1,5 +1,8 @@
 <!-- TITLE: Glossary -->
 
-[P2SH](/glossary/p2sh)
-[P2PKH](/glossary/p2pkh)
 [Constraint Script](/glossary/constraint_script)
+
+[P2PKH](/glossary/p2pkh)
+[P2SH](/glossary/p2sh)
+
+[UTXO set](/glossary/utxo_set)
