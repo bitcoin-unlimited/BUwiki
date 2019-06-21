@@ -5,5 +5,7 @@
 [P2PKH](/glossary/p2pkh)
 [P2SH](/glossary/p2sh)
 
+[Redeem Script](/glossary/redeem_script)
+
 [UTXO](/glossary/utxo)
 [UTXO set](/glossary/utxo_set)
