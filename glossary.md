@@ -7,5 +7,7 @@
 
 [Redeem Script](/glossary/redeem_script)
 
+[Transaction](/glossary/transaction)
+
 [UTXO](/glossary/utxo)
 [UTXO set](/glossary/utxo_set)
