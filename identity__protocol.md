@@ -48,6 +48,23 @@ In some situations, it is possible for a remote attacker to request a login to y
 
 ## Protocol Description
 
+```mermaid
+sequenceDiagram
+  participant Phone
+  participant Browser
+  participant Server
+  Browser ->> Server: HTTP get
+  Server ->> Browser: Login page (HTTP response)
+  Browser ->> Phone: Login Offer (via QR code or plugin)
+  Phone ->> Server: Login offer response (signed challenge)
+  Server ->> Phone: Login OK/ERROR
+  alt login ok
+    Server ->> Browser: Redirect to home page
+  else unknown identity
+    Server ->> Browser: Opt redirect to signup page
+  end
+```
+
 ### Login Offer
 The server provides a URI (or a QR-encoded URI) of the following format (bold indicated variable fields):
 
@@ -72,7 +89,7 @@ The crypto-identity app should register itself as the handler for the "bchidenti
 
 On desktop platforms, a browser plugin may register the "bchidentity" URI, and be used to proxy the bchidentity URIs to a paired mobile phone.
 
-### Login Response
+### Login Offer Response
 
 For web servers, the crypto-identity app creates and issues a http "get" request of the following format:
 
@@ -119,7 +136,7 @@ m/44'/0x1c3b1c3b'/0'/0/**index**
 ```
 uniquifier = DeriveChildKey(m/44'/0x1c3b1c3b'/0'/0/0xffffffff)
 bytes = SHA256(SHA256(domain name + uniquifier))  # where + is string concatenation
-index = bytes[0]&~31 + bytes[1]*256 + bytes[2]*256*256 + (hash[3]*256*256*256
+index = bytes[0]&~31 + bytes[1]*256 + bytes[2]*256*256 + hash[3]*256*256*256
 ```
 The purpose of the uniquifier is to make sure that a web site cannot engineer an identity collision with another site.  
 
@@ -131,7 +148,7 @@ The crypto-identity app signs the following string using a Bitcoin-standard pubk
 
 "Bitcoin Signed Message:\n**domain**[**:port**]\_bchidentity_**op**\_**challengeString**"
 
-The first component is "Bitcoin Signed Message:\n".  This is automatically prepended to every message signed by most current bitcoin wallets and bitcoin libraries so you may not need to include it.
+The first component of the string to be signed is "Bitcoin Signed Message:\n".  This is automatically prepended to every non-transaction message signed by most current bitcoin wallets and bitcoin libraries so you may not need to include it.
 
 **domain**: the domain name of the login request.  To defeat some "man-in-the-middle" attacks, signing apps MUST ensure that this string actually IS the domain to which the response is sent.
 

@@ -1,4 +1,4 @@
-<div class="cwik">
+<div class="cwikmeta">
 {
 "title":"Glossary",
 "related":["/glossary/UTXO","/glossary/UTXO__set"]
