@@ -1,5 +1,5 @@
 # Identity Protocol (Login)
-The identity protocol allows a bitcoin wallet to interface with a server, securely supplying information such as login credentials and identity information.  This document describes the login functionality of crypto-identity software.
+The identity protocol allows software to interface with a server, securely supplying information such as login credentials and identity information. This “crypto-identity software” could be embedded into bitcoin wallets or be a special purpose app.
 
 ## Overview
 
@@ -13,7 +13,9 @@ Let's fix these problems.
 
 ## Operation
 
-This system is implemented in an crypto-identity app or sub-function of a Bitcoin Cash wallet, most commonly located on a phone or tablet (mobile device).  The login function of the system works in 2 modes: using a passwordless login scheme, and as a traditional password manager.
+This system is implemented in an crypto-identity app or sub-function of a Bitcoin Cash wallet, most commonly located on a phone or tablet (mobile device).  The login function of the system works in 2 modes: using a passwordless public/private key login scheme, and as a traditional password manager.
+
+In traditional password manager mode, a browser plugin is used to communicate between the browser and phone, and is not the main focus of this document.
 
 The passwordless login requires that a web site be compatible with this protocol.  In its basic operation, the web site is configured during sign up with a Bitcoin Cash address.  The web site provides the user's crypto-identity app with a challenge string consisting of a sequence of random words.  This challenge string is transmitted to the user's app visually via a QR code or via a browser plug-in that has previously been securely introduced to the crypto-identity app.  After an optional password entry unlocks the crypto-identity app, the app signs a message consisting of the website's domain, the operation being performed (login), and the challenge string.  This is communicated directly from the crypto-identity app to the web site via a HTTP get or put request to effect a log in.
 
@@ -125,7 +127,9 @@ The server MUST reply to the Login Response message with the following error cod
 ### Identity management
 The crypto-identity app has the concept of "common identities" and "unique identities".  A common identity is deliberately used across multiple domains to link accounts.  A unique identity is probabilistically given to just one web site.
 
-Apps can use any method to organize identities.  However, to ensure seed recovery compatibility, apps SHOULD follow these procedures:
+Apps can use any method to organize identities.  However, to ensure seed recovery compatibility, apps SHOULD follow these procedures to choose a private key or username/password for every log in.
+
+#### Choosing a public/private key for challenge based authentication
 
 Use BIP32 compliant HD wallets with the following BIP44 compliant derivation path:
 
@@ -141,6 +145,9 @@ index = bytes[0]&~31 + bytes[1]*256 + bytes[2]*256*256 + hash[3]*256*256*256
 The purpose of the uniquifier is to make sure that a web site cannot engineer an identity collision with another site.  
 
 This organization provides 32 possible "common identities", and an algorithmic way to recover unique identities from the HD wallet seed.  If the user cannot remember whether a common or unique identity was used, it is possible to try logging in with all 33 identities.  In practice it is unlikely that a user will need more than a few common identities, so an efficient recovery algorithm would be to try the unique identity first and then the common identities starting with 0.  But, if implemented simply, this may allow a server to infer a relationship between the common identities -- a paranoid implementation will need to recover identities slowly and through separate networks and sessions.  Finally, it should be emphasized that this is only a concern for the last-resort option of key recovery from seed phrase.  A privacy conscious user should back up his wallet regularly to avoid this situation, or use unique identities and a single common identity.
+
+#### Choosing a username/password for traditional authentication
+TBD
 
 ### Signature computation
 
