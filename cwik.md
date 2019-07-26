@@ -65,7 +65,27 @@ Your changes accumulate in local storage on the server.  Press the "commit" butt
 Look here: https://github.com/bitcoin-unlimited/BUwiki to see the backing repository.
 
 ## Token Integration
-C
+TBD
 
 ## Source Documentation Generation
-TBD
+**To be implemented**
+
+This system is able to integrate multiple Git-hosted repositories.  A typical configuration would be one documentation focused repository and multiple source repositories.  These source repositories can provide inline documentation that is extracted via various documentation generators (subsequently called "codedoc") and provide access to "raw" source code.
+
+Linking between documentation and code/codedoc or codedoc to codedoc occurs via a special syntax that allows references to code blocks, is tolerant of some code reorganizations, and identifies and records broken links for human repair.
+
+There is a processing step to convert these links to .md format.  So the full source data preparation steps are:
+
+```mermaid
+graph TB
+A["git source code"] == doc generator ==> B["code doc"]
+D["git doc files"] ==> E(("Link resolver"))
+A ==> E
+B ==> E
+E ==> F["Markdown files"]
+E ==> G["broken link report<br/>(markdown file)"]
+style A fill:#ff6,stroke:#333,stroke-width:8px;
+style D fill:#ff6,stroke:#333,stroke-width:8px;
+style F fill:#3A3,stroke:#334,stroke-width:4px;
+style G fill:#3A3,stroke:#334,stroke-width:4px;
+```
