@@ -5,6 +5,7 @@
 }</div>
 
 ## Concepts
+[Blockchain](blockchain)
 ## Protocols
 [Full Node (P2P) Protocol](protocol)
 [Light Client (Electron Cash) Protocol](electrs__protocol)
