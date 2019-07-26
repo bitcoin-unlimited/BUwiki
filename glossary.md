@@ -29,8 +29,3 @@
 [UTXO](/glossary/utxo)
 [UTXO set](/glossary/utxo__set)
 
-The *Gamma function* satisfying $\Gamma(n) = (n-1)!\quad\forall n\in\mathbb N$ is via the Euler integral
-
-$$
-\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.
-$$
