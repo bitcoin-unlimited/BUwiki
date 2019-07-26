@@ -6,6 +6,7 @@
 
 ## Concepts
 [Blockchain](blockchain)
+[Hash reference](hash__reference)
 ## Protocols
 [Full Node (P2P) Protocol](protocol)
 [Light Client (Electron Cash) Protocol](electrs__protocol)
