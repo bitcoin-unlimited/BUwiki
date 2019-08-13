@@ -4,6 +4,8 @@ These legacy design decisions can make the protocol difficult to implement on th
 
 ## Serialization Format
 
+Bitcoin uses a custom serialization format that is generally little-endian.
+
 
 ## Message Envelope
 
