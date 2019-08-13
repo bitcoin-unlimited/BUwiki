@@ -12,37 +12,56 @@ These legacy design decisions can make the protocol difficult to implement on th
 ### Announcements (unsolicited messages)
 
 #### INV
+*Notifies peers about the existence of some information (block or transaction)*
 
 #### XUPDATE
-
+*Communicates a change in peer capabilities*
+#### FILTERLOAD
+*Inserts a transaction filter into the peer*
+#### FILTERADD
+*Add a single item into an existing filter*
+#### FILTERCLEAR
+*Remove an existing filter*
 
 ### Requests
 
 #### GETDATA
+*Requests information (previously announced via an INV) from a peer*
 
 #### GETBLOCKS
 
 #### GETHEADERS
+*Requests block headers from a peer*
 
 #### PING
+*Keep-alive*
 
 #### VERSION
+*Describes peer capabilities*
 
 #### XVERSION
+*Describes peer capabilities in an extensible manner*
 *Currently supported by Bitcoin Unlimited only*
 
 #### Responses
+Note that some of these "response" messages can also be sent without solicitation (i.e. without a request).
 
 #### ADDR
+*Provides a peer with the addresses of other peers*
+
 #### BLOCK, THINBLOCK, XTHINBLOCK, GRAPHENEBLOCK, CMPCTBLOCK
+*Provides a block*
 
 #### HEADERS
-
+*Provides a set of block headers (unsolicited or GETHEADERS response)*
 #### MERKLEBLOCK
+*Provides a provable subset of a block's transactions, as filtered by FILTERADD*
 
 #### PONG
 
 #### REJECT
+*General response by well-behaved clients if a message cannot be handled*
+
 
 #### TX
 
