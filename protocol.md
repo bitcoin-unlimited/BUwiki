@@ -9,6 +9,14 @@ Bitcoin uses a custom serialization format that is generally little-endian.
 
 ## Message Envelope
 
+The following table describes the message header:
+| 0: 4 bytes | 4: 12 bytes | 16: 4 bytes | 20: 4 bytes | 24: size bytes |
+|-------------|--------------|-------------|----------------|------------|
+| network identifier | command | size | checksum | contents |
+| *BCH*:E3,E1,F3,E8<br>*BTC*:F9,BE,B4,D9<br>*tBCH*:F4,E5,F3,F4<BR>*tBTC*:0B,11,09,07 | ascii not null terminated | little endian uint32 | little endian uint32 | depends on command
+
+
+
 ## Message Types
 
 ### Announcements (unsolicited messages)
