@@ -10,14 +10,31 @@ Bitcoin uses a custom serialization format that is generally little-endian.
 ## Message Envelope
 
 The following table describes the message header:
-| 0: 4 bytes | 4: 12 bytes | 16: 4 bytes | 20: 4 bytes | 24: size bytes |
-|-------------|--------------|-------------|----------------|------------|
 | network identifier | command | size | checksum | contents |
-| *BCH*:E3,E1,F3,E8<br>*BTC*:F9,BE,B4,D9<br>*tBCH*:F4,E5,F3,F4<BR>*tBTC*:0B,11,09,07 | ascii not null terminated | little endian uint32 | little endian uint32 | depends on command
+|-------------|--------------|-------------|----------------|------------|
+| 0: 4 bytes | 4: 12 bytes | 16: 4 bytes | 20: 4 bytes | 24: size bytes |
+|*BCH*:E3,E1,F3,E8<br>*BTC*:F9,BE,B4,D9<br>*tBCH*:F4,E5,F3,F4<BR>*tBTC*:0B,11,09,07 | ascii null extended | little endian uint32 | little endian uint32 | depends on command
 
+### Network Identifier
+The network identifier is used to separate blockchains and test networks.  This reduces unnecessary load on peers, allowing them to rapidly ban nodes rather then forcing the peer to do a blockchain analysis before banning.  
 
+Unfortunately, the BCH and BSV blockchains use the same network identifier.
 
-## Message Types
+### Command
+The command is the exact lowercase bytes in the titles of each subsection in the Message Types section below followed by zeros -- e.g. the INV message's command is literally the 12 bytes: 'i','n',v',0,0,0,0,0,0,0,0,0.  This is not a "C" string.  If a command was exactly 12 bytes, there would be no null terminator!
+
+### Size
+Size is the size of the contents field in bytes, not the size of the entire message.
+
+### Checksum
+Checksum is a message checksum.  Since TCP has message integrity checksums, and a peer can cause another node to waste processing power validating bad checksums, it is not recommended that nodes verify this checksum.  
+
+Senders should calculate this checksum to be compatible with all software.  However, the XVERSION message can be used to tell XVERSION compatible clients that checksums will not be calculated.  In this case the field must be set to 0 (but not enforced as 0 on the receiver's side).  This may allow a future reuse of this field.
+
+### Contents
+The contents of messages are described in the next section.
+
+## Message Contents
 
 ### Announcements (unsolicited messages)
 
