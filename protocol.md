@@ -10,6 +10,7 @@ Bitcoin uses a custom serialization format that is generally little-endian.
 ## Message Envelope
 
 The following table describes the message header:
+
 | network identifier | command | size | checksum | contents |
 |-------------|--------------|-------------|----------------|------------|
 | 0: 4 bytes | 4: 12 bytes | 16: 4 bytes | 20: 4 bytes | 24: size bytes |
@@ -56,6 +57,22 @@ The [hash identifier](glossary/hash__identifier) of the object that is available
 *Communicates a change in peer capabilities*
 #### FILTERLOAD
 *Inserts a transaction filter into the peer*
+
+This message installs a bloom filter into the peer.  Subsequent INV notifications and MERKLEBLOCK messages only provide transactions that in match this bloom filter in some manner.  The following items in a transaction are checked against the bloom filter:
+
+ - The transaction hash
+ - Each data field in every [output script](glossary/output__script) in the transaction
+	 - Most importantly, this allows public keys and public key hashes (essentially bitcoin addresses) to be added to the bloom filter, allowing a wallet to detect an incoming transfer.
+ - Each [previous output](glossary/previous__output) in the transaction
+	 - This allows a wallet to detect that a different wallet has spent funds that are co-controlled
+ - Each data field in every [input script](glossary/input__script) in the transaction.
+
+See [C:{CBloomFilter::MatchAndInsertOutputs, CBloomFilter::MatchInputs}]
+
+| up to 36000 bytes |
+|-------------------|
+|   [bloom filter](objects/bloom_filter)   |
+
 #### FILTERADD
 *Add a single item into an existing filter*
 #### FILTERCLEAR
