@@ -41,6 +41,17 @@ The contents of messages are described in the next section.
 #### INV
 *Notifies peers about the existence of some information (block or transaction)*
 
+| 4 bytes | 32 bytes |
+|---------|----------|
+|   type  |   hash   |
+
+NOTE: Since a block header is a relatively small data structure, and block propagation speed is an important network metric, a peer may send HEADER messages in place of INV messages when a block arrives.
+
+##### Type
+The type of the object offered
+##### Hash
+The [hash identifier](glossary/hash__identifier) of the object that is available at the peer.
+
 #### XUPDATE
 *Communicates a change in peer capabilities*
 #### FILTERLOAD
@@ -54,6 +65,12 @@ The contents of messages are described in the next section.
 
 #### GETDATA
 *Requests information (previously announced via an INV) from a peer*
+
+A GETDATA request is formatted as a vector of INV data:
+
+| compact int |  4 bytes | 32 bytes | ... |
+|---------------|-----------|------------|--|
+| number of elements | elem N type | elem N hash | elem N+1 type and hash...
 
 #### GETBLOCKS
 
@@ -81,6 +98,8 @@ Note that some of these "response" messages can also be sent without solicitatio
 
 #### HEADERS
 *Provides a set of block headers (unsolicited or GETHEADERS response)*
+
+
 #### MERKLEBLOCK
 *Provides a provable subset of a block's transactions, as filtered by FILTERADD*
 
