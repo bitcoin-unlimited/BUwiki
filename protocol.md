@@ -117,7 +117,7 @@ Note that some of these "response" messages can also be sent without solicitatio
 *Provides a set of block headers (unsolicited or GETHEADERS response)*
 
 
-#### MERKLEBLOCK
+#### [MERKLEBLOCK](protocol/p2p/merkleblock)
 *Provides a provable subset of a block's transactions, as filtered by FILTERADD*
 
 #### PONG

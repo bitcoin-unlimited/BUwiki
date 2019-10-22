@@ -1,0 +1,1 @@
+Provides a block header and partial merkle proof tree that selected transaction ids exist in the block.  Transactions are selected by honest servers if they match the bloom filter installed by the client.  However, note that servers can omit transactions and this cannot be detected except by receiving a MERKLEBLOCK message from an honest server.
