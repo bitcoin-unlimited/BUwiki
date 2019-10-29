@@ -4,4 +4,4 @@ Provides a block header and partial merkle proof tree that selected transaction 
 
 | ... | 4 bytes |  ... | ...|
 |----|---------------|-----------|------------|
-|  [block header](/protocol/p2p/block__header)| # tx in block | vector of 32 byte hashes | vector of bytes that define the merkle block traversal
+|  [block header](/protocol/p2p/block__header)| # tx in block | [vector](/protocol/p2p/vector) of 32 byte hashes | [vector](/protocol/p2p/vector) of bytes that define the merkle block traversal
