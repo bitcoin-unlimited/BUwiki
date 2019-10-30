@@ -1,3 +1,9 @@
+<div class="cwikmeta">
+{
+"title":"P2P Protocol",
+"related":[]
+} </div>
+
 The Bitcoin P2P protocol is comprised of messages over TCP.  These messages are serialized using a custom format.  Unlike RPC protocols, messages do not necessarily have a reply and there is no way to unambiguously connect a sent message to a reply, although many communications are often request/response pairs.   High performance full node software may handle incoming messages in parallel, so it is not appropriate to assume a message reply order.  Messages that cannot be fulfilled are sometimes dropped with no reply, and sometimes replied to via a REJECT message.
 
 These legacy design decisions can make the protocol difficult to implement on the client side, but are generally needed when a robust implementation communicates with untrusted/uncooperative partners.  A good strategy is to wait for any message that provides the required data, with a timeout, and then separately issue the request in a retry loop to multiple peers.  If a timeout occurs, return to higher level software which should re-assess whether the data is still needed, since in nodes in the network may have converged to a competing block or transaction, and therefore not be serving the data you are requesting (nodes only serve data on the most-difficult chain, even if they have some data pertaining to lower-difficulty splits).
@@ -37,7 +43,7 @@ The contents of messages are described in the next section.
 
 ## Message Contents
 
-### Announcements (unsolicited messages)
+### Announcements (unsolicited messages with no response)
 
 #### [INV](protocol/p2p/inv)
 *Notifies peers about the existence of some information (generally a block or transaction)*
@@ -57,45 +63,50 @@ The contents of messages are described in the next section.
 #### [GETDATA](/protocol/p2p/getdata)
 *Requests information (generally previously announced via an INV) from a peer*
 
-#### GETBLOCKS
+#### [GETBLOCKS](/protocol/p2p/getblocks)
+*Requests block hash identifiers*
 
-#### GETHEADERS
+#### [GETHEADERS](/protocol/p2p/getheaders)
 *Requests block headers from a peer*
 
-#### PING
+#### [PING](/protocol/p2p/ping)
 *Keep-alive*
 
-#### VERSION
+#### [VERSION](/protocol/p2p/version)
 *Describes peer capabilities*
 
-#### XVERSION
+#### [XVERSION](/protocol/p2p/xversion)
 *Describes peer capabilities in an extensible manner*
 *Currently supported by Bitcoin Unlimited only*
 
 #### Responses
 Note that some of these "response" messages can also be sent without solicitation (i.e. without a request).
 
-#### ADDR
+#### [ADDR](/protocol/p2p/addr)
 *Provides a peer with the addresses of other peers*
 
 #### BLOCK, THINBLOCK, XTHINBLOCK, GRAPHENEBLOCK, CMPCTBLOCK
 *Provides a block*
 
-#### HEADERS
+#### [HEADERS](/protocol/p2p/headers)
 *Provides a set of block headers (unsolicited or GETHEADERS response)*
 
 
 #### [MERKLEBLOCK](protocol/p2p/merkleblock)
 *Provides a provable subset of a block's transactions, as filtered by FILTERADD*
 
-#### PONG
+#### [PONG](/protocol/p2p/pong)
+*Reply to a ping message*
 
-#### REJECT
+#### [REJECT](/protocol/p2p/reject)
 *General response by well-behaved clients if a message cannot be handled*
 
 
-#### TX
+#### [TX](/protocol/p2p/tx)
+*Transaction object*
 
-#### VERACK
+#### [VERACK](/protocol/p2p/verack)
+*Respond to a [version](/protocol/p2p/version) message*
 
-#### XVERACK
+#### [XVERACK](/protocol/p2p/xverack)
+*Respond to an [xversion](/protocol/p2p/xversion) message*

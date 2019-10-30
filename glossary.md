@@ -13,6 +13,8 @@
 [Block](/glossary/block)
 ## [C](#C)
 [Constraint Script](/glossary/constraint__script)
+## [H](#H)
+[Hash Identifier](/glossary/hash__identifier)
 ## [O](#O)
 [Output Script](/glossary/output__script)
 ## [P](#P)
@@ -28,4 +30,3 @@
 ## [U](#U)
 [UTXO](/glossary/utxo)
 [UTXO set](/glossary/utxo__set)
-
