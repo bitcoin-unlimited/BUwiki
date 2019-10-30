@@ -1,6 +1,6 @@
-The Bitcoin P2P protocol is comprised of messages over TCP.  These messages are serialized using a custom format.  Unlike RPC protocols, messages do not necessarily have a reply and there is no way to unambiguously connect a sent message to a reply, although many communications are often request/response pairs.   High performance full node software may handle incoming messages in parallel, so it is not appropriate to assume a message reply order.  Messages that cannot be fulfilled are sometimes dropped with no reply.  
+The Bitcoin P2P protocol is comprised of messages over TCP.  These messages are serialized using a custom format.  Unlike RPC protocols, messages do not necessarily have a reply and there is no way to unambiguously connect a sent message to a reply, although many communications are often request/response pairs.   High performance full node software may handle incoming messages in parallel, so it is not appropriate to assume a message reply order.  Messages that cannot be fulfilled are sometimes dropped with no reply, and sometimes replied to via a REJECT message.
 
-These legacy design decisions can make the protocol difficult to implement on the client side, but are generally needed when a robust implementation communicates with untrusted/uncooperative partners.  A good strategy is to wait for any message that provides the required data, with a timeout, and then separately issue the request in a retry loop to multiple peers.  If a timeout occurs, return to higher level software which should re-assess whether the data is needed.  This strategy handles situations where (for example), the client requests a block or header but a reorg has happened so that block/header is no longer on the most-difficult chain, causing peers to drop the client's request. 
+These legacy design decisions can make the protocol difficult to implement on the client side, but are generally needed when a robust implementation communicates with untrusted/uncooperative partners.  A good strategy is to wait for any message that provides the required data, with a timeout, and then separately issue the request in a retry loop to multiple peers.  If a timeout occurs, return to higher level software which should re-assess whether the data is still needed, since in nodes in the network may have converged to a competing block or transaction, and therefore not be serving the data you are requesting (nodes only serve data on the most-difficult chain, even if they have some data pertaining to lower-difficulty splits).
 
 ## Serialization Format
 
@@ -54,14 +54,8 @@ The contents of messages are described in the next section.
 
 ### Requests
 
-#### GETDATA
-*Requests information (previously announced via an INV) from a peer*
-
-A GETDATA request is formatted as a vector of INV data:
-
-| compact int |  4 bytes | 32 bytes | ... |
-|---------------|-----------|------------|--|
-| number of elements | elem N type | elem N hash | elem N+1 type and hash...
+#### [GETDATA](/protocol/p2p/getdata)
+*Requests information (generally previously announced via an INV) from a peer*
 
 #### GETBLOCKS
 

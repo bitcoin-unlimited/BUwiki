@@ -29,4 +29,4 @@ The type of the object that is available.
 Implementations: [C++](https://github.com/BitcoinUnlimited/BitcoinUnlimited/blob/eb264e627e231f7219e60eef41b4e37cc52d6d9d/src/protocol.h#L477)
 
 ##### Hash
-The [hash identifier](glossary/hash__identifier) of the available object.
+The [hash identifier](/glossary/hash__identifier) of the available object.
