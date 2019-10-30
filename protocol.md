@@ -39,43 +39,17 @@ The contents of messages are described in the next section.
 
 ### Announcements (unsolicited messages)
 
-#### INV
-*Notifies peers about the existence of some information (block or transaction)*
+#### [INV](protocol/p2p/inv)
+*Notifies peers about the existence of some information (generally a block or transaction)*
 
-| 4 bytes | 32 bytes |
-|---------|----------|
-|   type  |   hash   |
-
-NOTE: Since a block header is a relatively small data structure, and block propagation speed is an important network metric, a peer may send HEADER messages in place of INV messages when a block arrives.
-
-##### Type
-The type of the object offered
-##### Hash
-The [hash identifier](glossary/hash__identifier) of the object that is available at the peer.
-
-#### XUPDATE
+#### [XUPDATE](/protocol/p2p/xupdate)
 *Communicates a change in peer capabilities*
-#### FILTERLOAD
-*Inserts a transaction filter into the peer*
+#### [FILTERLOAD](/protocol/p2p/filterload)
+*Inserts a transaction and merkle block filter into the peer*
 
-This message installs a bloom filter into the peer.  Subsequent INV notifications and MERKLEBLOCK messages only provide transactions that in match this bloom filter in some manner.  The following items in a transaction are checked against the bloom filter:
-
- - The transaction hash
- - Each data field in every [output script](glossary/output__script) in the transaction
-	 - Most importantly, this allows public keys and public key hashes (essentially bitcoin addresses) to be added to the bloom filter, allowing a wallet to detect an incoming transfer.
- - Each [previous output](glossary/previous__output) in the transaction
-	 - This allows a wallet to detect that a different wallet has spent funds that are co-controlled
- - Each data field in every [input script](glossary/input__script) in the transaction.
-
-See [C:{CBloomFilter::MatchAndInsertOutputs, CBloomFilter::MatchInputs}]
-
-| up to 36000 bytes |
-|-------------------|
-|   [bloom filter](objects/bloom_filter)   |
-
-#### FILTERADD
+#### [FILTERADD](/protocol/p2p/filteradd)
 *Add a single item into an existing filter*
-#### FILTERCLEAR
+#### [FILTERCLEAR](/protocol/p2p/filterclear)
 *Remove an existing filter*
 
 ### Requests
