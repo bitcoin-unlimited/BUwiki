@@ -1,7 +1,8 @@
-<div class="cwik">
+<div class="cwikmeta">
 {
 "title":"Block",
-}
-</div>
+"related":[]
+} </div>
+
 
 A block is a group of (transactions)[/glossary/transaction] that have been committed to the blockchain.

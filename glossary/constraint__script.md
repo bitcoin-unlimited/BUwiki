@@ -1,4 +1,4 @@
-<div class="cwik">
+<div class="cwikmeta">
 {
 "title":"Constraint Script",
 "related":["/glossary/output__script","/glossary/redeem__script","/glossary/input__script"]

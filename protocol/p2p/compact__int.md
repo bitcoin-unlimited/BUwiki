@@ -1,7 +1,8 @@
 A "compact int" is serialized as follows:
 
 *If the number < 253, store it in 1 byte
-*If the number fits in 16 bits: store a 1 byte value 253, and the 2 byte little-endian number
+*If the number fits in 16 bits: store a 1 byte value 253, and the 2 byte little-endian number.
+
 |    0   |     1   |    2    | 
 |--------|---------|---------|
 |  0xfd  | val&255 | val>>8  |
