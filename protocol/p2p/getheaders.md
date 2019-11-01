@@ -31,4 +31,4 @@ If the locator is empty, the response includes only the header identified by thi
 
 *Use an empty locator and a valid block hash identifier to request the header of a specific block.*
 
-Server Implementations: [Bitcoin Unlimited](https://github.com/BitcoinUnlimited/BitcoinUnlimited/blob/eb264e627e231f7219e60eef41b4e37cc52d6d9d/src/net_processing.cpp#L1131)
+Server Implementations: [Bitcoin Unlimited](https://github.com/BitcoinUnlimited/BitcoinUnlimited/blob/bucash1.7.0.0/src/net_processing.cpp#L1131)

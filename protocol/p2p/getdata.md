@@ -1,6 +1,6 @@
 <div class="cwikmeta">{
-"title":"INV",
-"related":["/protocol","/protocol/p2p/inv"
+"title":"GETDATA",
+"related":["/protocol","/protocol/p2p/inv"]
 }</div>
 
 Requests information (generally previously announced via an INV) from a peer.
