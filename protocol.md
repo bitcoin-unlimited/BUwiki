@@ -34,9 +34,11 @@ The command is the exact lowercase bytes in the titles of each subsection in the
 Size is the size of the contents field in bytes, not the size of the entire message.
 
 ### Checksum
-Checksum is a message checksum.  Since TCP has message integrity checksums, and a peer can cause another node to waste processing power validating bad checksums, it is not recommended that nodes verify this checksum.  
+This field is a message checksum.  Since TCP has message integrity checksums, and a peer can cause another node to waste processing power validating bad checksums, it is not recommended that nodes verify this checksum.  
 
-Senders should calculate this checksum to be compatible with all software.  However, the XVERSION message can be used to tell XVERSION compatible clients that checksums will not be calculated.  In this case the field must be set to 0 (but not enforced as 0 on the receiver's side).  This may allow a future reuse of this field.
+Senders should calculate this checksum to be compatible with all software.  However, the XVERSION message can be used to tell XVERSION compatible clients that checksums will not be calculated (currently supported by Bitcoin Unlimited).  In this case the field must be set to 0 (but not enforced as 0 on the receiver's side).  This may allow a future reuse of this field.
+
+The checksum is calculated by first computing the double SHA256 of the *contents* portion of the message.  The first 4 bytes of this hash is the checksum. See [C++ generate](https://github.com/BitcoinUnlimited/BitcoinUnlimited/blob/bucash1.7.0.0/src/net.cpp#L3179), [python verify](https://github.com/BitcoinUnlimited/BitcoinUnlimited/blob/eb264e627e231f7219e60eef41b4e37cc52d6d9d/qa/rpc-tests/test_framework/mininode.py#L409), [python generate](https://github.com/BitcoinUnlimited/BitcoinUnlimited/blob/eb264e627e231f7219e60eef41b4e37cc52d6d9d/qa/rpc-tests/test_framework/mininode.py#L449).
 
 ### Contents
 The contents of messages are described in the next section.
