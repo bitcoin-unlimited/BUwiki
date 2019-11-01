@@ -5,9 +5,7 @@
 }
 </div>
 
-<script>
-  alert("oops")
-</script>
+
 ## [A](#A)
 ## [B](#B)
 [Block](/glossary/block)
@@ -16,7 +14,7 @@
 ## [H](#H)
 [Hash Identifier](/glossary/hash__identifier)
 ## [O](#O)
-[Outpoint](/glossary/out__point)
+[Outpoint](/glossary/outpoint)
 [Output Script](/glossary/output__script)
 ## [P](#P)
 [P2PKH](/glossary/p2pkh)
