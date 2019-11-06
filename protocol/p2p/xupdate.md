@@ -1,6 +1,6 @@
 <div class="cwikmeta">{
 "title":"XUPDATE",
-"related":["/protocol","/protocol/p2p/xversion.md"]
+"related":["/protocol","/protocol/p2p/xversion"]
 }</div>
 
 *Notifies peers about an XVERSION configuration value update*

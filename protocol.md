@@ -34,11 +34,12 @@ The command is the exact lowercase bytes in the titles of each subsection in the
 Size is the size of the contents field in bytes, not the size of the entire message.
 
 ### Checksum
-This field is a message checksum.  Since TCP has message integrity checksums, and a peer can cause another node to waste processing power validating bad checksums, it is not recommended that nodes verify this checksum.  
+This field is a message checksum.  The checksum is calculated by first computing the double SHA256 of the *contents* portion of the message.  The first 4 bytes of this hash is the checksum. See [C++ generate](https://github.com/BitcoinUnlimited/BitcoinUnlimited/blob/bucash1.7.0.0/src/net.cpp#L3179), [python verify](https://github.com/BitcoinUnlimited/BitcoinUnlimited/blob/eb264e627e231f7219e60eef41b4e37cc52d6d9d/qa/rpc-tests/test_framework/mininode.py#L409), [python generate](https://github.com/BitcoinUnlimited/BitcoinUnlimited/blob/eb264e627e231f7219e60eef41b4e37cc52d6d9d/qa/rpc-tests/test_framework/mininode.py#L449).
 
-Senders should calculate this checksum to be compatible with all software.  However, the XVERSION message can be used to tell XVERSION compatible clients that checksums will not be calculated (currently supported by Bitcoin Unlimited).  In this case the field must be set to 0 (but not enforced as 0 on the receiver's side).  This may allow a future reuse of this field.
+Since TCP has message integrity checksums, and a peer can cause another node to waste processing power validating bad checksums, it is not recommended that nodes verify this checksum.  That is, this field should be considered obsolete.
 
-The checksum is calculated by first computing the double SHA256 of the *contents* portion of the message.  The first 4 bytes of this hash is the checksum. See [C++ generate](https://github.com/BitcoinUnlimited/BitcoinUnlimited/blob/bucash1.7.0.0/src/net.cpp#L3179), [python verify](https://github.com/BitcoinUnlimited/BitcoinUnlimited/blob/eb264e627e231f7219e60eef41b4e37cc52d6d9d/qa/rpc-tests/test_framework/mininode.py#L409), [python generate](https://github.com/BitcoinUnlimited/BitcoinUnlimited/blob/eb264e627e231f7219e60eef41b4e37cc52d6d9d/qa/rpc-tests/test_framework/mininode.py#L449).
+However, senders should calculate and fill this checksum field to be compatible with all software, unless the [XVERSION](/protocol/p2p/xversion.md) message is used to tell peers that this checksum will not be verified (currently supported by *Bitcoin Unlimited*).  In this case the field **SHOULD** be set to 0 (but not enforced as 0 on the receiver's side).  This may allow a future reuse of this field.
+
 
 ### Contents
 The contents of messages are described in the next section.
@@ -46,27 +47,28 @@ The contents of messages are described in the next section.
 ## Message Contents
 
 ### Announcements (unsolicited messages with no response)
+#### [FILTERADD](/protocol/p2p/filteradd)
+*Add a single item into an existing filter*
+
+#### [FILTERCLEAR](/protocol/p2p/filterclear)
+*Remove an existing filter*
+
+#### [FILTERLOAD](/protocol/p2p/filterload)
+*Inserts a transaction and merkle block filter into the peer*
 
 #### [INV](protocol/p2p/inv)
 *Notifies peers about the existence of some information (generally a block or transaction)*
 
 #### [XUPDATE](/protocol/p2p/xupdate)
 *Communicates a change in peer capabilities*
-#### [FILTERLOAD](/protocol/p2p/filterload)
-*Inserts a transaction and merkle block filter into the peer*
-
-#### [FILTERADD](/protocol/p2p/filteradd)
-*Add a single item into an existing filter*
-#### [FILTERCLEAR](/protocol/p2p/filterclear)
-*Remove an existing filter*
 
 ### Requests
 
-#### [GETDATA](/protocol/p2p/getdata)
-*Requests information (generally previously announced via an INV) from a peer*
-
 #### [GETBLOCKS](/protocol/p2p/getblocks)
 *Requests block hash identifiers*
+
+#### [GETDATA](/protocol/p2p/getdata)
+*Requests information (generally previously announced via an INV) from a peer*
 
 #### [GETHEADERS](/protocol/p2p/getheaders)
 *Requests block headers from a peer*

@@ -1,9 +1,9 @@
 <div class="cwikmeta">{
 "title":"XVERSION",
-"related":["/protocol","/protocol/p2p/xupdate.md"]
+"related":["/protocol","/protocol/p2p/xupdate"]
 }</div>
 
-*Notifies peers about an XVERSION configuration value update*
+*Notifies peers about a protocol configuration value*
 
 This message notifies a peer about extended protocol parameters.  This message MAY be sent during connection initialization.  If sent, it MUST be sent immediately subsequent to the receipt of the [VERACK](/protocol/p2p/verack.md) message, and before other non-initialization messages are sent.
 
