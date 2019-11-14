@@ -5,13 +5,17 @@
 }</div>
 
 ## Concepts
-[Blockchain](blockchain)
+[Blockchain](blockchain.md)
+
+[Bloom filter](objects/bloom__filter)
+
+[Final transactions](/final__transactions.md)
 
 [Hash reference](hash__reference)
 
 [Proof of work](proof__of__work)
 
-[Bloom filter](objects/bloom__filter)
+[Standard transactions](/standard__transactions.md)
 
 [Wallet private keys, public keys, and addresses](objects/wallet__objects)
 
