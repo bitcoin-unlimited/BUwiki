@@ -7,30 +7,35 @@ Passwords are a pain and are insecure.  If you use the internet, you have no dou
 
 We all know that entering your password into an untrusted computer is dangerous, and that entering your password into a trusted computer on an untrusted or insecure web site is dangerous.  But [homograph attacks](https://en.wikipedia.org/wiki/IDN_homograph_attack) can make this very hard to see, and typosquatting can fool the unwary.
 
-Unbelievably, even entering your password into a trusted computer on a trusted, secure web site is not entirely secure -- an IT professional working inside the organization could serve you a patched web site with a bit of javascript that sends him/her your password.  Or a deep dependency could insert some malicious code that goes live when the engineers upgrade the site's software to the latest versions.
+If a password needs to be entered, it should be entered only into hardware that is provided by (and presumably more trusted by) the person who knows the password.  
 
-Fundamentally, the act of entering passwords into untrusted machines or software creates a large number of vulnerabilities.
+Entering your password into a trusted computer on a trusted, secure web site is not entirely secure -- an IT professional working inside the organization could serve you a patched web site with a bit of javascript that sends him/her your password.  Or a deep dependency could insert some malicious code that goes live when the engineers upgrade the site's software to the latest versions.  The password entry handling software should not be separately implemented by every web site and served every time the web site is accessed.  The volume and rapid update cycles makes independent validation infeasible.  Instead, a few software implementation should handle password entry for many sites, and should be updated rarely.
+
+Fundamentally, the act of entering passwords into untrusted software on untrusted machines creates a large number of vulnerabilities.
 
 Let's fix these problems.
 
 ## Operation
 
-This system is implemented in an crypto-identity app or sub-function of a Bitcoin Cash wallet, most commonly located on a phone or tablet (mobile device).  The login function of the system works in 2 modes: using a passwordless public/private key login scheme, and as a traditional password manager.
+This system is implemented in an crypto-identity app or sub-function of a Bitcoin Cash wallet, most commonly located on a phone or tablet (mobile device).  The login function of the system works in 2 modes: using a password-optional public/private key login scheme, and as a traditional password manager.
 
 In password manager mode, a browser plugin is used to communicate between the browser and phone.  The vulnerabilities that a password manager solves and does not solve are well known so this operation mode is not the main focus of this document.
 
-The passwordless login requires server-side changes but is much more secure.  To begin, the server/web site is provided a Bitcoin Cash address during the sign-up process.  During login, the web site provides the user's crypto-identity app with a challenge string consisting of random data.  This challenge string is transmitted to the user's app visually via a QR code, directly via a link, or via a browser plug-in that has previously been securely introduced to the crypto-identity app.  After an optional password entry unlocks the crypto-identity app, the app signs a message consisting of the website's domain, the operation being performed (login), and the challenge string.  This is communicated directly from the crypto-identity app to the web site via a HTTP get request to effect a log in.
+The password-optional login requires server-side changes but is much more secure.  To begin, the server/web site is provided a Bitcoin Cash address during the sign-up process.  The server will use this address to verify a user by checking that the user knows the associate private key.
+
+During login, the web site provides the user's crypto-identity app with a challenge string consisting of random data.  This challenge string is transmitted to the user's app visually via a QR code, directly via a link, or via a browser plug-in that has previously been securely introduced to the crypto-identity app.  After an optional password entry unlocks the crypto-identity app, and/or a site-specific very secure password is entered, the app generates a private key based on a key derived from the wallet's master private key and the optional site-specific password.  The app uses this key to sign a message consisting of the website's domain, the operation being performed (login), and the challenge string.  This is communicated directly from the crypto-identity app to the web site via a HTTP get request to effect a log in.
+
 
 ### Problems Solved
 
 In the "overview" section I identified a few problems with current log in schemes.  This section lists these problems and how they are solved:
 
-1. *Remembering passwords*:  Secret keys are stored on the user's phone -- the only password that must be remembered is to unlock the phone and/or the Bitcoin Cash wallet app.
+1. *Remembering passwords*:  Secret keys are stored on the user's phone -- the only password that must be remembered is to unlock the phone and/or the Bitcoin Cash wallet app, for low security websites.
 2. *Repeating passwords*: The login process does not use passwords, or provides a different password to each web site (when in password-manager mode).
-3. *Entering passwords into untrusted machines or software*:  Login is passwordless -- the only password needed unlocks the crypto-identity app on the users phone.   This is entered into the user's own device, running dedicated software.  This is not a guarantee of security -- but it is arguably a lot more secure than running arbitrary software on unknown machines. 
+3. *Entering passwords into untrusted machines or software*:  Login is passwordless -- the only passwords needed unlocks the crypto-identity app or is used to derive a private key on the users phone .   This is entered into the user's own device, running dedicated software.  This is not a guarantee of security -- but it is arguably a lot more secure than running arbitrary software on unknown machines. 
 4. *Backing up password manager data*: The app uses a Bitcoin Cash Hierarchical Deterministic (HD) wallet.  This means that the wallet can be backed up once upon creation by saving a 12 word recovery phrase.  This means that it is possible to recover logins that did not exist at the time this phrase was written down, so it is unnecessary to back up the wallet periodically.  This makes it unnecessary to store this sensitive data in the "cloud".
 5. *Use on multiple machines*: Password data does not need to be synchronized across machines as is required with password managers, since it can be located on a portable device.  Regardless, it is possible to place the user's wallet on multiple devices (or to upgrade a device) by entering the recovery phrase.
-6. *Homograph/typosquatting attacks*: An app is not fooled by visually similar domain names so it will not recognize the web site that is requesting a login.  Even if the user is fooled into registering with the attacking site, the user will commonly use a separate identity for each site, so the identity between the real and fake site will be different.  And finally, even if the user chooses to use a common identity, the wallet incorporates the domain name of the requesting web site into the message it signs, so this signature cannot be successfully replayed on the legitimate web site.  As stated in the caveats, a combined homograph/typosquatting and MITM attack is still possible to gain a session with the targeted server as the targeted user, if a QR code is used rather than a plugin.  However, the username and password is not compromised, and the engineering capability "bar" to pull off this attack is raised. 
+6. *Homograph/typosquatting attacks*: An app is not fooled by visually similar domain names so it will not recognize the web site that is requesting a login.  Even if the user is fooled into registering with the attacking site, a different public key is provided to that site.  The wallet also incorporates the domain name of the requesting web site into the message it signs, so this signature cannot be successfully replayed on the legitimate web site.  As stated in the caveats, a combined homograph/typosquatting and MITM attack is still possible to gain a session with the targeted server as the targeted user, if a QR code is used rather than a plugin.  However, the username and password is not compromised, and the engineering capability "bar" to pull off this attack is raised. 
 7. *login using an insecure/public computer*:  In the challenge-type login, the secret key never leaves your phone, and the signed message is not communicated through the insecure computer, so a compromised computer cannot access it.  There is also no chance that the user accidentally saves his login information in the browser.
 8. *IT professional code injection*:  The challenge-type login never communicates a password that can be stolen, and the signed challenge cannot be used to access any other web site or session within this site.
 
@@ -136,10 +141,11 @@ Apps can use any method to organize identities.  However, to ensure seed recover
 
 #### Choosing a public/private key for challenge based authentication
 
-Use BIP32 compliant HD wallets with the following BIP44 compliant derivation path:
+First use BIP32 compliant HD wallets with the following BIP44 compliant derivation path:
 
 m/44'/0x1c3b1c3b'/0'/0/**index**
 
+If the user enters a site-specific passphrase then the actual private key is the SHA256( derivation key + passphrase), otherwise the derivation key itself is used as the private key.
 
 **index**: use 0-31 if a "common identity" is desired, otherwise, derive an index from the server domain name using the following algorithm:
 ```
@@ -148,6 +154,7 @@ bytes = SHA256(SHA256(domain name + uniquifier))  # where + is string concatenat
 index = bytes[0]&~31 + bytes[1]*256 + bytes[2]*256*256 + hash[3]*256*256*256
 ```
 The purpose of the uniquifier is to make sure that a web site cannot engineer an identity collision with another site.  
+
 
 This organization provides 32 possible "common identities", and an algorithmic way to recover unique identities from the HD wallet seed.  If the user cannot remember whether a common or unique identity was used, it is possible to try logging in with all 33 identities.  In practice it is unlikely that a user will need more than a few common identities, so an efficient recovery algorithm would be to try the unique identity first and then the common identities starting with 0.  But, if implemented simply, this may allow a server to infer a relationship between the common identities -- a paranoid implementation will need to recover identities slowly and through separate networks and sessions.  Finally, it should be emphasized that this is only a concern for the last-resort option of key recovery from seed phrase.  A privacy conscious user should back up his wallet regularly to avoid this situation, or use unique identities and a single common identity.
 
