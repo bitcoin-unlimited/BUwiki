@@ -33,3 +33,5 @@
 
 ## Miscellaneous
 [Glossary](glossary)
+
+[test recursive dir](/newdir/nd/test.md)
