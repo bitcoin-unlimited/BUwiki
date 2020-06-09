@@ -4,7 +4,28 @@
 "related":[]
 }</div>
 
-## Concepts
+# [Bitcoin Cash Specification Reference](ref/home)
+
+This site integrates the ongoing BCH specification effort with Bitcoin Unlimited specific documentation so that the Bitcoin Unlimited docs can seamlessly reference the specification.
+
+## Protocols
+
+[Light Client (Electron Cash) Protocol](/electrs__protocol)
+
+[BCH Identity Protocol](/identity__protocol)
+
+[Full Node (P2P) Protocol](/ref/protocol)
+## Software
+
+[Bitcoin Unlimited Cash Full Node](bu_bitcoind)
+
+[Cwik (This site's software)](cwik) 
+
+## Miscellaneous
+
+### [Glossary](glossary)
+
+### Concepts
 [Blockchain](blockchain.md)
 
 [Bloom filter](objects/bloom__filter)
@@ -18,20 +39,3 @@
 [Standard transactions](/standard__transactions.md)
 
 [Wallet private keys, public keys, and addresses](objects/wallet__objects)
-
-## Protocols
-[Full Node (P2P) Protocol](protocol)
-
-[Light Client (Electron Cash) Protocol](electrs__protocol)
-
-[Identity Protocol (Login)](identity__protocol)
-## Software
-
-[Bitcoin Unlimited Cash Full Node](bu_bitcoind)
-
-[Cwik (This site's software)](cwik) 
-
-## Miscellaneous
-[Glossary](glossary)
-
-[test recursive dir](/newdir/nd/test.md)
