@@ -56,7 +56,9 @@ A combination homograph/MITM attack is possible if QR codes are used to send the
 In some situations, it is possible for a remote attacker to request a login to your app.  For example, s/he could send you a photo of the login QR code, or a paired browser plugin might automatically connect to your crypto-identity app.  This could be a feature to give someone temporary access.  But don't OK a login if you are not sure where its coming from!
 
 
-## Protocol Description
+# Protocol Description
+
+## Login
 
 ```mermaid
 sequenceDiagram
@@ -101,7 +103,7 @@ On desktop platforms, a browser plugin may register the "bchidentity" URI, and b
 
 ### Login Offer Response
 
-For web servers, the crypto-identity app creates and issues a http "get" request of the following format:
+For entities that support the HTTP protocol, the crypto-identity app creates and issues a http "get" request of the following format:
 
 http://**domain**[**:port**]/**path**?op=login&addr=**identity address**&sig=**signature**
 
@@ -132,7 +134,72 @@ The server MUST reply to the Login Response message with the following error cod
 *401: "unknown identity"*
 	The supplied bitcoincash address does not match any registered users.  The server MAY redirect or update the client's browser away from the login screen, to a new user signup screen.  But the server SHOULD still accept at least 33 login attempts (the wallet recovery process requires testing a few possible identities) before invalidating the login offer (it is best to not invalidate the login offer at all until the session expires).
 
-## Crypto-identity App Operation
+## Registration
+
+This protocol executes an initial registration (and automatic login) to a web site.
+
+
+### Registration Offer
+bchidentity://**domain**/**path**?op=reg&chal=**challengeString**&cookie=**cookie**[&hdl=**dataSpec** 
+  
+**Values**:
+**dataSpec**: underscore delimited field specifying parameters/constraints on the requested data.  Ignore unknown specifiers:
+"opt" = optional field
+"man" = mandatory field
+
+**Fields**:  
+  
+**domain**: domain name of the site to log into (e.g. "www.bitcoinunlimited.net".  Also include the port using the standard :number format if it is not the default http port.  Use ":443" to request a https response.  
+**path**: where to send the response (e.g. "/login/auto")  
+**challengeString**: an arbitrary string chosen by the server that is unique for every login and contains sufficient entropy to make repeats incredibly unlikely.  The challenge string MUST only contain ASCII alphanumeric characters (A-Z, a-z, 0-9, and _).  
+**cookie**: arbitrary data chosen by the server that will be sent back to the server during the login response.  For web sites, this is often the originating session identifier since the login response will likely arrive in a different session.
+
+If any of these parameters is not included, the registration does not want this data.
+**hdl**: (Optional) username or handle to use at this site
+**realname**: (Optional) real name
+**addr**: (Optional) mailing address
+**billing**: (Optional) billing address
+**dob**: (Optional) birthday
+**attest**: (Optional) attestations
+**ava**: (Optional) avatar
+
+### Registration Offer Response
+
+The crypto-identity app creates and issues a http "post" request of the following format.
+
+http://**domain**[**:port**]/**path**
+
+POST contentType "application/json":
+
+{
+  'op':'login',
+  'addr':**identity address**,
+  'sig':**signature**,
+  'hdl':**hdl**,
+  'realname':**realname**,
+  'addr':**addr**,
+  'billing':**billing**,
+  'dob':**birthday**,
+  'ava':**avatar**,
+  'attest'=**attestationIdentifierAndSignature**
+}
+
+**domain**, **port**, **path**: These parameters are provided by the login offer.
+
+**identity address**: This is the Bitcoin Cash address to be registered as your user identifier.  This MUST be sent in "cashaddr" format.
+
+**signature**: The URL-encoded signature calculated as described in the *Signature Computation* section of this document.
+
+A registration offer response should not include any data that the offer did not request.  However response processors **MUST** tolerate the inclusion of extra data fields, both defined and undefined.
+
+**hdl**: The username or handle (that is, the display name) desired by this registration.
+**realname**: The user's actual name, in "first [middle] last" format (first{space}optional middle{space}last"
+**addr**: The user's address
+**ava**: The user's avatar image, hex-encoded if it is in a binary format, otherwise text data.
+ 
+
+
+# Crypto-identity App Operation
 
 ### Identity management
 The crypto-identity app has the concept of "common identities" and "unique identities".  A common identity is deliberately used across multiple domains to link accounts.  A unique identity is probabilistically given to just one web site.
