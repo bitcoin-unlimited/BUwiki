@@ -136,7 +136,7 @@ The server MUST reply to the Login Response message with the following error cod
 
 ## Registration
 
-This protocol executes an initial registration (and automatic login) to a web site.
+This protocol requests and provides signed data, alongside the normal "login" challenge string.  A common use for this functionality is registration, however, this protocol can be used to gather information during every login (so the server does not need to store it), to refresh or modify saved registration information, or to request additional information as needed.
 
 
 ### Registration Offer
