@@ -134,21 +134,24 @@ The server MUST reply to the Login Response message with the following error cod
 *401: "unknown identity"*
 	The supplied bitcoincash address does not match any registered users.  The server MAY redirect or update the client's browser away from the login screen, to a new user signup screen.  But the server SHOULD still accept at least 33 login attempts (the wallet recovery process requires testing a few possible identities) before invalidating the login offer (it is best to not invalidate the login offer at all until the session expires).
 
-## Registration
+## Registration Offer
 
-This protocol executes a registration and login to a web site.  The key difference between login and registration is that registration exchanges user data, such as account name, email address, postal address, etc.
+This protocol exchanges user data, such as account name, email address, postal address, etc alongside login information.
 
-This method may be used by a server instead of "login" if the server would like user data to be refreshed.  For example, a simple server might not store user attributes, but instead request that it be supplied upon every login.  Or a server might initiate this protocol if it is missing user information, such as a postal address during the checkout process.   
+This protocol is not meant to be only used once during a "new account creation".  It may be used by a server instead of the "login offer" if the server would like to receive user data.  For example, a simple server might not store user attributes, but instead use this protocol to request that it be supplied upon every login.  Or, the "user settings" page may use this protocol to allow the user to automatically update information.  Finally, a site might initiate this protocol to request additional information, such as requesting the user's mailing address during a purchasing process.
 
-Therefore clients *SHOULD* silently accept repeat "registration" requests (behaving as a normal login) for sites that it has already registered for data that the user has authorized to be exchanged.  If unauthorized data is requested, clients *SHOULD* request permission before sending that data.
+Therefore clients *SHOULD* silently accept repeat "registration" requests (behaving as a normal login), but only if the requested data has already been authorized by the user.  If unauthorized data is requested, clients *SHOULD* request additional permissions before sending that data.
 
 ### Registration Offer
 bchidentity://**domain**/**path**?op=reg&chal=**challengeString**&cookie=**cookie**[&**optionalParam**=**dataSpec**...]
   
 **Values**:
 **dataSpec**: underscore delimited field specifying parameters/constraints on the requested data.  Ignore unknown specifiers:
-"opt" = optional field
-"man" = mandatory field
+ * "o" = optional field: The site will use this information if provided, but it is unnecessary.
+ * "r" = recommended field: Significant functionality may be unavailable if this data is not provided.  The site may require this data at some later time.  An example of "recommended" data is a user's mailing address during the initial account creation in an e-commerce site.  This data will be necessary to complete a purchase, but entry can be deferred until then.
+ * "m" = mandatory field: The site requires this data to proceed.
+ 
+ *If a site requires attestations, the content of attestations must include all mandatory fields to have any value to the requesting site*
 
 **Fields**:  
   
