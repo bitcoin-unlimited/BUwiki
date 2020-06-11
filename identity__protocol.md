@@ -136,17 +136,19 @@ The server MUST reply to the Login Response message with the following error cod
 
 ## Registration
 
-This protocol requests and provides signed data, alongside the normal "login" challenge string.  A common use for this functionality is registration, however, this protocol can be used to gather information during every login (so the server does not need to store it), to refresh or modify saved registration information, or to request additional information as needed.
+This protocol executes a registration and login to a web site.  The key difference between login and registration is that registration exchanges user data, such as account name, email address, postal address, etc.
 
+This method may be used by a server instead of "login" if the server would like user data to be refreshed.  For example, a simple server might not store user attributes, but instead request that it be supplied upon every login.  Or a server might initiate this protocol if it is missing user information, such as a postal address during the checkout process.   
+
+Therefore clients *SHOULD* silently accept repeat "registration" requests (behaving as a normal login) for sites that it has already registered for data that the user has authorized to be exchanged.  If unauthorized data is requested, clients *SHOULD* request permission before sending that data.
 
 ### Registration Offer
-bchidentity://**domain**/**path**?op=reg&chal=**challengeString**&cookie=**cookie**[&hdl=**dataSpec** 
+bchidentity://**domain**/**path**?op=reg&chal=**challengeString**&cookie=**cookie**[&**optionalParam**=**dataSpec**...]
   
 **Values**:
 **dataSpec**: underscore delimited field specifying parameters/constraints on the requested data.  Ignore unknown specifiers:
-"o" = optional field: 
-"m" = mandatory field: The operation will not succeed if this field is not provided
-"r" = recommended: If this field is not provided, registration will succeed but significant site functionality will be missing.  User may need to provide the data later.  For example an online store might set the "postal" field as recommended during initial account creation -- a postal address must be entered when a purchase is made but the site can be used to browse products first.  When the purchase is made, another "reg" QR code could be displayed with the "postal" field set to mandatory.
+"opt" = optional field
+"man" = mandatory field
 
 **Fields**:  
   
@@ -155,16 +157,17 @@ bchidentity://**domain**/**path**?op=reg&chal=**challengeString**&cookie=**cooki
 **challengeString**: an arbitrary string chosen by the server that is unique for every login and contains sufficient entropy to make repeats incredibly unlikely.  The challenge string MUST only contain ASCII alphanumeric characters (A-Z, a-z, 0-9, and _).  
 **cookie**: arbitrary data chosen by the server that will be sent back to the server during the login response.  For web sites, this is often the originating session identifier since the login response will likely arrive in a different session.
 
-If any of these parameters is not included, the registration does not want this data.
-**hdl**: (Optional) username or handle to use at this site
-**realname**: (Optional) real name
-**postal**: (Optional) mailing address
-**billing**: (Optional) billing address
-**dob**: (Optional) birthday
+**optionalParam**: The following optional parameters are defined so that the server can request specific data.  If any of these parameters is not included, the registration does not want this data.
 **attest**: (Optional) attestations
 **ava**: (Optional) avatar
-**sm**: (Optional) social media information
-**ph**: (Optional) provide phone number
+**billing**: (Optional) billing address
+**dob**: (Optional) birthday
+**email**: (Optional) email
+**hdl**: (Optional) username or handle to use at this site
+**phone**:(Optional) phone number
+**postal**: (Optional) mailing address
+**realname**: (Optional) real name
+
 
 ### Registration Offer Response
 
@@ -175,17 +178,17 @@ http://**domain**[**:port**]/**path**
 POST contentType "application/json":
 
 {
-  'op':'reg',
+  'op':'login',
   'addr':**identity address**,
   'sig':**signature**,
   'hdl':**hdl**,
   'realname':**realname**,
-  'postal':**postal address**,
+  'addr':**addr**,
+  'email':**email**,
   'billing':**billing**,
   'dob':**birthday**,
   'ava':**avatar**,
-  'attest':**attestationIdentifierAndSignature**,
-  'ph':**phone number**
+  'attest'=**attestationIdentifierAndSignature**
 }
 
 **domain**, **port**, **path**: These parameters are provided by the login offer.
@@ -197,20 +200,10 @@ POST contentType "application/json":
 A registration offer response should not include any data that the offer did not request.  However response processors **MUST** tolerate the inclusion of extra data fields, both defined and undefined.
 
 **hdl**: The username or handle (that is, the display name) desired by this registration.
- + format is a single string
+**realname**: The user's actual name, in "first [middle] last" format (first{space}optional middle{space}last"
+**addr**: The user's address
+**ava**: The user's avatar image, hex-encoded if it is in a binary format, otherwise text data.
  
-**realname**: The user's actual name
- + format is "first [middle] last" (first{space}optional middle{space}last"
- 
-**postal address**: The user's postal address
- 
- **billing**: The user's billing address
- 
-**ava**: The user's avatar image
- + hex-encoded if it is in a binary format, otherwise text data.
-
-**sm**: Social media information
-  + Social media information is specified as a string of service:handle, e.g. "twitter:janeDoe, keybase:janieD".  Ignore whitespace around the comma or colon.
 
 
 # Crypto-identity App Operation
