@@ -12,6 +12,19 @@
  - Edits are signed by cryptocurrency tokens
  - Integrated with source code documentation generators
 
+## Basic Markdown
+
+`**Bold**` like **this**
+`*Italics*` like *this*
+`# Title`
+`## Chapter`
+(other headings are more number signs)
+`~~strikethrough~~` like ~~this~~
+`[link text](link)` like [this](/cwik)
+> Blockquote looks like "> this"
+
+    code is indented
+
 ## Enhanced Markdown
 Here are some examples:
 
