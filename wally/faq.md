@@ -16,6 +16,9 @@ Touch the address immediately underneath the word "Receive", and that address wi
  1. If you want to send the address via gmail, select the gmail icon in the green band at the top of the Wally app. An email will be displayed with the Wally bitcoincash address automatically inserted into the body of the email. Fill in the email's "To" field and send it. 
  2. Alternately, select the share icon in the green band at the top of the Wally app. A drop down menu will be displayed that will give you various options, such as mail or messages, that you can select to share the Wally bitcoincash address. 
 
+## How do I get an address to which I want to send mBCH into the send address field?
+Simply copy an address into your device's clipboard, and it will automatically be loaded into the send address field.
+
 ## Using Wally, how do you specify the amount of BCH that you want to send in terms of the LOCAL CURRENCY?
 First, choose the local currency by selecting the Settings symbol at the top right of the Wally screen.  At the top of the Settings page, use the pull down menu to select the local currency of your choice.  Once a local currency is set it will remain set unless you use Settings to change it.  
 
@@ -32,4 +35,3 @@ Remember that no actual local currency is being sent, just an equivalent value o
 ## Why does Wally offer multiple accounts?
 You can set up multiple accounts by touching the green "+" symbol to the right of the Balance line on Wally's main screen.  One use for having several accounts is to track your spending by, for example, using one account for groceries, one account for purchases of computing equipment, and another account for miscellaneous purchases.
  
-
