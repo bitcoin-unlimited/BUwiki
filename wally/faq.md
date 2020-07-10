@@ -12,3 +12,5 @@ When you pay a bill, other people with whom you are equally sharing the expense 
 
 ## When specifing local currency to send BCH, does Wally use a fair exchange rate?
 
+## Test
+yuio
