@@ -7,6 +7,9 @@
  - Support of multiple local currencies.
  - Provides secure logins to supported sites on other devices such as PCs, laptops, and tablets.
 
+## What is a mBCH?
+mBCH stands for millibitcoincash. Each mBCH is one thousandth of a BCH.
+
 ## How do you share a Wally BCH address?
 Touch the address immediately underneath the word "Receive", and that address will be copied to the clipboard of your device. 
 
@@ -26,5 +29,7 @@ When you specify an amount in local currency to send to someone, Wally obtains t
 
 Remember that no actual local currency is being sent, just an equivalent value of mBCH is being sent, and there are absolutely no exchange fees involved. Finally, there is always a very remote possibility that for some unforeseen technical reason, the exchange rate might be somehow incorrect.  Wally shows you the exchange rate for one BCH before you send any funds, which you can glance at to confirm that it is reasonable.
 
-## Test
-yuio
+## Why does Wally offer multiple accounts?
+You can set up multiple accounts by touching the green "+" symbol to the right of the Balance line on Wally's main screen.  One use for having several accounts is to track your spending by, for example, using one account for groceries, one account for purchases of computing equipment, and another account for miscellaneous purchases.
+ 
+
