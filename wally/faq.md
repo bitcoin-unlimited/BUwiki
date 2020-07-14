@@ -4,20 +4,25 @@
 
  - Very easy to use friendly human interface.
  - Useful everyday features such as multiple accounts and the splitting of bills.
- - Support of multiple local currencies.
- - Provides secure logins to supported sites on other devices such as PCs, laptops, and tablets.
+ - Support of multiple local (fiat) currencies.
+ - Wally's ground breaking "Identity" feature provides ultra secure logins and idenity information to supported sites on devices such as PCs, laptops, and tablets.
 
 ## What is a mBCH?
-mBCH stands for millibitcoincash. Each mBCH is one thousandth of a BCH.
+mBCH stands for milli-bitcoincash. Each mBCH is one thousandth of a BCH.
+
+## Sending mBCH
+The first step in sending mBCH is obtaining the bitcoincash address to which you want to send the mBCH. Using your email, messaging, or other means, obtain the recipient's bitcoincash address and copy it into the clipboard of your device. Alternatively, you can use the QR scan symbol on the main screen of Wally to activate the camera on your device to scan in a recipient's address QR. 
+
+The **SEND** section at the top of Wally's main page is used to send mBCH.  To the right of the words **SEND from** there is a pull down menu that allows you to select from which account the mBCH will be sent. Select the clipboard icon on the right side of Wally's **SEND** line. This will automatically paste the address on the line below **SEND**. The third and last line of Wally's **SEND** section is used to select the currency type and the amount of currency. At this time, you can choose a local (fiat) currency or mBCH using the pull down menu on the right. Finally enter the send quantity in the **Amount** field and then select the SEND button to complete sending the mBCH.
+
+More Information: See below LOCAL CURRENCY, MULTIPLE ACCOUNTS
+
 
 ## How do you share a Wally BCH address?
 Touch the address immediately underneath the word "Receive", and that address will be copied to the clipboard of your device. 
 
  1. If you want to send the address via gmail, select the gmail icon in the green band at the top of the Wally app. An email will be displayed with the Wally bitcoincash address automatically inserted into the body of the email. Fill in the email's "To" field and send it. 
- 2. Alternately, select the share icon in the green band at the top of the Wally app. A drop down menu will be displayed that will give you various options, such as mail or messages, that you can select to share the Wally bitcoincash address. 
-
-## Sending mBCH
-test
+ 2. Alternately, select the share icon in the green band at the top of the Wally app. A drop down menu will be displayed that will give you various options, such as mail or messages, that you can select use to share the Wally bitcoincash address. Just paste the address from your device's clipboard into your selected share option.
 
 
 ## How do I get an address to which I want to send mBCH into the send address field?
@@ -36,6 +41,6 @@ When you specify an amount in local currency to send to someone, Wally obtains t
 
 Remember that no actual local currency is being sent, just an equivalent value of mBCH is being sent, and there are absolutely no exchange fees involved. Finally, there is always a very remote possibility that for some unforeseen technical reason, the exchange rate might be somehow incorrect.  Wally shows you the exchange rate for one BCH before you send any funds, which you can glance at to confirm that it is reasonable.
 
-## Why does Wally offer multiple accounts?
-You can set up multiple accounts by touching the green "+" symbol to the right of the Balance line on Wally's main screen.  One use for having several accounts is to track your spending by, for example, using one account for groceries, one account for purchases of computing equipment, and another account for miscellaneous purchases.
+## Why does Wally offer MULTIPLE ACCOUNTS?
+You can set up multiple accounts by touching the green "+" symbol to the right of the Balance line on Wally's main screen.  One use for having several accounts is to track your spending by, for example, using one account for business and one account personal expenses. 
  
