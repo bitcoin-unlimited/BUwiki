@@ -16,6 +16,10 @@ Touch the address immediately underneath the word "Receive", and that address wi
  1. If you want to send the address via gmail, select the gmail icon in the green band at the top of the Wally app. An email will be displayed with the Wally bitcoincash address automatically inserted into the body of the email. Fill in the email's "To" field and send it. 
  2. Alternately, select the share icon in the green band at the top of the Wally app. A drop down menu will be displayed that will give you various options, such as mail or messages, that you can select to share the Wally bitcoincash address. 
 
+## Sending mBCH
+test
+
+
 ## How do I get an address to which I want to send mBCH into the send address field?
 Simply copy an address into your device's clipboard, and it will automatically be loaded into the send address field.
 
