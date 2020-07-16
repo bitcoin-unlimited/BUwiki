@@ -1,17 +1,20 @@
 
 
-## Why should I use the Wally wallet?
+## Why should I use the Wally Wallet?
 
  - Very easy to use friendly human interface.
  - Useful everyday features such as multiple accounts and the splitting of bills.
  - Support of multiple local (fiat) currencies.
  - Wally's ground breaking "Identity" feature provides ultra secure logins and idenity information to supported sites on devices such as PCs, laptops, and tablets.
 
-## Can you give a SUMMARY OVERVIEW of the Wally wallet?
+## Can you give a SUMMARY OVERVIEW of the Wally Wallet?
 Yes. The Wally Wallet is a cryptocurrency wallet whose design center is ease of use, simplicity, and useful features. At this point in time, it supports bitcoin cash and also allows you to specify amounts in local currencies. Wally's main screen is used for 90% of what you do with a wallet: sending, receiving, and showing account balances. Wally offers multiple accounts, multiple local currencies, a unique "identity" feature that provides ultra secure logins and information to internet sites, and other helpful  features.
 
 ## What is mBCH?
 mBCH stands for milli-bitcoin cash. Each mBCH is one thousandth of a BCH.
+
+## How is my mBCH protected from theft?
+At this time, the Wally Wallet does not have it's own password. The password for your device protects Wally from bad actors accessing your wallet. If you keep significant funds in your wallet, it would be a good idea to not let anyone use your device that you wouldn't trust with your traditional paper currency physical wallet. Since Wally is designed for ease of use, it's protection level mirrors that of a physical wallet.
 
 ## Sending mBCH
 The first step in sending mBCH is obtaining the bitcoin cash address to which you want to send the mBCH. Using your email, messaging, or other means, obtain the recipient's bitcoin cash address and copy it into the clipboard of your device. Alternatively, you can use the QR scan symbol on the main screen of Wally to activate the camera on your device to scan in a recipient's address QR. The address will automatically be copied into the **SEND** section of your Wally Wallet.
@@ -47,8 +50,22 @@ When you specify an amount in local currency to send to someone, Wally obtains t
 Remember that no actual local currency is being sent, just an equivalent value of mBCH is being sent, and there are absolutely no exchange fees involved. Finally, there is always a very remote possibility that for some unforeseen technical reason, the exchange rate might be somehow incorrect.  Wally shows you the exchange rate for one BCH before you send any funds, which you can glance at to confirm that it is reasonable.
 
 ## Why does Wally offer MULTIPLE ACCOUNTS? How do I set up additional accounts?
-You can set up multiple accounts by touching the green "+" symbol to the right of the Balance line on Wally's home page.  One use for having several accounts is to track your spending by, for example, using one account for business and one account personal expenses. In the future, Wally may support several cryptocurrencies, each of which would have it's own account or accounts.
+One use for having several accounts is to track your spending by, for example, using one account for business and one account personal expenses. In the future, Wally may support several cryptocurrencies, each of which would have it's own account or accounts.
+
+You can set up multiple accounts by touching the green "+" symbol to the right of the Balance line on Wally's home page. The **New Account** page will be displayed. Enter an account name of your choice. Account names can be from 1 to 8 characters (letters, numbers, or symbols) long.
+
+
 
 ## What information does Wally show me about my account balances?
  The lower section of Wally's home page shows a list of your accounts and their balances. Balances are are shown in mBCH. If the amount shown is green, all send transactions for the account have been settled. If an orange amount is shown to the right or the green amount, one or more send transactions are in progress. The green amount is the mBCH you have available for sending, and the orange amount shows the amount of mBCH in the account's addresses from which sent amounts are being extracted. When the sends are settled, the orange amount will disappear and the green amount will be the total mBCH for that account.
+ 
+## How does the IDENTITY feature make my life easier?
+Once you've set up your identity for a supported web site, you can use Wally to log into that web site on any device in an ultra secure manner. Just select the QR scan button on Wally's home page and use your device to scan the QR code on the web site's login page. Not only will you be logged in but additional information that you have pre-approved will be sent to the web site, such as your name, address, credit card number, or telephone number. This saves you from having to supply such information every time you log in. 
+
+## How do I enter my identity information.
+Select the Identity icon at the bottom of Wally's home page.  The **Identity** page will be displayed. A list of web sites that support the Identity feature is displayed. Select one of these web sites and a page showing a list of your identity information is displayed along with a switch for each item on the list. Items supported by the web site are in black, and identity items not supported are in grey. (Note to self: How does one populate the identity info. Has this been implemented yet?)  Turn on the switch for any item that you wish to pass to the web site when logging in.  (Andy, how does one get a URL onto the web site list?)
+ 
+
+ 
+
  
