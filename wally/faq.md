@@ -17,7 +17,7 @@ mBCH stands for milli-bitcoin cash. Each mBCH is one thousandth of a BCH.
 At this time, the Wally Wallet does not have it's own password. The password for your device protects Wally from bad actors accessing your wallet. If you keep significant funds in your wallet, it would be a good idea to not let anyone use your device that you wouldn't trust with your traditional paper currency physical wallet. Since Wally is designed for ease of use, it's protection level mirrors that of a physical wallet.
 
 ## Sending mBCH
-The first step in sending mBCH is obtaining the bitcoin cash address to which you want to send the mBCH. Using your email, messaging, or other means, obtain the recipient's bitcoin cash address and copy it into the clipboard of your device. Alternatively, you can use the QR scan symbol on the main screen of Wally to activate the camera on your device to scan in a recipient's address QR. The address will automatically be copied into the **SEND** section of your Wally Wallet.
+The first step in sending mBCH is obtaining the bitcoin cash public ID address to which you want to send the mBCH. Using your email, messaging, or other means, obtain the recipient's bitcoin cash address and copy it into the clipboard of your device. Alternatively, you can use the QR scan symbol on the main screen of Wally to activate the camera on your device to scan in a recipient's address QR. The address will automatically be copied into the **SEND** section of your Wally Wallet.
 
 The **SEND** section at the top of Wally's home page is used to send mBCH.  Use the pull down menu to the right of the words **SEND from** to select account from which the mBCH will be sent. Next, if the recipients address hasn't already automatically appeared on the next line, select the clipboard icon on the right side of Wally's **SEND** line. This will paste the recipient's address from the clipboard into the line below **SEND**. The third and last line of Wally's **SEND** section is used to select the currency type and the amount of currency. At this time, you can choose a local (fiat) currency or mBCH using the pull down menu on the right. Finally enter the send quantity in the **Amount** field and then select the SEND button to complete sending the mBCH. (Note: if you specified an amount of local currency, the equivalent amount of mBCH will sent.)
 
@@ -27,10 +27,10 @@ More Information: See above and below for mBCH, LOCAL CURRENCY, MULTIPLE ACCOUNT
 Simply copy an address into your device's clipboard, and it will automatically be loaded into the send address field on Wally's home page.
 
 ## Receiving mBCH
-The middle of the Wally home page is used for receiving mBCH. If the sender already has the address of the account into which you want the mBCH sent, you do not have to do anything. The mBCH will appear in your account after it is sent. If you need to provide your address to the sender, use the pull down menu to the right of **Receive into** to select the account into which you want the mBCH sent. The address for that account will appear right below the **Receive into** line and also the QR code for that address will be displayed. Either send your address to the sender (see the next FAQ) or have them scan the displayed QR code.
+The middle of the Wally home page is used for receiving mBCH. If the sender already has your public ID address for the account into which you want the mBCH sent, you do not have to do anything. The mBCH will appear in your account after it is sent. If you need to provide your public ID address to the sender, use the pull down menu to the right of **Receive into** to select the account into which you want the mBCH sent. The address for that account will appear right below the **Receive into** line and also the QR code for that address will be displayed. Either send your address to the sender (see the next FAQ) or have them scan the displayed QR code.
 
-## How do I send my Wally BCH address to someone who wants to send me BCH?
-Your Wally Wallet's BCH address is too long to reliably recite it to someone who is going to send you BCH. Instead, touch the address immediately underneath the word "Receive" on Wally's home page, and that address will be copied to the clipboard of your device. 
+## How do I send my Wally BCH public ID address to someone who wants to send me BCH?
+Your Wally Wallet's BCH public ID address is too long to reliably recite it to someone who is going to send you BCH. Instead, touch the address immediately underneath the word "Receive" on Wally's home page, and that address will be copied to the clipboard of your device. 
 
  1. If you want to send the address via gmail, select the gmail icon in the green band at the top of the Wally's home page. An email will be displayed with the Wally bitcoin cash address automatically inserted into the body of the email. Fill in the email's "To" field and send it. 
  2. Alternately, select the share icon in the green band at the top of Wally's home page. A drop down menu will be displayed that will give you various options, such as mail, messages, or save-to-drive that you can select and use to share the Wally bitcoin cash address. In general, the address will automatically be loaded into the share option chosen.
@@ -54,9 +54,9 @@ When you specify an amount in local currency to send to someone, Wally obtains t
 Remember that no actual local currency is being sent, just an equivalent value of mBCH is being sent, and there are absolutely no exchange fees involved. Finally, there is always a very remote possibility that for some unforeseen technical reason, the exchange rate might be somehow incorrect.  Wally shows you the exchange rate for one BCH before you send any funds, which you can glance at to confirm that it is reasonable.
 
 ## Why does Wally offer MULTIPLE ACCOUNTS? How do I set up additional accounts?
-One use for having several accounts is to track your spending by, for example, using one account for business and one account personal expenses. In the future, Wally may support several cryptocurrencies, each of which would have it's own account or accounts.
+One use for having several accounts is to track your spending by, for example, using one account for business and one account personal expenses. You may also want to isolate received funds and spent funds on a project or other specific basis. Additionally, in the future, Wally may support several cryptocurrencies, each of which would have it's own account or accounts.
 
-You can set up multiple accounts by touching the green "+" symbol to the right of the Balance line on Wally's home page. The **New Account** page will be displayed. Enter an account name of your choice. Account names can be from 1 to 8 characters (letters, numbers, or symbols) long.
+You can set up multiple accounts by touching the green "+" symbol to the right of the Balance line on Wally's home page. The **New Account** page will be displayed. Enter an account name of your choice. Account names can be from 1 to 8 characters (letters, numbers, or symbols) long. After setting up an account, go to Wally's settings page and write down the Account Backup and Restore Secret Phrase for the account. (See SETTINGS below.)
 
 
 
@@ -70,7 +70,26 @@ Once you've set up your identity for a supported web site, you can use Wally to 
 
 ## How do I enter my identity information.
 Select the Identity icon at the bottom of Wally's home page.  The **Identity** page will be displayed. A list of web sites that support the Identity feature is displayed. Select one of these web sites and a page showing a list of your identity information is displayed along with a switch for each item on the list. Items supported by the web site are in black, and identity items not supported are in grey. (Note to self: How does one populate the identity info. Has this been implemented yet?)  Turn on the switch for any item that you wish to pass to the web site when logging in.  (How does one get a URL onto the web site list?)
+
+## What Wally features can I control using the SETTINGS page?
+
+ 1. LOCAL CURRENCY. Select the gear icon at the top of Wally's home page to go to the settings page. The first line on the settings page allows you to select your preferred local currency. Use the pull down menu on the right to see the available local currencies, and select the currency of your choice.
+ 2. ACCOUNT BACKUP AND RESTORE SECRET PHRASE. The second section of the settings page requires your special attention. After setting up an account, you should immediately write down the account's secret phrase and store it in a safe place. This will allow you or anyone else to recover your funds if your wallet is lost or destroyed. Keep your secret phrase secret.
  
+  ***!!WARNING!!*   If the Wally app is accidentally deleted or your device goes bad, is destroyed, is lost, or is stolen, or if any other mishap occurs preventing you from accessing your wallet, you will lose your BCH unless you have written down and safely stored your account backup and restore secret phrase.**
+  
+ 3. BCH NODE PREFERENCES
+ 4. 
+ 5. 
+
+
+
+
+
+
+
+
+
 
  
 
