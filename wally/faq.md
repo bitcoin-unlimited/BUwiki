@@ -26,7 +26,7 @@ More Information: See above and below for mBCH, LOCAL CURRENCY, MULTIPLE ACCOUNT
 ## How do I get the address to which I want to send mBCH into the send address field?
 Simply copy an address into your device's clipboard, and it will automatically be loaded into the send address field on Wally's home page.
 
-## How do I receive mBCH from another person?
+## Receiving mBCH
 The middle of the Wally home page is used for receiving mBCH. If the sender already has the address of the account into which you want the mBCH sent, you do not have to do anything. The mBCH will appear in your account after it is sent. If you need to provide your address to the sender, use the pull down menu to the right of **Receive into** to select the account into which you want the mBCH sent. The address for that account will appear right below the **Receive into** line and also the QR code for that address will be displayed. Either send your address to the sender (see the next FAQ) or have them scan the displayed QR code.
 
 ## How do I send my Wally BCH address to someone who wants to send me BCH?
@@ -41,7 +41,11 @@ First, choose the local currency by selecting the Settings symbol (a gear) at th
 
 On Wally's home page, below SEND, there is an address line showing the address to which the BCH will be sent. Below the address line is the AMOUNT line where you enter the "send quantity" of mBCH or local currency that you wish to send.  If you wish to change the type of currency shown next to the "send quantity" field, select the down arrow to the right of the currency, and then choose either your local currency or mBCH from the pull down list.
 
-## How do we split a bill using Wally?
+## How does Wally determine TRANSACTION FEES?
+Wally automatically determines the transaction fee that is part of each send transaction.  These fees are typically only a few fractions of a cent or a few cents.  Wally ....  
+
+
+## How do we SPLIT A BILL using Wally?
 When you pay a bill, other people with whom you are equally sharing the expense can easily send you their portion of the bill. Under "Receive" on the Wally home page, select "SPLIT A BILL". On the page that is displayed, fill in the total amount of the bill and the tip. You can enter a specific tip amount or select the percentage tip by touching the arrow to the right of "Tip". Next, select the number of ways you are splitting the bill.  The amount each person will be paying is then shown in mBCH and in the local currency, and your address QR code is displayed to make it easy for people to send you mBCH.
 
 ## When specifying local currency to send BCH, does Wally use a fair exchange rate?
@@ -56,8 +60,10 @@ You can set up multiple accounts by touching the green "+" symbol to the right o
 
 
 
-## What information does Wally show me about my account balances?
- The lower section of Wally's home page shows a list of your accounts and their balances. Balances are are shown in mBCH. If the amount shown is green, all send transactions for the account have been settled. If an orange amount is shown to the right or the green amount, one or more send transactions are in progress. The green amount is the mBCH you have available for sending, and the orange amount shows the amount of mBCH in the account's addresses from which sent amounts are being extracted. When the sends are settled, the orange amount will disappear and the green amount will be the total mBCH for that account.
+## What information does Wally show me about my ACCOUNT BALANCES?
+ The lower section of Wally's home page shows a list of your accounts and their balances. Balances are are shown in mBCH. If the amount shown is green, all transactions for the account have been settled. If an orange amount is shown to the right or the green amount, one or more send and/or receive transactions are in progress. For send transactions, the green amount is the mBCH you have available for sending, and the orange amount shows the amount of mBCH "change" that is temporarily unavailable while the transaction is being processed. Remember that when you send mBCH, your transaction amount, your transaction fee, and one or more or your addresses containing enough BCH  to cover the transaction are sent to the the world's BCH nodes.  The BCH node that successfully mines the next block of transactions extracts your send amount and your transaction fee from the addresses, and then returns any "change" to your wallet . This "change" is displayed in orange. When sends are settled, the orange amount will disappear and the green amount will be the total mBCH that remains in the account.
+ 
+When receiving mBCH, the amount received will be shown in orange to the right of the amount previously in the account. Once the transaction is settled, the received amount will be added to account's total and the orange received amount will disappear. 
  
 ## How does the IDENTITY feature make my life easier?
 Once you've set up your identity for a supported web site, you can use Wally to log into that web site on any device in an ultra secure manner. Just select the QR scan button on Wally's home page and use your device to scan the QR code on the web site's login page. Not only will you be logged in but additional information that you have pre-approved will be sent to the web site, such as your name, address, credit card number, or telephone number. This saves you from having to supply such information every time you log in. 
