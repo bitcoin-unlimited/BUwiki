@@ -81,6 +81,9 @@ Select the Identity icon at the bottom of Wally's home page.  The **Identity** p
  3. BCH NODE PREFERENCES
  4. 
  5. 
+## My phone was destroyed. How do I recover my wallet and all of my accounts?
+Recovery of a lost Wally wallet is easy. First, install a new copy of Wally into a phone or other device.
+Next start up Wally and go to settings. In the settings Recovery section, enter the Account Backup and Restore Secret Phrase for each of the accounts that you want to recover. Wally will examine the BCH blockchain and using the data in the blockchain, Wally will fully restore your account(s). This takes some time, so be patient.
 
 
 
