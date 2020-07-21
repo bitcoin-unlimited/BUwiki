@@ -12,7 +12,7 @@
 Yes. The Wally Wallet is a cryptocurrency wallet whose design center is ease of use, simplicity, and useful features. At this point in time, it supports bitcoin cash and also allows you to specify amounts in local currencies. Wally's main screen is used for 90% of what you do with a wallet: sending, receiving, and showing account balances. Wally offers multiple accounts, multiple local currencies, a unique "identity" feature that provides ultra secure logins and information to internet sites, and other helpful  features.
 
 ## What is mBCH?
-mBCH stands for milli-bitcoin cash. Each mBCH is one thousandth of a BCH.
+mBCH stands for millibitcoincash. Each mBCH is one thousandth of a BCH (1000 mBCH = 1 BCH).  Other common terms are not used by Wally. These include microbitcoincash, which equals 1 millionth of a BCH (1,000,000 microBCH = 1 BCH) and a Satoshi, which is one hundred millionth of a BCH (100,000,000 Satoshi = 1 BCH).
 
 ## How is my mBCH protected from theft?
 At this time, the Wally Wallet does not have it's own password. The password for your device protects Wally from bad actors accessing your wallet. If you keep significant funds in your wallet, it would be a good idea to not let anyone use your device that you wouldn't trust with your traditional paper currency physical wallet. Since Wally is designed for ease of use, it's protection level mirrors that of a physical wallet.
@@ -43,7 +43,7 @@ First, choose the local currency by selecting the Settings symbol (a gear) at th
 On Wally's home page, below SEND, there is an address line showing the address to which the BCH will be sent. Below the address line is the AMOUNT line where you enter the "send quantity" of mBCH or local currency that you wish to send.  If you wish to change the type of currency shown next to the "send quantity" field, select the down arrow to the right of the currency, and then choose either your local currency or mBCH from the pull down list.
 
 ## How does Wally determine TRANSACTION FEES?
-Wally automatically determines the transaction fee that is part of each send transaction.  These fees are typically only a few fractions of a cent or a few cents.  Wally ....  
+Wally automatically determines the transaction fee that is part of each send transaction.  The fee is just over one Satoshi per byte of information in your send transaction. Usually, around 200 to 250 bytes are in a transaction, but a transaction that requires multiple addresses to cover the amount being sent can rarely exceed 1000 bytes.   
 
 
 ## How do we SPLIT A BILL using Wally?
@@ -75,9 +75,9 @@ Select the Identity icon at the bottom of Wally's home page.  The **Identity** p
 ## What Wally features can I control using the SETTINGS page?
 
  1. LOCAL CURRENCY. Select the gear icon at the top of Wally's home page to go to the settings page. The first line on the settings page allows you to select your preferred local currency. Use the pull down menu on the right to see the available local currencies, and select the currency of your choice.
- 2. ACCOUNT BACKUP AND RESTORE SECRET PHRASE. The second section of the settings page requires your special attention. After setting up an account, you should immediately write down the account's secret phrase and store it in a safe place. This will allow you or anyone else to recover your funds if your wallet is lost or destroyed. Keep your secret phrase secret.
+ 2. ACCOUNT RECOVERY SECRET PHRASE. The second section of the settings page requires your special attention. After setting up an account, you should immediately write down the account's secret phrase and store it in a safe place. This will allow you or anyone else to recover your funds if your wallet is lost or destroyed. Keep your secret phrase secret.
  
-  ***!!WARNING!!*   If the Wally app is accidentally deleted or your device goes bad, is destroyed, is lost, or is stolen, or if any other mishap occurs preventing you from accessing your wallet, you will lose your BCH unless you have written down and safely stored your account backup and restore secret phrase.**
+  ***!!WARNING!!*   If the Wally app is accidentally deleted or your device goes bad, is destroyed, is lost, is stolen, or if any other mishap occurs preventing you from accessing your wallet, you will lose your BCH unless you have written down and safely stored your account recovery secret phrase.**
   
  3. BCH NODE PREFERENCES. Advanced users may want to set one of the BCH node options. When these are not set, Wally chooses a random BCH node to validate your send transactions. Furthermore, Wally will occasionally switch to a different random node to further insure your security. The Simplified Payment Validation (SPV) standard is used to ensure rapid execution of transactions. Users that want a particular node to validate their transactions (such as their own BCH node if they are running one) may set Wally to only use that node or, alternately, to preferably us that node. To enable these choices, select one of the red buttons in the third section of the settings page and enter the node name.
  4. ACCOUNT MANAGEMENT. The forth section of the setting page allows you to rediscover transactions, access unconfirmed transactions, and to delete accounts.  Use the drop down menu to select the account that you want to manage, and then select REDISCOVER, ASSESS UNCONFIRMED, or DELETE. 
@@ -86,7 +86,7 @@ Select the Identity icon at the bottom of Wally's home page.  The **Identity** p
 
 ## My phone was destroyed. How do I recover my wallet and all of my accounts?
 Recovery of a lost Wally wallet is easy. First, install a new copy of Wally into a phone or other device.
-Next start up Wally and go to settings. In the settings Recovery section, enter the Account Backup and Restore Secret Phrase for each of the accounts that you want to recover. Wally will examine the BCH blockchain and using the data in the blockchain, Wally will fully restore your account(s). This takes some time, so be patient.
+Next start up Wally and go to settings. In the settings Account Management section, select RECOVER and then enter an Account Recovery Secret Phrase for an account that you want to recover. Wally will examine the BCH blockchain and using the data in the blockchain, Wally will fully restore your account(s). This takes some time, so be patient. Repeat this process for all the accounts in your lost wallet.
 
 
 
