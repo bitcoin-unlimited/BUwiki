@@ -5,7 +5,8 @@
  - Very easy to use friendly human interface.
  - Useful everyday features such as multiple accounts and the splitting of bills.
  - Support of multiple local (fiat) currencies.
- - Wally's ground breaking "Identity" feature provides ultra secure logins and idenity information to supported sites on devices such as PCs, laptops, and tablets.
+ - Simplified Payment Validation (SPV) support ensures rapid transaction execution.
+ - Ground breaking "Identity" feature uses your Wally wallet to securely login to supported websites on other devices such as PCs, laptops, tablets, and your wallet device. At the same time you log in, you can automatically pass additional selected information such as your address and telephone number to these websites.
 
 ## Can you give a SUMMARY OVERVIEW of the Wally Wallet?
 Yes. The Wally Wallet is a cryptocurrency wallet whose design center is ease of use, simplicity, and useful features. At this point in time, it supports bitcoin cash and also allows you to specify amounts in local currencies. Wally's main screen is used for 90% of what you do with a wallet: sending, receiving, and showing account balances. Wally offers multiple accounts, multiple local currencies, a unique "identity" feature that provides ultra secure logins and information to internet sites, and other helpful  features.
@@ -78,9 +79,11 @@ Select the Identity icon at the bottom of Wally's home page.  The **Identity** p
  
   ***!!WARNING!!*   If the Wally app is accidentally deleted or your device goes bad, is destroyed, is lost, or is stolen, or if any other mishap occurs preventing you from accessing your wallet, you will lose your BCH unless you have written down and safely stored your account backup and restore secret phrase.**
   
- 3. BCH NODE PREFERENCES
- 4. 
- 5. 
+ 3. BCH NODE PREFERENCES. Advanced users may want to set one of the BCH node options. When these are not set, Wally chooses a random BCH node to validate your send transactions. Furthermore, Wally will occasionally switch to a different random node to further insure your security. The Simplified Payment Validation (SPV) standard is used to ensure rapid execution of transactions. Users that want a particular node to validate their transactions (such as their own BCH node if they are running one) may set Wally to only use that node or, alternately, to preferably us that node. To enable these choices, select one of the red buttons in the third section of the settings page and enter the node name.
+ 4. ACCOUNT MANAGEMENT. The forth section of the setting page allows you to rediscover transactions, access unconfirmed transactions, and to delete accounts.  Use the drop down menu to select the account that you want to manage, and then select REDISCOVER, ASSESS UNCONFIRMED, or DELETE. 
+
+***!!WARNING!**!* When deleting an account, all the mBCH in the account will be lost forever. (Note to lead software engineer....can the mBCH be restored using the secret phrase???
+
 ## My phone was destroyed. How do I recover my wallet and all of my accounts?
 Recovery of a lost Wally wallet is easy. First, install a new copy of Wally into a phone or other device.
 Next start up Wally and go to settings. In the settings Recovery section, enter the Account Backup and Restore Secret Phrase for each of the accounts that you want to recover. Wally will examine the BCH blockchain and using the data in the blockchain, Wally will fully restore your account(s). This takes some time, so be patient.
