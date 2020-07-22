@@ -75,6 +75,9 @@ Select the "Shop" icon at the bottom of Wallly's home page. Wally's "Stores and 
 ## How does the IDENTITY feature make my life easier?
 Once you've set up your identity for a supported web site, you can use Wally to log into that web site on any device in an ultra secure manner. Just select the QR scan button on Wally's home page and use your device to scan the QR code on the web site's login page. Not only will you be logged in but additional information that you have pre-approved will be sent to the web site, such as your name, address, credit card number, or telephone number. This saves you from having to supply such information every time you log in. 
 
+## Why are logins using IDENTITY so secure?
+When Wally scans the login QR presented by a website, Wally initiates the login by requesting a cryptographic challenge string from that website. The website then sends the challenge. Wally, using your cryptographic ID, processes the string, proves that it is your device/wallet that is requesting the login, and sends back the proof. Once the website sees the proof, it logs you in without any need for you to risk entering your user name or password using a keyboard. Among other benefits, key logger attacks are completely foiled.
+ 
 ## How do I enter my identity information.
 Select the Identity icon at the bottom of Wally's home page.  The **Identity** page will be displayed. A list of web sites that support the Identity feature is displayed. Select one of these web sites and a page showing a list of your identity information is displayed along with a switch for each item on the list. Items supported by the web site are in black, and identity items not supported are in grey. (Note to self: How does one populate the identity info. Has this been implemented yet?)  Turn on the switch for any item that you wish to pass to the web site when logging in.  (How does one get a URL onto the web site list?)
 
