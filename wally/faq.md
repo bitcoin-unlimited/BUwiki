@@ -70,7 +70,7 @@ When receiving mBCH, the amount received will be shown in orange to the right of
 ## How do I find stores that accept bitcoin cash?
 Select the "Shop" icon at the bottom of Wallly's home page. Wally's "Stores and Merchants" page will be displayed, showing a list of websites that either help you find what you are looking for or take you directly there. When you select an item from the list, your device's web browser will display the selected website. The first item on the list is bitcoin.com's actively maintained map showing the location worldwide of stores that accept bitcoin cash. Other items include lists of merchants, casinos, and favorite websites that you have placed on the list.
 
-(Note to software engineer: The bitcoin.com site with the map is https://map.bitcoin.com/. 
+(Note to software engineer: The bitcoin.com site with the map is https://map.bitcoin.com/.  A list of merchants that accept bitcoin cash is at https://acceptbitcoin.cash/.  A list of casinos that accept bitcoin cash is at https://wizardofodds.com/banking/cryptocurrency/Bitcoin-Cash/. 
  
 ## How does the IDENTITY feature make my life easier?
 Once you've set up your identity for a supported web site, you can use Wally to log into that web site on any device in an ultra secure manner. Just select the QR scan button on Wally's home page and use your device to scan the QR code on the web site's login page. Not only will you be logged in but additional information that you have pre-approved will be sent to the web site, such as your name, address, credit card number, or telephone number. This saves you from having to supply such information every time you log in. 
