@@ -44,7 +44,7 @@ First, choose the local currency by selecting the Settings symbol (a gear) at th
 On Wally's home page, below SEND, there is an address line showing the address to which the BCH will be sent. Below the address line is the AMOUNT line where you enter the "send quantity" of mBCH or local currency that you wish to send.  If you wish to change the type of currency shown next to the "send quantity" field, select the down arrow to the right of the currency, and then choose either your local currency or mBCH from the pull down list.
 
 ## How does Wally determine TRANSACTION FEES?
-Wally automatically determines the transaction fee that is part of each send transaction.  The fee is just over one Satoshi per byte of information in your send transaction. Usually, around 200 to 250 bytes are in a transaction, but a transaction that requires multiple addresses to cover the amount being sent can rarely exceed 1000 bytes.   
+Wally automatically determines the transaction fee that is part of each send transaction.  The fee is just over one Satoshi per byte of information in your send transaction. Usually, around 200 to 250 bytes are in a transaction, but a transaction that requires multiple addresses to cover the amount being sent can rarely exceed 1000 bytes. In US currency, a typical transaction fee is only one fiftieth of a penny.
 
 
 ## How do we SPLIT A BILL using Wally?
