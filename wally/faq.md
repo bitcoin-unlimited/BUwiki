@@ -10,7 +10,7 @@
  - Quickly find stores and merchants that accept bitcoin cash.
 
 ## Can you give a SUMMARY OVERVIEW of the Wally Wallet?
-Yes. The Wally Wallet is a cryptocurrency wallet whose design center is ease of use, simplicity, and useful features. At this point in time, it supports bitcoin cash and also allows you to specify amounts in local currencies. Wally's main screen is used for 90% of what you do with a wallet: sending, receiving, and showing account balances. Wally offers multiple accounts, multiple local currencies, a unique "identity" feature that provides ultra secure logins and information to internet sites, and other helpful  features.
+Yes. The Wally Wallet is a cryptocurrency wallet focosed on Bitcoin Cash whose design center is ease of use, simplicity, and useful features. At this point in time, it supports bitcoin cash and also allows you to specify amounts in local currencies. Wally's main screen is used for 90% of what you do with a wallet: sending, receiving, and showing account balances. Wally offers multiple accounts, multiple local currencies, a unique "identity" feature that provides ultra secure logins and information to internet sites, and other helpful  features.
 
 ## What is mBCH?
 mBCH stands for millibitcoincash. Each mBCH is one thousandth of a BCH (1000 mBCH = 1 BCH).  Other common terms are not used by Wally. These include microbitcoincash, which equals 1 millionth of a BCH (1,000,000 microBCH = 1 BCH) and a Satoshi, which is one hundred millionth of a BCH (100,000,000 Satoshi = 1 BCH).
