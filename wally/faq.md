@@ -10,10 +10,15 @@
  - Quickly find stores and merchants that accept bitcoin cash.
 
 ## Can you give a SUMMARY OVERVIEW of the Wally Wallet?
-Yes. The Wally Wallet is a cryptocurrency wallet focosed on Bitcoin Cash whose design center is ease of use, simplicity, and useful features. At this point in time, it supports bitcoin cash and also allows you to specify amounts in local currencies. Wally's main screen is used for 90% of what you do with a wallet: sending, receiving, and showing account balances. Wally offers multiple accounts, multiple local currencies, a unique "identity" feature that provides ultra secure logins and information to internet sites, and other helpful  features.
+Yes. The Wally Wallet is a cryptocurrency wallet focused on Bitcoin Cash whose design center is ease of use, simplicity, and useful features. In addition, Wally supports various experimental and test cryptocurrencies as an aid for developers.
+
+Wally’s main screen is used for 90% of what you do with a wallet: sending, receiving, and showing account balances. Wally allows you to specify the amount of BCH you want to send in either mBCH or in local currencies. Wally offers multiple accounts, multiple local currencies, help in finding merchants that accept bitcoin cash, a unique “identity” feature that provides ultra secure logins to internet sites, and other helpful features.
+
+## With which devices is Wally compatible?
+The Wally Wallet is compatible with Android devices running Android 8.0 (Oreo) or later. Generally, most new phones and tablets made in 2018 are therefore compatible.
 
 ## What is mBCH?
-mBCH stands for millibitcoincash. Each mBCH is one thousandth of a BCH (1000 mBCH = 1 BCH).  Other common terms are not used by Wally. These include microbitcoincash, which equals 1 millionth of a BCH (1,000,000 microBCH = 1 BCH) and a Satoshi, which is one hundred millionth of a BCH (100,000,000 Satoshi = 1 BCH).
+mBCH stands for millibitcoincash. Each mBCH is one thousandth of a BCH (1000 mBCH = 1 BCH).  Other common terms are not used by Wally. These include microbitcoincash, which equals 1 millionth of a BCH (1,000,000 uBCH = 1 BCH) and a Satoshi, which is one hundred millionth of a BCH (100,000,000 Satoshi = 1 BCH).
 
 ## How is my mBCH protected from theft?
 At this time, the Wally Wallet does not have it's own password. The password for your device protects Wally from bad actors accessing your wallet. If you keep significant funds in your wallet, it would be a good idea to not let anyone use your device that you wouldn't trust with your traditional paper currency physical wallet. Since Wally is designed for ease of use, it's protection level mirrors that of a physical wallet.
