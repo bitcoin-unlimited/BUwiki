@@ -107,3 +107,42 @@ Select the Identity icon at the bottom of Wally's home page.  The **Identity** p
 ***!!WARNING!**!* When deleting an account, all the mBCH in the account will be lost forever.
 
 
+
+
+## Glossary of Terms
+
+**Address or Bitcoin Cash address**
+An address in a BCH wallet. When sending BCH, the address of the recipient is specified to ensure that the BCH is sent to the correct recipient. Each address is completely unique, as the probability of a duplicate address being created is infintesimally small.
+
+**BCH** 
+Abbreviation for both “bitcoin cash” (the currency) and the Bitcoin Cash Network. See below.
+
+**Bitcoin, Bitcoin Cash, bitcoin, and bitcoin cash**
+Bitcoin and Bitcoin Cash (note the names are capitalized) refer to the electronic networks that process transactions made with bitcoin and bitcoin cash (note the lower case names). The names bitcoin and bitcoin cash refer to the electronic currency itself, as in “I own 3 and a half bitcoin cash”.
+
+ Traditional currencies are typically coins, paper bills, and amounts in bank, brokerage, or other accounts. bitcoin and bitcoin cash (and other cryptocurrencies) are a type of currency that exists in the form of _private keys_, with each private key representing a particular amount of the currency. Usually, only one person or organization knows a particular private key and hence “owns” the cryptocurrency that the private key represents.
+
+The amount of currency associated with a private key can be split into parts, each part then having its own private key, and whose sum is the same as the amount represented by the original private key. Alternately, private keys can be combined into a new private key which represents the amount of the sum of the combined private keys.
+
+**bitcoin cash Transaction**
+A transaction is the exchange of a quantity of BCH between two people. One person sends BCH to another, and the other person receives the BCH. The information specifying this transaction is grouped with the information describing other transactions into a _block_ of transactions by Bitcoin Cash _miners_. Once the block has been validated by the BCH network and added to the *blockchain*, the transactions in that block are *confirmed*.
+
+**Block**
+One or more BCH transactions, grouped together with an identifying block header. See Blockchain below for more detail.
+
+**Block Validation**
+Once a minor has successfully mined a block, it is sent to all other BCH nodes on the BCH network for validation. Each node checks to see if the new block has been correctly mined and then, after this validation, appends to the blockchain that it maintains. In the somewhat rare case when two miners each mine different blocks and simultaneously sent them to the BCH network, some of the nodes might validate one of the blocks and others might validate the other block. The Bitcoin Cash node software automatically resolves this situation, usually when the next block is mined, and one of the two prior simultaneous blocks is deleted from the blockchain and the other is adopted by all nodes.
+
+**Blockchain**
+The BCH blockchain is the place where all BCH transactions that have ever been validated are stored. Approximately once every ten minutes, a group of BCH transactions are packaged into a so called 'block' of transactions and validated by the nodes of the BCH network. Once validated, the new block is added to the chain of blocks that have previously been validated. All the transactions in the blockchain can be examined by anyone at any time. This, for example, allows Bitcoin Unlimited to check that the BCH in a new incoming transaction belongs to the wallet spending it and that the BCH involved hasn't previously been spent. Besides storing transactions, each block stores the _hash_ of the previous block and the hash of the block itself, thereby forming a chain of blocks. This prevents anyone getting away with altering data in a block, as altering any data would cause the hash of the block to change and the changed hash would not match the hash that is stored in the next block in the chain. Finally, the blockchain is distributed, with many copies of the entire blockchain are stored all over the world. In order for a bad actor to change data stored in a block, he or she would have to change data in a block and all blocks forward in the chain in over 50% of the blockchains stored worldwide. Bitcoin Cash mining software ensures that this would require such a huge amount of time and computational power that it could never practicably be done.
+
+**Committed Transaction and Confirmed Transaction**
+Once a block of transactions have been validated by the Bitcoin Cash network, the block is added to the blockchain. Recipients of transactions large transactions often wait until the block containing their transaction is six blocks deep in the blockchain before considering the transaction as confirmed. Recipients of transactions involving smaller amounts often consider their transaction confirmed as soon as the block containing their transaction has been added to the blockchain, or is only 2 or 3 blocks deep. Recipients take this action because the probability of a block being declared invalid reduces greatly as it gets deeper in the blockchain.
+
+**Private Key**
+
+**QR Code**
+The Bitcoin Cash QR code is used by a BCH recipient to communicate to the BCH sender the address to which the BCH is to be sent and optionally a message.
+
+**Simplified Payment Validation (SPV)**
+A method for verifying if particular transactions are included in a block without downloading the entire block. The method is used by some lightweight Bitcoin Cash clients.
