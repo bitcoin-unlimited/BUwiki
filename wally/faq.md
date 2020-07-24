@@ -73,10 +73,10 @@ You can set up multiple accounts by touching the green "+" symbol to the right o
 ## How do I recover a lost account or a lost wallet?
 Lost accounts are accounts that were destroyed because your phone was lost or destroyed, or because Wally was deleted, or because you forgot that account's PIN. To recover an account whose PIN was lost, select the green + symbol on Wally's home page, and then type the account's Recovery Secret Phrase where indicated on the New Account page. Recovery may take will some time, so be patient. Without the PIN or the Account Recovery Secret Phrase your account and it's contents are lost forever.
 
-If all your accounts were destroyed (e.g.,your phone was lost or Wally was deleted) install a new copy of Wally on a device and as above, type in the Account Recovery Secret Phrase for each account, letting each account be recovered before entering the next account's Recovery Secret Phrase. Wally will examine the BCH blockchain and using the data in the blockchain, Wally will fully restore your account(s). Each account will take some time, so be patient, and repeat this process for all the accounts in your lost wallet.
+If all your accounts were destroyed (e.g.,your phone was lost or Wally was deleted) install a new copy of Wally on a device and as above, type in the Account Recovery Secret Phrase for each account, letting each account be recovered before entering the next account's Recovery Secret Phrase. Wally will examine the BCH blockchain and using the data in the blockchain, Wally will fully restore your account(s). Each account will take some time, so be patient.
  
 ## What information does Wally show me about my ACCOUNT BALANCES?
- The lower section of Wally's home page shows a list of your accounts and their balances. Balances are are shown in mBCH. If the amount shown is green, all transactions for the account have been settled. If an orange amount is shown to the right or the green amount, one or more send and/or receive transactions are in progress. For send transactions, the green amount is the mBCH you have available for sending, and the orange amount shows the amount of mBCH "change" that is temporarily unavailable while the transaction is being processed. Remember that when you send mBCH, your transaction amount, your transaction fee, and one or more or your addresses containing enough BCH  to cover the transaction are sent to the the world's BCH nodes.  The BCH node that successfully mines the next block of transactions extracts your send amount and your transaction fee from the addresses, and then returns any "change" to your wallet . This "change" is displayed in orange. When sends are settled, the orange amount will disappear and the green amount will be the total mBCH that remains in the account.
+ The lower section of Wally's home page shows a list of your accounts and their balances. Balances are are shown in mBCH. If the amount shown is green, all transactions for the account have been settled. If an orange amount is shown to the right or the green amount, one or more send and/or receive transactions are in progress. For send transactions, the green amount is the mBCH you have available for sending, and the orange amount shows the amount of mBCH "change" that is temporarily unavailable while the transaction is being processed. Remember that when you send mBCH, your transaction amount, your transaction fee, and one or more or your addresses containing enough BCH  to cover the transaction are sent to the the world's BCH nodes.  The BCH node that successfully mines the next block of transactions extracts your send amount and your transaction fee from the addresses, and then returns any "change" to your wallet . The amount you will receive in "change" is displayed in orange. When sends are settled, the orange amount will be added to the account's green total, and the orange amount will disappear.
  
 When receiving mBCH, the amount received will be shown in orange to the right of the amount previously in the account. Once the transaction is settled, the received amount will be added to account's total and the orange received amount will disappear. 
 
@@ -101,24 +101,9 @@ Select the Identity icon at the bottom of Wally's home page.  The **Identity** p
  
   ***!!WARNING!!*   If the Wally app is accidentally deleted or your device goes bad, is destroyed, is lost, is stolen, or if any other mishap occurs preventing you from accessing your wallet, you will lose your BCH unless you have written down and safely stored your account recovery secret phrase.**
   
- 3. BCH NODE PREFERENCES. Advanced users may want to set one of the BCH node options. When these are not set, Wally chooses a random BCH node to validate your send transactions. Furthermore, Wally will occasionally switch to a different random node to further insure your security. The Simplified Payment Validation (SPV) standard is used to ensure rapid execution of transactions. Users that want a particular node to validate their transactions (such as their own BCH node if they are running one) may set Wally to only use that node or, alternately, to preferably us that node. To enable these choices, select one of the red buttons in the third section of the settings page and enter the node name.
- 4. ACCOUNT MANAGEMENT. The forth section of the setting page allows you to rediscover transactions, access unconfirmed transactions, and to delete accounts.  Use the drop down menu to select the account that you want to manage, and then select REDISCOVER, ASSESS UNCONFIRMED, or DELETE. 
+ 3. BCH NODE PREFERENCES. Advanced users may want to set one of the BCH node options. When these are not set, Wally chooses a random BCH node to validate your send transactions. Furthermore, Wally will occasionally switch to a different random node to further insure your security. The Simplified Payment Validation (SPV) standard is used to ensure rapid execution of transactions. Users that want a particular node to validate their transactions (such as their own BCH node if they are running one) may set Wally to only use that node or, alternately, to preferably us that node. To enable these choices, select one of the red buttons in the third section of the settings page and enter the node's domain name or its IP address.
+ 4. ACCOUNT SETTINGS. The third section of the setting page allows you to view an account's Account Recovery Secret Phrase, to assess unconfirmed transactions, to rediscover all transactions, to delete accounts, and to make an account invisible.  Use the drop down menu located immediately below **Account Settings** to select the account that you want to manage, and then select one of these five operations.
 
-***!!WARNING!**!* When deleting an account, all the mBCH in the account will be lost forever. (Note to lead software engineer....can the mBCH be restored using the secret phrase???
-
-## My phone was destroyed. How do I recover my wallet and all of my accounts?
-Recovery of a lost Wally wallet is easy. First, install a new copy of Wally into a phone or other device.
-Next start up Wally and go to settings. In the settings Account Management section, select RECOVER and then enter an Account Recovery Secret Phrase for an account that you want to recover. Wally will examine the BCH blockchain and using the data in the blockchain, Wally will fully restore your account(s). This takes some time, so be patient. Repeat this process for all the accounts in your lost wallet.
+***!!WARNING!**!* When deleting an account, all the mBCH in the account will be lost forever.
 
 
-
-
-
-
-
-
-
-
- 
-
- 
