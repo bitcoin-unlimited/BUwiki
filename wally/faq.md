@@ -3,11 +3,12 @@
 ## Why should I use the Wally Wallet?
 
  - Very easy to use friendly human interface.
- - Useful everyday features such as multiple accounts and the splitting of bills.
+ - Useful everyday features such as multiple accounts, account history, and the splitting of bills.
  - Support of multiple local (fiat) currencies.
  - Simplified Payment Validation (SPV) support ensures rapid transaction execution.
- - Ground breaking "Identity" feature uses your Wally wallet to securely login to supported websites on other devices such as PCs, laptops, tablets, and your wallet device. At the same time you log in, you can automatically pass additional selected information such as your address and telephone number to these websites.
+ - Ground breaking "Identity" feature uses your Wally wallet to securely login to supported websites.
  - Quickly find stores and merchants that accept bitcoin cash.
+ - One click link to Wally FAQs, Crypto market prices, Bitcoin news, your exchange, etc.
 
 ## Can you give a SUMMARY OVERVIEW of the Wally Wallet?
 Yes. The Wally Wallet is a cryptocurrency wallet focused on Bitcoin Cash whose design center is ease of use, simplicity, and useful features. In addition, Wally supports various experimental and test cryptocurrencies as an aid for developers.
