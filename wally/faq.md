@@ -150,10 +150,10 @@ The BCH blockchain is the place where all BCH transactions that have ever been v
 Once a block of transactions have been validated by the Bitcoin Cash network, the block is added to the blockchain. Recipients of transactions large transactions often wait until the block containing their transaction is six blocks deep in the blockchain before considering the transaction as confirmed. Recipients of transactions involving smaller amounts often consider their transaction confirmed as soon as the block containing their transaction has been added to the blockchain, or is only 2 or 3 blocks deep. Recipients take this action because the probability of a block being declared invalid reduces greatly as it gets deeper in the blockchain.
 
 **Private Key, Private ID Address**
-A Bitcoin Cash private key (also called a private ID address) is a secret number that allows cryptocurrency to be spent. Every one of your Bitcoin Cash addresses has a matching private key, which is saved in one of your Wally wallet accounts.
+A Bitcoin Cash private key (also called a private ID address) is a secret number that allows cryptocurrency to be spent. Every one of your Bitcoin Cash addresses has a matching private key, which is saved in one of your Wally wallet accounts. Private addresses can send bitcoin cash to recipients.
 
 **Public Key, Public ID Address**
-A public key (also called public id address) identifies a Wally account into which someone can send BCH.
+A public key (also called public id address) identifies a Wally account into which someone can send BCH. Public addresses can receive bitcoin cash from senders.
 
 **QR Code**
 The Bitcoin Cash QR code is used by a BCH recipient to communicate to the BCH sender the address to which the BCH is to be sent and optionally a message.
