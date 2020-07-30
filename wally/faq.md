@@ -87,6 +87,9 @@ When receiving mBCH, the amount received will be shown in orange to the right of
 ## Can I see my ACCOUNT HISTORY?
 Yes. Under Account Balances, just tap on an account name and a Account History page will be displayed.
 
+## Shopping
+Wally can help you find merchants that accept BCH. Select the **Shopping** icon at the bottom of Wally's home page. A brief description of several websites is displayed that will help you locate BCH friendly stores and services.  You may add your favorite shopping sites to this list via the settings icon at the top of the shopping page. Select any of these websites and your device's browser will pop up to that website.
+
 ## How do I find stores that accept bitcoin cash?
 Select the "Shop" icon at the bottom of Wallly's home page. Wally's "Stores and Merchants" page will be displayed, showing a list of websites that either help you find what you are looking for or take you directly there. When you select an item from the list, your device's web browser will display the selected website. The first item on the list is bitcoin.com's actively maintained map showing the location worldwide of stores that accept bitcoin cash. Other items include lists of merchants, casinos, and favorite websites that you have placed on the list.
 
