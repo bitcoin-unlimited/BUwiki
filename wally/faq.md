@@ -26,6 +26,9 @@ Your funds in your Wally Wallet are protected by several levels of security. Fir
 
 **A few comments on security**:  Strong passwords and PINs make brute force access (i.e., trying every possible PIN) much more difficult than weak ones.  Account PINs protect your funds from unsophisticated theft. There is always the remote chance that a thief with sufficient technical knowledge or root access to your device could theoretically gain access to your funds. Besides passwords, PINs, and invisible accounts, you can also incorporate schemes like having two invisible accounts, one of which you are willing to divulge to a knowledgeable and threatening thief, and the other which holds most of your funds.  
 
+## What are the icons on the top of Wally's home page?
+The rightmost icon, the lock, displays a page where you can enter a pin that tells Wally to display the "invisible account" associated with that pin. (You set up such an account by selecting the "**+**" icon on Wally's main page.) The gear icon takes you to Wally's setting page. The  red "**M**" icon opens a gmail email with your public address already filled into the body of the mail, for sending to someone who wants to send BCH to you. The "share" icon opens a drop down menu which allows you to share your public address in various ways, such as via a message.
+
 ## Sending mBCH
 The first step in sending mBCH is obtaining the Bitcoin Cash public ID address to which you want to send the mBCH. Using your email, messaging, or other means, obtain the recipient's Bitcoin Cash address and copy it into the clipboard of your device. Alternatively, you can use the QR Code scan symbol on the main screen of Wally to activate the camera on your device to scan in a recipient's address QR Code. The address will automatically be copied into the **SEND** section of your Wally Wallet.
 
@@ -143,7 +146,10 @@ The BCH blockchain is the place where all BCH transactions that have ever been v
 **Committed Transaction and Confirmed Transaction**
 Once a block of transactions have been validated by the Bitcoin Cash network, the block is added to the blockchain. Recipients of transactions large transactions often wait until the block containing their transaction is six blocks deep in the blockchain before considering the transaction as confirmed. Recipients of transactions involving smaller amounts often consider their transaction confirmed as soon as the block containing their transaction has been added to the blockchain, or is only 2 or 3 blocks deep. Recipients take this action because the probability of a block being declared invalid reduces greatly as it gets deeper in the blockchain.
 
-**Private Key**
+**Private Key, Private ID Address**
+
+**Public Key, Public ID Address**
+A public key (also called public id address) identifies a Wally account into which someone can send BCH.
 
 **QR Code**
 The Bitcoin Cash QR code is used by a BCH recipient to communicate to the BCH sender the address to which the BCH is to be sent and optionally a message.
