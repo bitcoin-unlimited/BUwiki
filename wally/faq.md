@@ -8,26 +8,31 @@
  - Simplified Payment Validation (SPV) support ensures rapid transaction execution.
  - Ground breaking "Identity" feature uses your Wally wallet to securely login to supported websites.
  - Quickly find stores and merchants that accept bitcoin cash.
- - One click link to Wally FAQs, Crypto market prices, Bitcoin news, your exchange, etc.
+ - One click link to Wally Frequently Asked Questions.
 
 ## Can you give a SUMMARY OVERVIEW of the Wally Wallet?
-Yes. The Wally Wallet is a cryptocurrency wallet focused on Bitcoin Cash whose design center is ease of use, simplicity, and useful features. In addition, Wally supports various experimental and test cryptocurrencies as an aid for developers.
+Yes. The Wally Wallet is a cryptocurrency wallet focused on Bitcoin Cash whose design center is ease of use, simplicity, and useful features. In addition, Wally supports various experimental and test cryptocurrencies as an aid for software developers.
 
 Wally’s main screen is used for 90% of what you do with a wallet: sending, receiving, and showing account balances. Wally allows you to specify the amount of BCH you want to send in either mBCH or in local currencies. Wally offers multiple accounts, multiple local currencies, help in finding merchants that accept bitcoin cash, a unique “identity” feature that provides ultra secure logins to internet sites, and other helpful features.
 
 ## With which devices is Wally compatible?
-The Wally Wallet is compatible with Android devices running Android 8.0 (Oreo) or later. Generally, most new phones and tablets made in 2018 are therefore compatible.
+The Wally Wallet is compatible with Android devices running Android 8.0 (Oreo) or later. Generally, most new phones and tablets made in or after 2018 are therefore compatible.
 
 ## What is mBCH?
-mBCH stands for millibitcoincash. Each mBCH is one thousandth of a BCH (1000 mBCH = 1 BCH).  Other common terms are not used by Wally. These include microbitcoincash, which equals 1 millionth of a BCH (1,000,000 uBCH = 1 BCH) and a Satoshi, which is one hundred millionth of a BCH (100,000,000 Satoshi = 1 BCH).
+mBCH stands for millibitcoincash. Each mBCH is one thousandth of a BCH (1000 mBCH = 1 BCH).  There are other common terms you might come across but are not used by Wally. These include microbitcoincash, which equals 1 millionth of a BCH (1,000,000 uBCH = 1 BCH) and a Satoshi, which is one hundred millionth of a BCH (100,000,000 Satoshi = 1 BCH).
 
 ## How is my mBCH protected from theft?
-Your funds in your Wally Wallet are protected by several levels of security. First, the password for your device protects Wally from bad actors accessing your wallet. We recommend that you **use a strong device password** to protect access to all of your apps. Secondly, each account that you set up in Wally can optionally have its own **account PIN**. For example, you might want to have an account without a PIN for small everyday purchases and another account with a PIN that contains a larger amount of BCH. A third level of security is achieved via **invisible accounts**. When you set up an account with a PIN, you can choose to make that account invisible. Only when you enter the PIN will the account and it's balance be displayed. Without their PINs, no one could know of the existence of invisible accounts.
+Your funds in your Wally Wallet are protected by several levels of security. First, the password for your device protects Wally from bad actors accessing your wallet. We recommend that you **use a strong device password** to protect access to all of your apps and files. 
 
-**A few comments on security**:  Strong passwords and PINs make brute force access (i.e., trying every possible PIN) much more difficult than weak ones.  Account PINs protect your funds from unsophisticated theft. There is always the remote chance that a thief with sufficient technical knowledge or root access to your device could theoretically gain access to your funds. Besides passwords, PINs, and invisible accounts, you can also incorporate schemes like having two invisible accounts, one of which you are willing to divulge to a knowledgeable and threatening thief, and the other which holds most of your funds.  
+Secondly, each account that you set up in Wally can optionally have its own **account PIN**. For example, you might want to have an account without a PIN for small everyday purchases and another account with a PIN that contains a larger amount of BCH. The account balance for an account with a pin will be displayed, but until the pin is entered, no transactions can be made from that account. 
+
+A third level of security is achieved via **invisible accounts**. When you set up an account with a PIN and also set the account to be hidden until the PIN is entered, no one will know that the account exists until you enter the PIN. Only after you enter an account's PIN will the account be displayed on drop down menus and in account balances. Without their PINs, no one could know of the existence of invisible accounts.
+
+**A few comments on security**:  Strong device passwords and account PINs make brute force access (i.e., trying every possible PIN) much more difficult than weak ones.  Device passwords and account PINs protect your funds from unsophisticated theft. Besides passwords, PINs, and invisible accounts, you can also incorporate schemes like having two invisible accounts, one of which you are willing to divulge to a knowledgeable and threatening thief, and the other which holds most of your funds.  
+Note: there is always the remote chance that a thief with sufficient technical knowledge or root access to your device could theoretically gain access to your funds. Unlikely as this is, we thought it was worth mentioning.
 
 ## What are the icons on the top of Wally's home page?
-The rightmost icon, the lock, displays a page where you can enter a pin that tells Wally to display the "invisible account" associated with that pin. (You set up such an account by selecting the "**+**" icon on Wally's main page.) The gear icon takes you to Wally's setting page. The  red "**M**" icon opens a gmail email with your public address already filled into the body of the mail, for sending to someone who wants to send BCH to you. The "share" icon opens a drop down menu which allows you to share your public address in various ways, such as via a message.
+The rightmost icon, **the lock icon**, displays a page where you can enter a PIN that unlocks a locked Wally account. Once a pin is entered, transactions can be made from that account until Wally is shut down. If the account had been set to be hidden, it will become visible. **The gear icon** takes you to Wally's setting page. The  red "**M**" **icon** opens a gmail email with your public address already filled into the body of the mail, for sending to someone who wants to send BCH to you. The **share icon** opens a drop down menu which allows you to share your public address in various ways, such as via a message. The **"?" icon** will open your device's browser and display Wally's FAQs.
 
 ## Sending mBCH
 The first step in sending mBCH is obtaining the Bitcoin Cash public ID address to which you want to send the mBCH. Using your email, messaging, or other means, obtain the recipient's Bitcoin Cash address and copy it into the clipboard of your device. Alternatively, you can use the QR Code scan symbol on the main screen of Wally to activate the camera on your device to scan in a recipient's address QR Code. The address will automatically be copied into the **SEND** section of your Wally Wallet.
