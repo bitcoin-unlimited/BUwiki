@@ -119,8 +119,8 @@ Select the Identity icon at the bottom of Wally's home page.  The **Identity** p
  4. ACCOUNT SETTINGS. The third section of the setting page allows you to view an account's Account Recovery Secret Phrase, to assess unconfirmed transactions, to rediscover all transactions, to delete accounts, and to make an account invisible.  Use the drop down menu located immediately below the Account Settings heading to select the account that you want to manage, and then select one of these five operations.  **Assess Unconfirmed Transactions**: Use this to       **Rediscover All Transactions**:    Use this to rebuild an account's history from scratch.  **Rediscover Blockchain Headers**:   Use this to     **Delete Above Account**:  Warning! 
 When deleting an account, all funds in the account will be lost, and can only be recovered if you have the Account Recovery Secret Phrase.
 
-
-
+## Can I move my BCH from another wallet to Wally?
+Yes. You can move your bitcoin cash and transaction history from another wallet to your Wally wallet. Just set up a new Wally account and enter the 12 word Recovery Secret Phrase from your old wallet into the new account's Account Recovery Secret Phrase field. This works for BIP39 compliant hierarchical deterministic wallets. Alternately, you can send the BCH in your old wallet to your Wally wallet, but the transaction history won't be moved. WARNING: It is a bad idea to maintain two wallets containing the same BCH. After moving your BCH to Wally, delete the old wallet.
 
 
 
