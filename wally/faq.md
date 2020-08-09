@@ -18,6 +18,9 @@ Wally’s main screen is used for 90% of what you do with a wallet: sending, rec
 ## With which devices is Wally compatible?
 The Wally Wallet is compatible with Android devices running Android 8.0 (Oreo) or later. Generally, most new phones and tablets made in or after 2018 are therefore compatible.
 
+## What is the best way to view Wally?
+Wally is optimized for viewing in portrait mode.
+ 
 ## What is mBCH?
 mBCH stands for millibitcoincash. Each mBCH is one thousandth of a BCH (1000 mBCH = 1 BCH).  There are other common terms you might come across but are not used by Wally. These include microbitcoincash, which equals 1 millionth of a BCH (1,000,000 uBCH = 1 BCH) and a Satoshi, which is one hundred millionth of a BCH (100,000,000 Satoshi = 1 BCH).
 
@@ -45,6 +48,9 @@ More Information: See mBCH, LOCAL CURRENCY, MULTIPLE ACCOUNTS, FAIR EXCHANGE RAT
 
 ## How do I get the address to which I want to send mBCH into the send address field?
 Simply copy an address into your device's clipboard, and it will automatically be loaded into the send address field on Wally's home page. You can also tap the clipboard icon on the SEND line to copy the contents of the clipboard into the send address field.
+
+## What is the minimum amount of BCH that can be sent?
+One satoshi, which is one hundred millionth of a BCH (100,000,000 Satoshi = 1 BCH), or 0.00001 mBCH. However, the transaction fee you will be charged will likely be more than 200 times the one satoshi. 
 
 ## Receiving mBCH
 The middle of the Wally home page is used for receiving mBCH. If the sender already has your public ID address for the account into which you want the mBCH sent, you do not have to do anything. The mBCH will appear in your account after it is sent. If you need to provide your public ID address to the sender, use the pull down menu to the right of **Receive into** to select the account into which you want the mBCH sent. The address for that account will appear right below the **Receive into** line and also the QR Code for that address will be displayed. Either send your address to the sender (see the next FAQ) or have them scan the displayed QR Code.
@@ -104,7 +110,12 @@ Once you've set up your identity for a supported web site, you can use Wally to 
 
 ## Why are logins using IDENTITY so secure?
 You initiate a login by bringing up the login page of a website on any device's screen, for example, your laptop. Use Wally to scan the login QR shown on the login page. Wally initiates the login by requesting, via the internet, a cryptographic challenge string from that website. The website then sends the challenge. Wally, using your cryptographic ID, processes the string, proves that it is your device/wallet that is requesting the login, and sends back the proof. Once the website sees the proof, it logs you in without any need for you to risk entering your user name or password using a keyboard. Among other benefits, key logger attacks are completely foiled.
- 
+
+## How do I sign up for and later log in to an IDENTITY website?
+On your laptop, desktop, or tablet, go to the log in page of the website. Two QR codes will be displayed, one for registering and one for logging in. When signing up, use the Wally QR scan icon to scan the registration QR code. Follow the registration instructions that will be displayed. 
+
+Once registered, to log in to the website just use Wally to scan the login QR code that is displayed on the website's login page. You'll be automatically and securely logged in.
+
 ## How do I enter my identity information.
 Select the Identity icon at the bottom of Wally's home page.  The **Identity** page will be displayed. A list of your selected web sites that support the Identity feature is displayed. Select one of these web sites and a page showing a list of your identity information is displayed along with a switch for each item on the list. Items supported by the web site are in black, and identity items not supported are in grey. (Note to self: How does one populate the identity info. Has this been implemented yet?)  Turn on the switch for any item that you wish to pass to the web site when logging in.  (How does one get a URL onto the web site list?)
 
