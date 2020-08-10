@@ -49,9 +49,6 @@ More Information: See mBCH, LOCAL CURRENCY, MULTIPLE ACCOUNTS, FAIR EXCHANGE RAT
 ## How do I get the address to which I want to send mBCH into the send address field?
 Simply copy an address into your device's clipboard, and it will automatically be loaded into the send address field on Wally's home page. You can also tap the clipboard icon on the SEND line to copy the contents of the clipboard into the send address field.
 
-## What is the minimum amount of BCH that can be sent?
-One satoshi, which is one hundred millionth of a BCH (100,000,000 Satoshi = 1 BCH), or 0.00001 mBCH. However, the transaction fee you will be charged will likely be more than 200 times the one satoshi. 
-
 ## How do I REMOVE ALL of the mBCH from and CLOSE an account?
 Because a very small but unpredictable fee is assessed for each transaction, it is unlikely that you could precisely enter a send amount that would zero an account. But Wally can do this for you. Just tap the amount shown for the account's balance, and "all" will appear in the SEND AMOUNT field. Once sent, the account will have a zero balance. To close the account, go to SETTINGS, use the drop down menu to choose the account, and then select DELETE THE ABOVE ACCOUNT.
 
@@ -120,7 +117,7 @@ On your laptop, desktop, or tablet, go to the log in page of the website. Two QR
 Once registered, to log in to the website just use Wally to scan the login QR code that is displayed on the website's login page. You'll be automatically and securely logged in.
 
 ## How do I enter my identity information.
-Select the Identity icon at the bottom of Wally's home page.  The **Identity** page will be displayed. A list of your selected web sites that support the Identity feature is displayed. Select one of these web sites and a page showing a list of your identity information is displayed along with a switch for each item on the list. Items supported by the web site are in black, and identity items not supported are in grey. (Note to self: How does one populate the identity info. Has this been implemented yet?)  Turn on the switch for any item that you wish to pass to the web site when logging in.  (How does one get a URL onto the web site list?)
+Select the Identity icon at the bottom of Wally's home page.  The **Identity** page will be displayed. A list of your selected web sites that support the Identity feature is displayed. Select one of these web sites and a page showing a list of your identity information is displayed along with a switch for each item on the list. Items supported by the web site are in black, and identity items not supported are in grey.   Turn on the switch for any item that you wish to pass to the web site when logging in. Select the gear icon (settings) to display a page that allows you to enter your identity information.
 
 ## What Wally features can I control using the SETTINGS page?
 
@@ -136,6 +133,8 @@ When deleting an account, all funds in the account will be lost, and can only be
 ## Can I move my BCH from another wallet to Wally?
 Yes. You can move your bitcoin cash and transaction history from another wallet to your Wally wallet. Just set up a new Wally account and enter the 12 word Recovery Secret Phrase from your old wallet into the new account's Account Recovery Secret Phrase field. This works for BIP39 compliant hierarchical deterministic wallets. Alternately, you can send the BCH in your old wallet to your Wally wallet, but the transaction history won't be moved. **WARNING**: It is a bad idea to maintain two wallets containing the same BCH. After moving your BCH to Wally, delete the old wallet.
 
+## What should I know about UPDATING WALLY?
+When a new version of the Wally Wallet is available on the Bitcoin Unlimited web site, you can safely download it and install it on your device. The new version will replace your present version, and all your accounts, account PINs, account history, and identity information will be carried into the new version.
 
 
 ## Glossary of Terms
