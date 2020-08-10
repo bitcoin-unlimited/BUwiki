@@ -52,8 +52,8 @@ Simply copy an address into your device's clipboard, and it will automatically b
 ## What is the minimum amount of BCH that can be sent?
 One satoshi, which is one hundred millionth of a BCH (100,000,000 Satoshi = 1 BCH), or 0.00001 mBCH. However, the transaction fee you will be charged will likely be more than 200 times the one satoshi. 
 
-## How do I remove all the mBCH from an account?
-Because a fee is assessed for each transaction
+## How do I REMOVE ALL of the mBCH from and CLOSE an account?
+Because a very small but unpredictable fee is assessed for each transaction, it is unlikely that you could precisely enter a send amount that would zero an account. But Wally can do this for you. Just tap the amount shown for the account's balance, and "all" will appear in the SEND AMOUNT field. Once sent, the account will have a zero balance. To close the account, go to SETTINGS, use the drop down menu to choose the account, and then select DELETE THE ABOVE ACCOUNT.
 
 ## Receiving mBCH
 The middle of the Wally home page is used for receiving mBCH. If the sender already has your public ID address for the account into which you want the mBCH sent, you do not have to do anything. The mBCH will appear in your account after it is sent. If you need to provide your public ID address to the sender, use the pull down menu to the right of **Receive into** to select the account into which you want the mBCH sent. The address for that account will appear right below the **Receive into** line and also the QR Code for that address will be displayed. Either send your address to the sender (see the next FAQ) or have them scan the displayed QR Code.
