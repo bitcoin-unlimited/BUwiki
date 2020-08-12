@@ -5,6 +5,7 @@
  - Very easy to use and friendly human interface.
  - Useful everyday features such as multiple accounts, account history, and the splitting of bills.
  - Accounts separate payments, improving privacy.
+ - Tracks account capital gains.
  - Supports multiple local (fiat) currencies.
  - Simplified Payment Validation (SPV) ensures rapid transaction execution.
  - Ground breaking "Identity" feature uses your Wally wallet to securely login to supported websites.
@@ -120,7 +121,7 @@ Once registered, to log in to the website just use Wally to scan a login QR code
 ## How do I enter my personal identity information?
 Select the Identity icon at the bottom of Wally's home page.  The **Identity** page will be displayed. Select the setting (gear) icon from within the identity page.  You will now be able to enter personal information such as your preferred username, your real name, and email address.
 
-## How do I change what person information is provided to a website?
+## How do I change what personal information is provided to a website?
 Select the Identity icon at the bottom of Wally's home page.  The **Identity** page will be displayed.  A list of your registered web sites that support the Identity feature is displayed. Select one of these web sites and a page showing a list of your identity information is displayed along with a switch for each item on the list. Items supported by the web site are in black, and identity items not supported are in grey.   Turn on the switch for any item that you wish to pass to the web site when logging in.
 
 ## What Wally features can I control using the SETTINGS page?
@@ -130,12 +131,12 @@ Select the Identity icon at the bottom of Wally's home page.  The **Identity** p
  
   ***!!WARNING!!*   If the Wally app is accidentally deleted or your device goes bad, is destroyed, is lost, is stolen, or if any other mishap occurs preventing you from accessing your wallet, you will lose your BCH unless you have written down and safely stored your account recovery secret phrase.**
   
- 3. BCH NODE PREFERENCES. Advanced users may want to set one of the BCH node options. When these are not set, Wally chooses a random BCH node to validate your send transactions. Furthermore, Wally will occasionally switch to a different random node to further insure your security. The Simplified Payment Validation (SPV) standard is used to ensure rapid execution of transactions. Users that want a particular node to validate their transactions (such as their own BCH node if they are running one) may set Wally to only use that node or, alternately, to preferably us that node. To enable these choices, select one of the slider buttons in the third section of the settings page and then enter the node's domain name or its IP address.
- 4. ACCOUNT SETTINGS. The third section of the setting page allows you to view an account's Account Recovery Secret Phrase, to assess unconfirmed transactions, to rediscover all transactions, to delete accounts, and to make an account invisible.  Use the drop down menu located immediately below the Account Settings heading to select the account that you want to manage, and then select one of these five operations.  The second, third, and forth operations are for knowledgeable power users. **Assess Unconfirmed Transactions**: Use this to remove any pending transactions that haven't been validated in a long while and that you suspect have somehow been lost or have never been submitted to the BCH network.    **Rediscover All Transactions**:    Use this to search the blockchain for missing transactions starting from when the wallet was created. This process can take a long time. Only use this option if you are pretty sure that a payment is missing.  **Rediscover Blockchain Headers**:       **Delete Above Account**:  Warning! 
+ 3. BCH NODE PREFERENCES. Advanced users may want to set one of the BCH node options. When these are not set, Wally chooses 4 random BCH nodes to watch for transactions. Furthermore, Wally will occasionally switch to a different random node to further ensure your security.  Users that want to use a particular node for blockchain access (such as their own BCH node if they are running one) may set Wally to only use that node or, alternately, to preferably use that node. To enable these choices, select one of the slider buttons in the third section of the settings page and then enter the node's domain name or its IP address.
+ 4. ACCOUNT SETTINGS. The third section of the setting page allows you to view an account's Account Recovery Secret Phrase, to assess unconfirmed transactions, to rediscover all transactions, to delete accounts, and to make an account invisible.  Use the drop down menu located immediately below the Account Settings heading to select the account that you want to manage, and then select one of these five operations.  The second, third, and forth operations are for knowledgeable power users. **Assess Unconfirmed Transactions**: Use this to remove any pending transactions that haven't been validated in a long while and that you suspect have somehow been lost or have never been submitted to the BCH network.    **Rediscover All Transactions**:    Use this to search the blockchain for missing transactions starting from when the wallet was created. This process can take a long time.  Only use this option if you are pretty sure that a payment is missing.  **Rediscover Blockchain Headers**: This option removes all blockchain history from Wally and redownloads the history.       **Delete Above Account**:  Warning! 
 When deleting an account, all funds in the account will be lost, and can only be recovered if you have the Account Recovery Secret Phrase.
 
 ## Can I move my BCH from another wallet to Wally?
-Yes. You can move your bitcoin cash and transaction history from another wallet to your Wally wallet. Just set up a new Wally account and enter the 12 word Recovery Secret Phrase from your old wallet into the new account's Account Recovery Secret Phrase field. This works for BIP39 compliant hierarchical deterministic wallets. Alternately, you can send the BCH in your old wallet to your Wally wallet, but the transaction history won't be moved. **WARNING**: It is a bad idea to maintain two wallets containing the same BCH. After moving your BCH to Wally, delete the old wallet.
+Yes. You can move your bitcoin cash and transaction history from another wallet to your Wally wallet. Just set up a new Wally account and enter the 12 word Recovery Secret Phrase from your old wallet into the new account's Account Recovery Secret Phrase field. This works for BIP39 compliant hierarchical deterministic wallets. Alternately, you can send the BCH in your old wallet to your Wally wallet, but the transaction history won't be moved. **WARNING**: It is a bad idea to maintain two accounts or wallets containing the same secret phrase. After moving your account to Wally, delete the old wallet.
 
 ## What should I know about UPDATING WALLY?
 When a new version of the Wally Wallet is available on the Bitcoin Unlimited web site, you can safely download it and install it on your device. The new version will replace your present version, and all your accounts, account PINs, account history, and identity information will be carried into the new version.
@@ -155,7 +156,7 @@ A third level of security is achieved via **invisible accounts**. When you set u
 ## Glossary of Terms
 
 **Address or Bitcoin Cash address**
-An address in a BCH wallet. When sending BCH, the address of the recipient is specified to ensure that the BCH is sent to the correct recipient. Each address is completely unique, as the probability of a duplicate address being created is infinitesimally small.
+An address is a destination to send BCH. When sending BCH, the address of the recipient is specified to ensure that the BCH is sent to the correct recipient. Each address is completely unique, as the probability of a duplicate address being created is infinitesimally small.
 
 **BCH** 
 Abbreviation for both “bitcoin cash” (the currency) and the Bitcoin Cash Network. See below.
@@ -163,18 +164,18 @@ Abbreviation for both “bitcoin cash” (the currency) and the Bitcoin Cash Net
 **Bitcoin, bitcoin, Bitcoin Cash, and bitcoin cash**
 Bitcoin and Bitcoin Cash (note the names are capitalized) refer to the electronic networks that process transactions made with bitcoin and bitcoin cash (note the lower case names). The names bitcoin and bitcoin cash refer to the electronic currencies themselves, as in “I own 3 and a half bitcoin cash”.
 
- Traditional currencies are typically coins, paper bills, and amounts in bank, brokerage, or other accounts. Cryptocurrencies, such as bitcoin and bitcoin cash, are a type of currency that exists in the form of _private keys_, with each private key representing a particular amount of the currency. Usually, only one person or organization knows a particular private key and hence “owns” the cryptocurrency that the private key represents.
+Traditional currencies are typically coins, paper bills, and amounts in bank, brokerage, or other accounts. Cryptocurrencies, such as bitcoin and bitcoin cash, are a type of currency that exists in a public ledger accessible by _private keys_, with each private key controlling the spending of a particular amount of the currency. Usually, only one person or organization knows a particular private key and hence “owns” the cryptocurrency that the private key controls.
 
-The amount of currency associated with a private key can be split into parts, each part then having its own private key, and whose sum is the same as the amount represented by the original private key. Alternately, private keys can be combined into a new private key which represents the amount of the sum of the combined private keys.
+**Bitcoin Cash Transaction**
+A transaction is the exchange of a quantity of BCH between people. One person sends BCH to another, and the other person receives the BCH. The information specifying this transaction is grouped with the information describing other transactions into a _block_ of transactions by Bitcoin Cash _miners_. Once the block has been validated by the BCH network and added to the *blockchain*, the transactions in that block are *confirmed*.
 
-**bitcoin cash Transaction**
-A transaction is the exchange of a quantity of BCH between two people. One person sends BCH to another, and the other person receives the BCH. The information specifying this transaction is grouped with the information describing other transactions into a _block_ of transactions by Bitcoin Cash _miners_. Once the block has been validated by the BCH network and added to the *blockchain*, the transactions in that block are *confirmed*.
+In detail, a transaction takes the amount of currency associated with some private keys and splits it into parts, each part then secured by its own private key, and whose sum is the same as the amount represented by the original private key (less a blockchain transaction fee). Alternately, the funds secured by many private keys can be combined into a single entry secured by a new private key.  Since different individuals know different private keys, the transaction effectively transmits value between individuals.
 
 **Block**
 One or more BCH transactions, grouped together with an identifying block header. See Blockchain below for more detail.
 
 **Block Validation**
-Once a minor has successfully mined a block, it is sent to all other BCH nodes on the BCH network for validation. Each node checks to see if the new block has been correctly mined and then, after this validation, appends the block to the blockchain that the node maintains. In the somewhat rare case when two miners each mine different blocks and simultaneously send them to the BCH network, some of the nodes might validate one of the blocks and others might validate the other block. The Bitcoin Cash node software automatically resolves this situation, usually when the next block is mined, and one of the two prior simultaneous blocks is deleted from the blockchain and the other is adopted by all nodes.
+Once a miner has successfully mined a block, it is sent to all other Bitcoin Cash nodes on the Bitcoin Cash network for validation. Each node checks to see if the new block has been correctly constructed and then, after this validation, appends the block to the blockchain that the node maintains. In the somewhat rare case when two miners each mine different blocks and simultaneously send them to the Bitcoin Cash network, some of the nodes might validate one of the blocks and others might validate the other block. The Bitcoin Cash node software automatically resolves this situation, usually when the next block is mined, and one of the two prior simultaneous blocks is deleted from the blockchain and the other is adopted by all nodes.
 
 **Blockchain**
 The BCH blockchain is the place where all BCH transactions that have ever been validated are stored. Approximately once every ten minutes, a group of BCH transactions are packaged into a so called 'block' of transactions and validated by the nodes of the BCH network. Once validated, the new block is added to the chain of blocks that have previously been validated. All the transactions in the blockchain can be examined by anyone at any time. This, for example, allows Bitcoin Unlimited to check that the BCH in a new incoming transaction belongs to the wallet spending it and that the BCH involved hasn't previously been spent. Besides storing transactions, each block stores the _hash_ of the previous block and the hash of the block itself, thereby forming a chain of blocks. This prevents anyone getting away with altering data in a block, as altering any data would cause the hash of the block to change and the changed hash would not match the hash that is stored in the next block in the chain. Finally, the blockchain is distributed, with many copies of the entire blockchain are stored all over the world. In order for a bad actor to change data stored in a block, he or she would have to change data in a block and all blocks forward in the chain in over 50% of the blockchains stored worldwide. Bitcoin Cash mining software ensures that this would require such a huge amount of time and computational power that it could never practicably be done.
@@ -182,14 +183,14 @@ The BCH blockchain is the place where all BCH transactions that have ever been v
 **Committed Transaction and Confirmed Transaction**
 Once a block of transactions have been validated by the Bitcoin Cash network, the block is added to the blockchain. Recipients of large transactions often wait until the block containing their transaction is six blocks deep in the blockchain before considering the transaction as confirmed. Recipients of transactions involving smaller amounts often consider their transaction confirmed as soon as the block containing their transaction has been added to the blockchain, or is only 2 or 3 blocks deep. Recipients take this action because the probability of a block being declared invalid reduces greatly as it gets deeper in the blockchain.
 
-**Private Key, Private ID Address**
-A Bitcoin Cash private key (also called a private ID address) is a secret number that allows cryptocurrency to be spent. Every one of your Bitcoin Cash addresses has a matching private key, which is saved in one of your Wally wallet accounts. Private addresses can send bitcoin cash to recipients.
+**Private Key**
+A Bitcoin Cash private key (also called a private ID address) is a secret number that allows cryptocurrency to be spent.  Every one of your Bitcoin Cash addresses has a matching private key, which is saved in one of your Wally wallet accounts.  Your account recovery secret phrase can be used to generate all of your account's private keys, which is why the recovery phrase is able to restore your account.
 
 **Bitcoin Cash Address**
-A Bitcoin Cash address identifies a Wally account into which someone can send BCH. Public addresses can receive bitcoin cash from senders.
+A Bitcoin Cash address identifies a blockchain ledger entry where someone can send BCH.  Accounts contain many addresses and all the BCH sent to those addresses.
 
 **QR Code**
-The Bitcoin Cash QR code is used by a BCH recipient to communicate to the BCH sender the address to which the BCH is to be sent and optionally a message.
+A QR code is a box of pixels that functions like a bar code, but for phones and cameras.  It can be used to communicate short messages between devices.  For example, a QR code could contain a Bitcoin Cash address, or a login challenge.
 
 **Simplified Payment Validation (SPV)**
 A method for verifying if particular transactions are included in a block without downloading the entire block. The method is used by some lightweight Bitcoin Cash clients.
