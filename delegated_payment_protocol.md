@@ -34,6 +34,7 @@ Registration is the process where an entity sets up a relationship with a wallet
 HTTP GET, and Intent protocols must include a pubkey and signature.
 
 Intents MUST be issued with `startActivityForResult` so that return data can be captured.
+Additional undefined fields **MUST** be ignored (but included in any signature check).
 
 #### Format 
 
@@ -56,9 +57,9 @@ An entity should either generate a single pubkey/privkey pair when the app is in
   
 #### Registration Response
 
-Wallets should return data as part of the registration handling, indicating whether the trickle pay registration was accepted.
+Wallets should return data as part of the registration handling, indicating whether the registration was accepted.  A wallet's "OK" response does not indicate whether the suggested policies were accepted, or whether any automatic payment was authorized by the user.  The entity should never be provided with information pertaining to how much it can spend without "bothering" the user so that it cannot reliably quietly drain user's accounts.  A wallet's "OK" response simply indicates a willingness to act as a payment gateway for the entity.
 
-**resultcode**: [integer] 0 = OK, > 0 means not accepted, 1 = user reject, 2 = pubkey required
+**resultcode**: [integer] 200= OK, 300 = user reject, 302 = pubkey required
 **supports**: [integer bit map]:  
 	1 = Pay Address supported, 
 	2 = Pay Transaction supported, 
@@ -69,7 +70,9 @@ Wallets should return data as part of the registration handling, indicating whet
   
 #### Pay Address Request
 
-This request format provides a simple payment interface.
+This request format provides a simple payment interface.  Note that the fee is calculated by the wallet and is not included when calculating automatic payment limits.  The addresses define the cryptocurrency, so MUST contain the appropriate prefix (e.g. bitcoincash:, bitcoin: etc).
+
+Additional undefined fields **MUST** be ignored, but included in any signature check.
 
 tdpp://<appname>/sendto?[amtN=<amount>]&[addrN=<address>]&[sig=<string>]
 
@@ -81,29 +84,65 @@ tdpp://<appname>/sendto?[amtN=<amount>]&[addrN=<address>]&[sig=<string>]
 
 The wallet will send amtN to addrN, e.g. amt1 to addr1.
 
-Note that the fee is calculated by the wallet and is not included when calculating trickle pay limits.
-
-The addresses define the cryptocurrency.
-
 **sig**: [mandatory if pubkey] The signature of the stringified URI format of this request using the pubkey provided during registration of "**entityName**", alphanumerically ordered by key, less the sig key and value.
 
 **Example**: 
 
 Donate 1 BCH to Bitcoin Unlimited.
 
-tdpp://www.myapp.com/sendto?amt0=100000000&addr0=bitcoincash:pq6snv5fcx2fp6dlzg7s0m9zs8yqh74335tzvvfcmq&sig=
+tdpp://www.myapp.com/sendto?amt0=100000000&addr0=bitcoincash:pq6snv5fcx2fp6dlzg7s0m9zs8yqh74335tzvvfcmq&sig=[TODO SIG FORMAT]
 
 #### Pay Address Response
 
+Additional undefined fields **MUST** be ignored.
+
+**resultcode**: [integer] 200 = OK, 300 = user reject, 301 = sig failed, 303 = unsupported request type, 304 = insufficient balance
+**txid**: [hex string, required on success]  The transaction hash of the created transaction
+**error**: [optional] String response from the wallet with rejection details
 
 
 #### Pay Transaction Request
 
-This request format allows the app to handle bitcoin transaction details, yet delegate funding and signing to the wallet.
+This request format allows the app to handle bitcoin transaction details, yet delegate funding and/or signing to the wallet.
 
-tricklepay://<appname>/sign?[tx=<hexstring>]&[flags=nofund,nopost]&[sig=<string>
+tdpp://<appname>/tx?chain=<blockchain>&tx=<tx>&[flags=<flags>]&[sig=<sig>]
+
+**chain**: [Mandatory, string]  The blockchain this transaction is for, as specified by the BIP21 URI prefix, for example: "bitcoincash" or "bitcoin".
+
+**tx**: [Mandatory, hexstring]  The transaction in network serialized hex string format.  This transaction may be complete and signed, or it may be incomplete in many ways.  It may supply or be missing inputs.  In other words, it may require additional inputs to meet the output quantity.  It may require an additional outputs, directed to this wallet, for change.  It may require signatures, but some inputs may be signed.
+
+**flags**: [optional, unsigned int bitmap]  An empty flags implies flags == 0
+0: nofund: do not add any inputs
+1: nopost: do not post the transaction to the network (return the finished transaction to the entity)
+2: noshuffle:  do not change the order of inputs or outputs.  Change outputs must be added to the end.
+
+#### Pay Transaction Response
+
+**resultcode**: [integer] 200 = txcompleted, 201 = tx missing sig, 202 = tx unmodified, 203 = tx not final, 204 = temporarily cannot post, 300 = user reject, 301 = sig failed, 303 = unsupported request type, 304 = insufficient balance
+
+Result code 201 means that the transaction has been "filled out" by this wallet, but the wallet is not capable of completing the job -- there are inputs that still must be signed.  This can legitimately occur with multisig inputs or interesting transaction forms.
+
+Result code 203 means that the transaction creation is successful, but the transaction cannot be accepted on the blockchain at this time.  This code may or may not be returned if "nopost" is specified.
+
+Result code 204 means that the wallet's connection to the blockchain is interrupted so this transaction cannot be posted.
+
+**tx**: The completed transaction in network serialized hex string format.
+**txid**: The completed transaction hash
+
+**error**: [string, optional] detailed error message, if any
+
 
 
 #### Pay JSON Payment Protocol Request
 
-This request asks the wallet to complete a [JSON payment protocol](https://github.com/bitpay/jsonPaymentProtocol/blob/master/v2/specification.md) dialog
+This request asks the wallet to complete a [JSON payment protocol](https://github.com/bitpay/jsonPaymentProtocol/blob/master/v2/specification.md) dialog.
+
+tdpp://<appname>/jsonpay?uri=<url>
+
+**url*: The payment protocol initiation URL, as specified in JSON payment protocol document
+
+#### JSON Payment Protocol Response
+
+**resultcode**: [integer] 200 = payment completed, 
+
+**jppmemo**: [string, optional] The "memo" field in the payment protocol response *SHOULD* be reported back to the calling entity, if it exists and is not empty.
