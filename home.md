@@ -14,6 +14,8 @@ This site integrates the ongoing BCH specification effort with Bitcoin Unlimited
 
 [BCH Identity Protocol](/identity__protocol)
 
+[Delegated Payment Protocol](/delegated_payment_protocol) (Trickle Pay)
+
 [Full Node (P2P) Protocol](/ref/protocol)
 ## Software
 
