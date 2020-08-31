@@ -3,6 +3,9 @@
 [Android wallet](/wally/Android.md)
 [Enterprise desktop wallet](/wally/Enterprise.md)
 
+## Media
+[Images](/wally/images.md)
+
 ## Privacy Statement
 [Privacy](/wally/privacy.md)
 
