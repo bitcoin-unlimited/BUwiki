@@ -1,11 +1,11 @@
 # Trusted Delegated Payment Protocol
 
   
-The Delegated Payment Protocol is a protocol that allows an entity and a cryptocurrency wallet to establish a trust (within limits) relationship, allowing the entity to delegate cryptocurrency operations to the wallet.  Based on policies set up by the wallet owner (the "user"), the wallet may automatically execute delegated operations, or may request user authorization.  The entity requesting payment has no control over whether the payment request is handled automatically, or promoted to user authorization.  Delegated operations can be simple payment, or the funding and signing of more complex transactions.  Entities can be anything that can execute a cryptographic signature, or whose identity is validated by other means (such as via https).  Common entities are web sites and smart phone apps.
+The Delegated Payment Protocol is a protocol that allows an entity and a cryptocurrency wallet to establish a trust (within limits) relationship, allowing the entity to delegate cryptocurrency operations to the wallet.  Based on policies set up by the wallet owner (the "user"), the wallet may automatically execute delegated operations (typically payments), or may request user authorization.  The entity requesting the operation has no control over whether the operation is handled automatically, or promoted to user authorization.  Delegated operations can be simple payment, the funding and signing of more complex transactions, or identity operations.  Entities can be anything that can execute a cryptographic signature, or whose identity is validated by other means (such as via https).  Common entities are web sites and smart phone apps.
 
-This facility can be broadly compared to the automatic fiat payment systems available via ACH (and others) that are used to deduct monthly membership dues, etc.  However, this facility may be used both for "traditional" (monthly bill) style payments, and for emerging small payment applications that are enabled by Bitcoin Cash's payment efficiency.     
+This service can be broadly compared to the automatic fiat payment systems available via ACH (and others) that are used to deduct monthly membership dues, etc.  However, this service may be used both for "traditional" (monthly bill) style payments, and for emerging small payment applications that are enabled by Bitcoin Cash's payment efficiency.     
 
-From a philosophical standpoint this service is very different than traditional ACH automatic payment permission.  In this protocol, user control over these trust relationships is centered within the wallet, and the wallet is an active agent in the execution of every payment.  This means that this trust relationship is easily adjusted by the user.  In some traditional systems, control over the trust relationship is delegated to the entity receiving the funds.  At best, this creates problems -- a different and separate system must be learned by the user for each relationship, often involving slow and obsolete technology, for example [a physical, stamped and mailed letter with numerous required and redundant details](https://donotpay.com/learn/cancel-golds-gym-membership/).  At worst, the entity deliberately obfuscates or complexifies their system to retain payments, and/or [charges the user to stop charging the user](https://www.consumerfinance.gov/ask-cfpb/how-do-i-stop-automatic-payments-from-my-bank-account-en-2023/).  
+And from a philosophical standpoint this service is very different than traditional automatic payment permission.  In this protocol, user control over these trust relationships is centered within the wallet, and the wallet is an active agent in the execution of every payment.  This means that this trust relationship is easily adjusted by the user.  In some traditional systems, control over the trust relationship is delegated to the entity receiving the funds.  At best, this creates problems -- a different and separate system must be learned by the user for each relationship, often involving slow and obsolete technology, for example [a physical, stamped and mailed letter with numerous required and redundant details](https://donotpay.com/learn/cancel-golds-gym-membership/).  At worst, the entity deliberately obfuscates or complexifies their system to retain payments, and/or [charges the user to stop charging the user](https://www.consumerfinance.gov/ask-cfpb/how-do-i-stop-automatic-payments-from-my-bank-account-en-2023/).  
 
 With problems like these, it seems as if many banking systems have essentially been co-opted by bank/business relationships to extract value from the hapless depositor (who must participate because of the significant problems with holding physical bills of currency whose high denominations have been retired and is losing value to inflation).  By returning control to the wallet owner, this protocol is aligned with cryptocurrency philosophy that seeks to provide an alternative that protects depositors rather than fleecing them.  
 
@@ -38,17 +38,17 @@ Additional undefined fields **MUST** be ignored (but included in any signature c
 
 #### Format 
 
-tdpp://<entityName>/register?[pubkey=<pubkey>]&[maxper=<amount>]&[maxday=<amount>]&[maxweek=<amount>]&[maxmonth=<amount>]&[descper=<string>]&[descday=<string>]&[descweek=<string>]&[descmonth=<string>]&[sig=<string>]
+tdpp://**entityName**/register?[pubkey=**pubkey**]&[maxper=**amount**]&[maxday=**amount**]&[maxweek=**amount**]&[maxmonth=**amount**]&[descper=**desc**]&[descday=**desc**]&[descweek=**desc**]&[descmonth=**desc**]&[sig=**sig**]
 
 #### Fields  
 
 **entityName**:   The name of the registering entity/service.  This name will be shown in the wallet during payment authorizations or trust management.  Since wallets will likely disallow 2 registrations using the same name, make your name unique (e.g. use a full DNS name if a web site).
 
-**pubkey**: [optional] If provided, this entity will sign tricklepay requests with this public key. This field MUST be provided if there is no implicit secure identity mechanism (such as https), or the wallet will reject with a NO_IDENTITY error.
+**pubkey**: [optional] If provided, this entity will sign requests with this public key. This field MUST be provided if there is no implicit secure identity mechanism (such as https), or the wallet will reject with a NO_IDENTITY error.
 
-**maxper**, **maxday**, **maxweek**,**maxmonth**: [optional] These fields specify the recommended automatic payment maximum in Satoshi (i.e. cryptocurrency’s finest unit).
+**maxper**, **maxday**, **maxweek**,**maxmonth**: [optional, unsigned long integer] These fields specify the recommended automatic payment maximum in Satoshi (i.e. cryptocurrency’s finest unit).
 
-**descper**, **descday**, **descweek**, **descmonth**: [optional] These fields specify short (3 lines or less) explanations of the chosen limits for optional user presentation by the wallet.
+**descper**, **descday**, **descweek**, **descmonth**: [optional, string] These fields specify short (3 lines or less) explanations of the chosen limits for optional user presentation by the wallet.
 
 **sig**: [mandatory if pubkey] The signature of the stringified URI format of this request, alphanumerically ordered by key, less the sig key and value.
 
@@ -74,9 +74,9 @@ This request format provides a simple payment interface.  Note that the fee is c
 
 Additional undefined fields **MUST** be ignored, but included in any signature check.
 
-tdpp://<appname>/sendto?[amtN=<amount>]&[addrN=<address>]&[sig=<string>]
+tdpp://**entityName**/sendto?[amtN=**amount**]&[addrN=**address**]&[sig=**sig**]
 
-**appname**: Identifies the prior registration.
+**entityName**: Identifies the prior registration.
 
 **amtN**: [unsigned integer, at least one] (e.g. amt0, amt1, amt2, amt3) Specify the amount to send in Satoshis (or the finest unit of the currency). Its possible to send to multiple destinations, but the wallet must use the sum of all amounts to determine if automatic or user authorization is required. If addrN exists, amtN must exist, or the wallet will fail the request.
 
@@ -105,7 +105,7 @@ Additional undefined fields **MUST** be ignored.
 
 This request format allows the app to handle bitcoin transaction details, yet delegate funding and/or signing to the wallet.
 
-tdpp://<appname>/tx?chain=<blockchain>&tx=<tx>&[flags=<flags>]&[sig=<sig>]
+tdpp://**appname**/tx?chain=**blockchain**&tx=**tx**&[flags=**flags**]&[sig=**sig**]
 
 **chain**: [Mandatory, string]  The blockchain this transaction is for, as specified by the BIP21 URI prefix, for example: "bitcoincash" or "bitcoin".
 
@@ -137,9 +137,9 @@ Result code 204 means that the wallet's connection to the blockchain is interrup
 
 This request asks the wallet to complete a [JSON payment protocol](https://github.com/bitpay/jsonPaymentProtocol/blob/master/v2/specification.md) dialog.
 
-tdpp://<appname>/jsonpay?uri=<url>
+tdpp://**appname**/jsonpay?uri=**url**
 
-**url*: The payment protocol initiation URL, as specified in JSON payment protocol document
+**url**: The payment protocol initiation URL, as specified in JSON payment protocol document
 
 #### JSON Payment Protocol Response
 
