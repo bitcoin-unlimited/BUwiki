@@ -1,6 +1,8 @@
 # Trusted Delegated Payment Protocol
+*Advanced wallet interaction with trusted applications or websites*
 
-  
+## Introduction 
+ 
 The Delegated Payment Protocol is a protocol that allows an entity and a cryptocurrency wallet to establish a trust (within limits) relationship, allowing the entity to delegate cryptocurrency operations to the wallet.  Based on policies set up by the wallet owner (the "user"), the wallet may automatically execute delegated operations (typically payments), or may request user authorization.  The entity requesting the operation has no control over whether the operation is handled automatically, or promoted to user authorization.  Delegated operations can be simple payment, the funding and signing of more complex transactions, or identity operations.  Entities can be anything that can execute a cryptographic signature, or whose identity is validated by other means (such as via https).  Common entities are web sites and smart phone apps.
 
 This service can be broadly compared to the automatic fiat payment systems available via ACH (and others) that are used to deduct monthly membership dues, etc.  However, this service may be used both for "traditional" (monthly bill) style payments, and for emerging small payment applications that are enabled by Bitcoin Cash's payment efficiency.     
@@ -23,6 +25,17 @@ This specification will use a URI format to describe the data contents, however,
 
 Intents are a technique that allow an Android application to communicate (and access functionality) with each other. Intents can be mapped to a URI since they contain the same basic elements. In particular URI parameters can be added to an intent via the extended data key value pair dictionary. 
 
+## Entity Wallet Trust
+
+This protocol sets up a user-authorized trust relationship between a wallet and an entity.  However, the opposite problem also exists.  An entity cannot trust that the wallet faithfully executed payments.  If such trust existed, wallets would be created that simply respond that payments were made without actually doing so, and therefore get free service.
+
+One solution to this problem is that the entity needs to independently verify the transaction at its desired level of assurance (i.e. unconfirmed, unconfirmed with no known doublespends, confirmed depth N), and that the transaction has the desired outputs.  From an engineering perspective this is awkward because it means that the app needs to contain blockchain libraries, and for unconfirmed assurances, access the blockchain network.
+
+SPV proofs can be furnished to prove confirmed transactions, but 10+ minute waits is not acceptable for many anticipated uses of this technology.
+
+Assurances of unconfirmed transactions will always be probabilistic since a miner may be secretly mining a doublespend.  However, many businesses find the risk reasonable.  Web site entities can deploy and access a trusted full node to gain this information.  At a lower level of assurance, apps can use the simpler electrum protocol to at least poll a random or trusted server or two to verify that the transaction has propagated, or propagate the transaction itself.  Maintaining a trusted full node for app payment queries increases the maintenance overhead of the app, but it is a possibility.  Accessing random servers is vulnerable to eclipse attacks, but mounting such an attack may not be economically viable for small payments.
+
+But the emerging technology "Tailstorm" (Bobtail and Storm combined) should allow partial proof-of-work inclusion proofs.  These can be used to provide a probabilistic and economic assurance that the transaction is actually being mined, without requiring that the entity independently communicate to the blockchain or to an external server.
 
 ## Protocol Messages
 ### Registration
@@ -38,7 +51,7 @@ Additional undefined fields **MUST** be ignored (but included in any signature c
 
 #### Format 
 
-tdpp://**entityName**/register?[pubkey=**pubkey**]&[maxper=**amount**]&[maxday=**amount**]&[maxweek=**amount**]&[maxmonth=**amount**]&[descper=**desc**]&[descday=**desc**]&[descweek=**desc**]&[descmonth=**desc**]&[sig=**sig**]
+tdpp://**entityName**/reg?[pubkey=**pubkey**]&[maxper=**amount**]&[maxday=**amount**]&[maxweek=**amount**]&[maxmonth=**amount**]&[descper=**desc**]&[descday=**desc**]&[descweek=**desc**]&[descmonth=**desc**]&[sig=**sig**]
 
 #### Fields  
 
