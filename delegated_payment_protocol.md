@@ -38,6 +38,13 @@ Assurances of unconfirmed transactions will always be probabilistic since a mine
 But the emerging technology "Tailstorm" (Bobtail and Storm combined) should allow partial proof-of-work inclusion proofs.  These can be used to provide a probabilistic and economic assurance that the transaction is actually being mined, without requiring that the entity independently communicate to the blockchain or to an external server.
 
 ## Protocol Messages
+
+### Signature of Intents and URLs
+
+All message signatures sign the URI form of the message without the "sig" parameter.  Intents do not appear to specify an ordering to the extra data (the parameters, using "putExtra").  To create an unambiguous conversion, we define that the URI form *MUST* sort these parameters alphanumerically by key and *MUST NOT* repeat any keys.
+
+This policy MUST be applied to other message formats, to keep the processing uniform across envelopes.  This means that the parameters in received URLs may need to be reordered before the signature check.
+
 ### Registration
 
 The registration phase allows an entity to set up a trust relationship with a wallet that will allow that entity to direct limited automatic (no user interaction) payments.
@@ -51,13 +58,13 @@ Additional undefined fields **MUST** be ignored (but included in any signature c
 
 #### Format 
 
-tdpp://**entityName**/reg?[pubkey=**pubkey**]&[maxper=**amount**]&[maxday=**amount**]&[maxweek=**amount**]&[maxmonth=**amount**]&[descper=**desc**]&[descday=**desc**]&[descweek=**desc**]&[descmonth=**desc**]&[sig=**sig**]
+tdpp://**entityName**/reg?[addr=**addr**]&[maxper=**amount**]&[maxday=**amount**]&[maxweek=**amount**]&[maxmonth=**amount**]&[descper=**desc**]&[descday=**desc**]&[descweek=**desc**]&[descmonth=**desc**]&[sig=**sig**]
 
 #### Fields  
 
 **entityName**:   The name of the registering entity/service.  This name will be shown in the wallet during payment authorizations or trust management.  Since wallets will likely disallow 2 registrations using the same name, make your name unique (e.g. use a full DNS name if a web site).
 
-**pubkey**: [optional] If provided, this entity will sign requests with this public key. This field MUST be provided if there is no implicit secure identity mechanism (such as https), or the wallet will reject with a NO_IDENTITY error.
+**addr**: [optional] If provided, this entity will sign requests with the public key associated with this address. This field MUST be provided if there is no implicit secure identity mechanism (such as https), or the wallet will reject with a NO_IDENTITY error.
 
 **maxper**, **maxday**, **maxweek**,**maxmonth**: [optional, unsigned long integer] These fields specify the recommended automatic payment maximum in Satoshi (i.e. cryptocurrency’s finest unit).
 
