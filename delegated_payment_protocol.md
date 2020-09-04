@@ -43,7 +43,9 @@ But the emerging technology "Tailstorm" (Bobtail and Storm combined) should allo
 
 All message signatures sign the URI form of the message without the "sig" parameter.  Intents do not appear to specify an ordering to the extra data (the parameters, using "putExtra").  To create an unambiguous conversion, we define that the URI form *MUST* sort these parameters alphanumerically by key and *MUST NOT* repeat any keys.
 
-This policy MUST be applied to other message formats, to keep the processing uniform across envelopes.  This means that the parameters in received URLs may need to be reordered before the signature check.
+This policy MUST be applied to other message formats, to keep the processing uniform across envelopes.  This means that the parameters in received URLs may need to be reordered before the signature check, and the "sig" parameter needs to be removed, along with its linking "&".  The URL get is *NOT REQUIRED* to properly sort these parameters!
+
+The signature is transmitted in the standard bitcoin signature encoding, which is a 64 character format beyond the scope of this document (see EncodeBase64() or use libbitcoincashkotlin.Codec.encode64).
 
 ### Registration
 
@@ -58,11 +60,15 @@ Additional undefined fields **MUST** be ignored (but included in any signature c
 
 #### Format 
 
-tdpp://**entityName**/reg?[addr=**addr**]&[maxper=**amount**]&[maxday=**amount**]&[maxweek=**amount**]&[maxmonth=**amount**]&[descper=**desc**]&[descday=**desc**]&[descweek=**desc**]&[descmonth=**desc**]&[sig=**sig**]
+tdpp://**entityName**/reg?[topic=**topic**]&[uoa=**uoa**]&[addr=**addr**]&[maxper=**amount**]&[maxday=**amount**]&[maxweek=**amount**]&[maxmonth=**amount**]&[descper=**desc**]&[descday=**desc**]&[descweek=**desc**]&[descmonth=**desc**]&[sig=**sig**]
 
 #### Fields  
 
-**entityName**:   The name of the registering entity/service.  This name will be shown in the wallet during payment authorizations or trust management.  Since wallets will likely disallow 2 registrations using the same name, make your name unique (e.g. use a full DNS name if a web site).
+**entityName**:   The name of the registering entity/service.  This name will be shown in the wallet during payment authorizations or trust management.  Since wallets will likely disallow 2 registrations using the same name and topic, make your name unique (e.g. use a full DNS name if a web site).
+
+**topic**: [optional, string] A registering entity may set up multiple tdpp relationships for unrelated items.  This string tells the user what this item is and differentiates them.
+
+**uoa**: [optional, string] Unit of account.  All recommended payment amounts are specified in the smallest unit of this currency.  The unit of account is important since many cryptocurrencies are volatile.  For example, if the uoa is "BCH", the amount is specified in Satoshis.  If the uoa is "USD" the amount is specified in pennies.  The currency the payment actually uses is *NOT* defined by this field (it is specified when the entity actually requests a payment).
 
 **addr**: [optional] If provided, this entity will sign requests with the public key associated with this address. This field MUST be provided if there is no implicit secure identity mechanism (such as https), or the wallet will reject with a NO_IDENTITY error.
 
