@@ -80,12 +80,13 @@ sequenceDiagram
 ### Login Offer
 The server provides a URI (or a QR-encoded URI) of the following format (bold indicated variable fields):
 
-bchidentity://**domain**/**path**?op=login&chal=**challengeString**&cookie=**cookie**
+bchidentity://**domain**/**path**?op=login&proto=**protocol**&chal=**challengeString**&cookie=**cookie**
 
 **Fields**:
 
 **domain**: domain name of the site to log into (e.g. "www.bitcoinunlimited.net".  Also include the port using the standard :number format if it is not the default http port.  Use ":443" to request a https response.
 **path**: where to send the response (e.g. "/login/auto")
+**protocol**: (optional) The protocol to use to respond to this offer.  Currently http or https is supported.  If not provided, the protocol will default to the protocol the offer came in on (if http or https), then http.
 **challengeString**: an arbitrary string chosen by the server that is unique for every login and contains sufficient entropy to make repeats incredibly unlikely.  The challenge string MUST only contain ASCII alphanumeric characters (A-Z, a-z, 0-9, and _).
 **cookie**: arbitrary data chosen by the server that will be sent back to the server during the login response.  For web sites, this is often the originating session identifier since the login response will likely arrive in a different session.
 
@@ -103,7 +104,7 @@ On desktop platforms, a browser plugin may register the "bchidentity" URI, and b
 
 ### Login Offer Response
 
-For entities that support the HTTP protocol, the crypto-identity app creates and issues a http "get" request of the following format:
+For entities that support the HTTP protocol, the crypto-identity app creates and issues a http or https "get" request of the following format:
 
 http://**domain**[**:port**]/**path**?op=login&addr=**identity address**&sig=**signature**
 
@@ -125,6 +126,9 @@ The server MUST reply to the Login Response message with the following error cod
 *200: "bad signature"*
 	The signature is incorrect
 	
+*301/302: "redirect"*
+	Clients *should* handle http redirects in the expected fashion.  A common redirect is http to https if the client chose incorrectly.
+	
 *404: "unknown session"*
 	The cookie does not match any known session.  The session has probably expired in the server and the user needs to reload the web page.
 	
@@ -140,7 +144,7 @@ This protocol requests and provides signed data, alongside the normal "login" ch
 
 
 ### Registration Offer
-bchidentity://**domain**/**path**?op=reg&chal=**challengeString**&cookie=**cookie**[&hdl=**dataSpec** 
+bchidentity://**domain**/**path**?op=reg&proto=**protocol**&chal=**challengeString**&cookie=**cookie**[&hdl=**dataSpec** 
   
 **Values**:
 **dataSpec**: underscore delimited field specifying parameters/constraints on the requested data.  Ignore unknown specifiers:
@@ -154,6 +158,7 @@ bchidentity://**domain**/**path**?op=reg&chal=**challengeString**&cookie=**cooki
 **path**: where to send the response (e.g. "/login/auto")  
 **challengeString**: an arbitrary string chosen by the server that is unique for every login and contains sufficient entropy to make repeats incredibly unlikely.  The challenge string MUST only contain ASCII alphanumeric characters (A-Z, a-z, 0-9, and _).  
 **cookie**: arbitrary data chosen by the server that will be sent back to the server during the login response.  For web sites, this is often the originating session identifier since the login response will likely arrive in a different session.
+**protocol**: (optional) The protocol to use to respond to this offer.  Currently http or https is supported.  If not provided, the protocol will default to the protocol the offer came in on (if http or https), then http.
 
 If any of these parameters is not included, the registration does not want this data.
 **hdl**: (Optional) username or handle to use at this site
@@ -168,7 +173,7 @@ If any of these parameters is not included, the registration does not want this 
 
 ### Registration Offer Response
 
-The crypto-identity app creates and issues a http "post" request of the following format.
+The crypto-identity app creates and issues a http or https "post" request of the following format.
 
 http://**domain**[**:port**]/**path**
 
@@ -213,6 +218,9 @@ A registration offer response should not include any data that the offer did not
 **social media**: Social media information
   + Social media information is specified as a string of service:handle, e.g. "twitter:janeDoe, keybase:janieD".  Ignore whitespace around the comma or colon.
 
+#### Server response to a login attempt
+
+Error codes are as specified in the "get" login attempt.
 
 # Crypto-identity App Operation
 
