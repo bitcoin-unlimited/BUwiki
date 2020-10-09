@@ -2,6 +2,8 @@
 
 *This wallet is currently experimental.*  **Do not use with significant funds!** 
 
+[deepdir](/wally/dir1/dir2/d__foo/foo.md)
+
 [Wally Oct 8, 2020](/wally/Wally201008.apk)
 
 ### Older releases
