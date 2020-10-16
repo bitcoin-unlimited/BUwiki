@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="156.52063mm"
+   height="138.84013mm"
+   viewBox="0 0 156.52063 138.84013"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="election_impossible_triangle_plain.svg">
+  <defs
+     id="defs2">
+	
+	
+	
+</defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.76746732"
+     inkscape:cx="35.626918"
+     inkscape:cy="-117.97609"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1732"
+     inkscape:window-height="1712"
+     inkscape:window-x="1786"
+     inkscape:window-y="302"
+     inkscape:window-maximized="0"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-25.626845,-24.85688)">
+    <polygon
+       style="fill:#997799;fill-opacity:1;stroke:#000000;stroke-linejoin:round;stroke-miterlimit:10"
+       class="st0"
+       points="315.5,9.9 234.6,9.9 412.6,331.3 215.2,331.3 177.9,399.2 531.2,399.4 "
+       id="polygon872"
+       transform="matrix(0.20201185,0,0,0.20201185,44.150284,37.606808)" />
+    <polygon
+       style="fill:#8080b2;fill-opacity:1;stroke:#000000;stroke-linejoin:round;stroke-miterlimit:10"
+       class="st1"
+       points="493.4,470.1 531.2,399.2 177.9,399.2 275.6,219.5 236.2,148.8 60.5,470.1 139,470.1 "
+       id="polygon874"
+       transform="matrix(0.20201185,0,0,0.20201185,44.150284,37.606808)" />
+    <polygon
+       style="fill:#666691;fill-opacity:1;stroke:#000000;stroke-linejoin:round;stroke-miterlimit:10"
+       class="st2"
+       points="412.6,331.3 234.6,9.9 19.8,399.4 60.5,470.1 236.2,148.8 337.9,331.3 "
+       id="polygon876"
+       transform="matrix(0.20201185,0,0,0.20201185,44.150284,37.606808)" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.69999981px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="75.155281"
+       y="34.505905"
+       id="text1008"><tspan
+         sodipodi:role="line"
+         x="75.155281"
+         y="34.505905"
+         id="tspan1006"
+         style="stroke-width:0.26458332px"><tspan
+           x="75.155281"
+           y="34.505905"
+           id="tspan1004"
+           style="stroke-width:0.26458332px">Integrity</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.69999981px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458335px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="102.3299"
+       y="29.546146"
+       id="text1014"
+       transform="rotate(60)"><tspan
+         sodipodi:role="line"
+         x="102.3299"
+         y="29.546146"
+         id="tspan1012"
+         style="stroke-width:0.26458335px"><tspan
+           x="102.3299"
+           y="29.546146"
+           id="tspan1010"
+           style="stroke-width:0.26458335px">Anonymity</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.69999981px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458335px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="-71.613098"
+       y="202.99152"
+       id="text1020"
+       transform="rotate(-60)"><tspan
+         sodipodi:role="line"
+         x="-71.613098"
+         y="202.99152"
+         id="tspan1018"
+         style="stroke-width:0.26458335px"><tspan
+           x="-71.613098"
+           y="202.99152"
+           id="tspan1016"
+           style="stroke-width:0.26458335px">Remotability</tspan></tspan></text>
+  </g>
+  <style
+     id="style870"
+     type="text/css">
+	.st0{fill:#999999;stroke:#000000;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st1{fill:#808080;stroke:#000000;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st2{fill:#666666;stroke:#000000;stroke-linejoin:round;stroke-miterlimit:10;}
+</style>
+</svg>

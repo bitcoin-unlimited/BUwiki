@@ -23,6 +23,9 @@ This site integrates the ongoing BCH specification effort with Bitcoin Unlimited
 
 [Cwik (This site's software)](cwik) 
 
+## Articles
+[Election Impossible Triangle](/election_impossible_triangle.md)
+
 ## Miscellaneous
 
 ### [Glossary](glossary)
