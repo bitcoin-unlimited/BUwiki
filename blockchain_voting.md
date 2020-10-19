@@ -14,9 +14,17 @@
 
 * Cannot be the voter registration authority (Sybil attack)<sup>1</sup>
 
-## Vote Recording
- * Data carried in a transaction
+A blockchain represents a public commitment of ordered data.  This data repository can be used to record votes in a variety of ways.  Any interested party can access the blockchain to discover all votes, so long as they know how votes are identified.  
+
+Note that blockchain reorganizations or mining denial-of-service attacks can be used to remove transactions from the blockchain's main chain, but cannot be used to change a participant's vote.
+
+These activities could affect any election that specifies a moment when polls close.  However, reorganizations leave strong historical evidence of misbehavior in terms of proof-of-work, and denial-of-service attacks leave strong cotemporal evidence (e.g. any participant actively monitoring the network during the voting will see vote records posted to the network but not included in the blockchain).
+
+## Blockchain Vote Recording Techniques
+ * Data carried in an arbitrary, otherwise unrelated transaction
  * A token payment to a choice of destinations, each destination represents one choice.
+
+
 
 
 ## Merkle Tree Based Vote Tallies
@@ -39,25 +47,86 @@ $$
 H(N) = H(Tally(N, D_x)) | H(LeftChild(N)) | H(RightChild(N))  \tag2
 $$
 
-The merkle tree leaf nodes are a vote by participant P: 
+The merkle tree leaf nodes are the hash of a vote, and participant information (such as the blockchain transaction or transaction hash, public key & signature) P, that proves the validity of the vote: 
 $$
-V(P, D_i) = \left\{ \begin{array}{l}
+Tally(P, D_i) = \left\{ \begin{array}{l}
      \verb|1 if vote "yes" for decision D_i| \\
      \verb|0 otherwise|
  \end{array} \right. \tag3
 $$
 
+$$
+V_n = H(Tally(P,D_x) | P) \tag4
+$$
+
+The following diagram illustrates the merkle tree of votes.  Vote tallies appear in brackets.  For brevity, tallies have been omitted from many nodes, except those that are part of the merkle proof of vote $V_2$, which is indicated in light blue.  
+
+```mermaid  
+graph TD
+R("Root[5,3]") -- 0 --> B["B[3,1]"]
+R -- 1 --> C["C[2,2]_"]
+B -- 0 --> D["D[2,0]_"]
+B -- 1 --> E["E[1,1]_"]
+C -- 0 --> F
+C -- 1 --> G
+D -- 0 --> H
+D -- 1 --> I
+E -- 0 --> J["J[1,0]_"]
+E -- 1 --> K["K[0,1]_"]
+F -- 0 --> L
+F -- 1 --> M
+G -- 0 --> N
+G -- 1 --> O
+H --> V0{"$V_0$"}
+I --> V1{"V<sub>1</sub>"}
+J --> V2{"V<sub>2</sub>[1,0]_"}
+K --> V3{"V<sub>3</sub>[0,1]_"}
+L --> V4{"V<sub>4</sub>"}
+M --> V5{"V<sub>5</sub>"}
+N --> V6{"V<sub>6</sub>"}
+O --> V7{"V<sub>7</sub>"}
+classDef proof fill:#cff,stroke:#333,stroke-width:3px;
+class V2,K,D,C proof;
+
+```
+
+So the Merkle proof is "$V_2[1,0]$, K[0,1], D[2,0], and C[2,2] at index 2".
+
+Specifying index 2 is very important.  Note that the path from the root to child nodes are labelled with a 0 or 1.  Traversing any path and interpreting these a bits in a number results in the zero based leaf index of the vote in the tree.  The merkle proof of $V_2$ must also include this index (2 or 010 binary) to communicate to the prover the concatenation order of the hash at each tree level (e.g. H(current val, next) or H(next, current val)).  For example the 2nd hash operation (combining J and K) executes H(current value J | K[0,1]) because the first bit is 0, but the 3rd hash operation (combining D and E) executes H( D[2,0] | current value E)  -- note the different order -- because the 2nd bit in the index is a 1.  Therefore the index number of the merkle leaf communicates the prover in what order the proof elements must be combined.  
+
+Actually, this additional data can be eliminated if the hash function is commutative<sup>5</sup>.  A simple commutative hash function CH based on cryptographic hash H is CH(x,y) = H(sort(x,y))
+
 
 ## Tokens
 * Issued 1 to each voter by the registration authority
-* Confers permission to participate in a vote, making 1 vote
+* Confers permission to participate in a vote.  Each token allows exactly 1 vote, enforced by blockchain token semantics
+
+Note that either the "data carrier" or "destination" voting architectures are possible using tokens.
 
 ## Token Shuffle
 
 * Enables voter anonymity from the registration authority and the public
 * Participant can still validate their vote it is cast
 
-A token shuffle is CoinJoin<sup>2</sup>, CashShuffle<sup>3</sup>, or an equivalent algorithm applied to the tokens that confer permission to participate in a vote.
+A token shuffle is CoinJoin<sup>2</sup>, CashShuffle<sup>3</sup>, or an equivalent algorithm applied to the tokens that confer permission to participate in a vote, rather than currency.
+
+A coin join is a very simple concept so is described briefly here:  
+
+A transaction may consist of many inputs and many outputs.  Let us propose that many individuals contribute a single input of one token and receive a single output of one token (to a different address from their input) into a single transaction.  If the order of the inputs does not correspond to the order of the outputs, and the input and output quantities are all the same, it is impossible to determine which input corresponds to which output.  This process can be repeated with different partners to increase the pool of possible entities that may control a particular output.
+
+The traditional coin shuffle suffers from a problem with varying input quantities:  Its possible to connect inputs to outputs if participants include different quantities because each participants' quantity must be preserved.  However, this is not a problem for voting tokens since each participant has exactly 1.
+
+Also note that actual construction of the multi-participant transaction may leak identity information or suffer denial-of-service attacks, so implementations are significantly more complex than this conceptual description.
+
+
+
+## Voting Topic and Data Commitments
+
+* Ensures integrity of voter choices
+	* Cannot omit a choice, add extra choices, or swap choices to identifiers for a subset of voters
+* Prevents vote replay
+
+Apply a cryptographic hash to the complete voting information and choice data to create an identifier that probabilistically uniquely identifies the vote session.  Participants and network software can compare identifiers to ensure they have the correct data.  The larger network can reject unknown identifiers which might notify participants of misbehaving or malicious software.  Identifiers should be included in each participant's vote so that the vote itself affirms its vote on a particular topic with the particular topic data.  This prevents both malicious topic data and replay attacks.
 
 ## Fake Vote Commitments
 
@@ -67,19 +136,21 @@ A token shuffle is CoinJoin<sup>2</sup>, CashShuffle<sup>3</sup>, or an equivale
 	* This would make it hard for participants to sell their vote because participants who voted differently can provide a fake proof to get the money
 * obfuscates ongoing counts 
 
-Voting registration authority creates a number of fake votes and commits to those votes via a cryptographic hash.  The fakes are issued during the election process.  When the polls close, the fake votes are revealed and the cryptographic hash proves all the fakes.  Revealing partial fakes results in a non-matchin hash
+The voting registration authority creates a number of fake votes and commits to those votes via a cryptographic hash.  The fakes are issued during the election process.  When the polls close, the fake votes are revealed and the cryptographic hash proves all the fakes.  Revealing partial fakes results in a non-matching hash so it is not possible to affect the election outcome via a partial reveal.
 
+## Vote Encryption
 
-## Voting Data Commitment
+ * Votes are encrypted using a public/private keypair, which is revealed when all votes are cast
+ * Key could be an aggregate
+ * Problem: Entity controlling key reveal or last reveal of an aggregate key could choose not to reveal if they do not like the election results.
 
-* Ensures integrity of voter choices
-	* (cannot omit a choice, add extra choices, or swap choices to identifiers for a subset of voters)
+## ZK-SNARKs
 
-Apply a cryptographic hash to the complete voting information and choice data to create an identifier that identifies the vote session.  Users and software can compare session identifiers to ensure they have the correct data.  Session identifiers should be included in each participant's vote to ensure that they are voting on the correct session with the correct data.
+TBD
 
+## References
 
-
-
-[1]: https://www.microsoft.com/en-us/research/publication/the-sybil-attack/
-[2]: CoinJoin
-[3]: CashShuffle
+[1]:  The Sybil Attack: https://www.microsoft.com/en-us/research/publication/the-sybil-attack/
+[2]: CoinJoin: https://bitcointalk.org/?topic=279249
+[3]: CoinShuffle:  https://www.darrentapp.com/pdfs/coinshuffle.pdf,  https://github.com/cashshuffle/spec
+[5]: Commutative Merkle trees: https://medium.com/@g.andrew.stone/tree-signature-variations-using-commutative-hash-trees-4a8a47d4f8ce
