@@ -18,8 +18,9 @@ Here are some examples:
 ### Math
 [Full Documentation](https://katex.org/docs/supported.html)
 The *Gamma function* satisfying $\Gamma(n) = (n-1)!\quad\forall n\in\mathbb N$ is via the Euler integral
+
 $$
-\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.
+\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,. \tag1
 $$
 
 ### Flowchart
