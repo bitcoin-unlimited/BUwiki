@@ -27,7 +27,8 @@ These activities could affect any election that specifies a moment when polls cl
 
 
 
-## Merkle Tree Based Vote Tallies
+## Merkle Tally Tree
+*tallies votes in a manner that admits succinct inclusion proofs*
 
 * Merkle inclusion proof can prove that a particular vote was counted in O(log N) data
 * But cannot prove no "ballot stuffing"
