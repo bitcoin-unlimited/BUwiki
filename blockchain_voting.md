@@ -27,7 +27,8 @@ These activities could affect any election that specifies a moment when polls cl
 
 
 
-## Merkle Tree Based Vote Tallies
+## Merkle Tally Tree
+*tallies votes in a manner that admits succinct inclusion proofs*
 
 * Merkle inclusion proof can prove that a particular vote was counted in O(log N) data
 * But cannot prove no "ballot stuffing"
@@ -64,37 +65,53 @@ The following diagram illustrates the merkle tree of votes.  Vote tallies appear
 ```mermaid  
 graph TD
 R("Root[5,3]") -- 0 --> B["B[3,1]"]
-R -- 1 --> C["C[2,2]_"]
-B -- 0 --> D["D[2,0]_"]
-B -- 1 --> E["E[1,1]_"]
+R -- 1 --> C["C[2,2]"]
+B -- 0 --> D["D[2,0]"]
+B -- 1 --> E["E[1,1]"]
 C -- 0 --> F
 C -- 1 --> G
 D -- 0 --> H
 D -- 1 --> I
-E -- 0 --> J["J[1,0]_"]
-E -- 1 --> K["K[0,1]_"]
+E -- 0 --> J["J[1,0]"]
+E -- 1 --> K["K[0,1]"]
 F -- 0 --> L
 F -- 1 --> M
 G -- 0 --> N
 G -- 1 --> O
-H --> V0{"$V_0$"}
-I --> V1{"V<sub>1</sub>"}
-J --> V2{"V<sub>2</sub>[1,0]_"}
-K --> V3{"V<sub>3</sub>[0,1]_"}
-L --> V4{"V<sub>4</sub>"}
-M --> V5{"V<sub>5</sub>"}
-N --> V6{"V<sub>6</sub>"}
-O --> V7{"V<sub>7</sub>"}
+H --> V0{"V0"}
+I --> V1{"V1"}
+J --> V2{"V2[1,0]"}
+K --> V3{"V3[0,1]"}
+L --> V4{"V4"}
+M --> V5{"V5"}
+N --> V6{"V6"}
+O --> V7{"V7"}
 classDef proof fill:#cff,stroke:#333,stroke-width:3px;
 class V2,K,D,C proof;
-
 ```
 
 So the Merkle proof is "$V_2[1,0]$, K[0,1], D[2,0], and C[2,2] at index 2".
 
-Specifying index 2 is very important.  Note that the path from the root to child nodes are labelled with a 0 or 1.  Traversing any path and interpreting these a bits in a number results in the zero based leaf index of the vote in the tree.  The merkle proof of $V_2$ must also include this index (2 or 010 binary) to communicate to the prover the concatenation order of the hash at each tree level (e.g. H(current val, next) or H(next, current val)).  For example the 2nd hash operation (combining J and K) executes H(current value J | K[0,1]) because the first bit is 0, but the 3rd hash operation (combining D and E) executes H( D[2,0] | current value E)  -- note the different order -- because the 2nd bit in the index is a 1.  Therefore the index number of the merkle leaf communicates the prover in what order the proof elements must be combined.  
+As with normal Merkle trees, specifying index 2 is required to communicate the data concatenation order at each level.  To explain, note that the Merkle proof execution for the provided example begins as follows:
 
-Actually, this additional data can be eliminated if the hash function is commutative<sup>5</sup>.  A simple commutative hash function CH based on cryptographic hash H is CH(x,y) = H(sort(x,y))
+$$
+ x \leftarrow H(V_2[1,0])  \tag{a1}
+$$
+
+$$
+x \leftarrow H(x | K[0,1])  \tag{a2}
+$$
+
+$$
+x \leftarrow H(D[2,0] | x), ... \tag{a3}
+$$
+But how did the algorithm "know" to switch the order of concatenation in the last operation?  The answer is by using the element index.
+
+To explain, note that the path from the root to child nodes are labelled with a 0 or 1.  Traversing any path and interpreting these a bits in a number results in the zero based element index of the vote in the tree, in this case its index 2 or 010 binary.  Starting with the least significant bit, use each bit to communicate to the prover the concatenation order (e.g. H(current val, next) or H(next, current val)) of the hash at each tree level, ignoring the bottom-most level which does not concatenate any elements.  For example the 2nd hash operation (a2, combining J and K) executes H(current value J | K[0,1]) because the first bit is 0, but the 3rd hash operation (a3, combining D and E) executes H( D[2,0] | current value E)  -- note the different order -- because the next bit in the index is a 1.  Therefore the index number of the merkle leaf communicates the prover in what order the proof elements must be combined.  
+
+An incorrectly specified index would result in the prover hashing data in the wrong order, yielding a different merkle root and therefore a failed merkle proof.   So a correct merkle proof also proves a vote's position in the tree.
+
+Actually, this additional index data can be eliminated if the hash function is commutative<sup>5</sup>, if there is no other use for it.  A simple commutative hash function CH based on cryptographic hash H is CH(x,y) = H(sort(x,y))
 
 
 ## Tokens
