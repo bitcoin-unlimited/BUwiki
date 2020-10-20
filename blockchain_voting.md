@@ -7,24 +7,27 @@
 
 ## A Blockchain as a public record
 * Permanent public record of vote
-* Allows permissionless independent and potentially open source vote tallies
+* Allows permissionless, independent and potentially open source vote tallies
 * Orders repeat votes (allowing unambiguous discarding of one), or prevents repeats
 * Provides registration & communication mechanism
 * Public record of number of registrations & participants
+* Blockchains cannot stand alone as the voter registration authority (Sybil attack)<sup>1</sup>
 
-* Cannot be the voter registration authority (Sybil attack)<sup>1</sup>
+A blockchain represents a public commitment of ordered data.  This data repository can be used to record votes in a variety of ways.  Any interested party can access the blockchain to discover all votes, so long as they know how to differentiate votes from other blockchain activity.
 
-A blockchain represents a public commitment of ordered data.  This data repository can be used to record votes in a variety of ways.  Any interested party can access the blockchain to discover all votes, so long as they know how votes are identified.  
+Note that blockchain reorganizations or mining denial-of-service attacks can be used to remove or ignore transactions and therefore votes, preventing their inclusion in the blockchain's main chain.  But these attacks cannot be used to change a participant's vote.
 
-Note that blockchain reorganizations or mining denial-of-service attacks can be used to remove transactions from the blockchain's main chain, but cannot be used to change a participant's vote.
-
-These activities could affect any election that specifies a moment when polls close.  However, reorganizations leave strong historical evidence of misbehavior in terms of proof-of-work, and denial-of-service attacks leave strong cotemporal evidence (e.g. any participant actively monitoring the network during the voting will see vote records posted to the network but not included in the blockchain).
+These attacks could affect an election that specifies a moment in time when polls close.  However, reorganizations leave strong historical evidence of misbehavior in terms of proof-of-work, and denial-of-service attacks leave strong cotemporal evidence (e.g. any participant actively monitoring the network during the voting will see vote records posted to the network but not included in the blockchain).
 
 ## Blockchain Vote Recording Techniques
- * Data carried in an arbitrary, otherwise unrelated transaction
- * A token payment to a choice of destinations, each destination represents one choice.
+ * Data Carried: Encoded as data in an arbitrary, otherwise unrelated transaction
+ * Token: A token payment to a choice of destinations, each destination represents one choice.
+ * A hybrid where a token represents permission-to-vote, but the actual vote is data carried in a transaction the melts or returns the token to the voting authority.
 
+### Vote Via Data Carrying 
+One construction<sup>6</sup> of a data carrying vote allows any entity to construct an arbitrary transaction that sends to a specific output contract.  Spending this output in a new transaction is the act of voting.  To satisfy the contract, the voter must push a public key P registered by the voting authority, a signature of the transaction using P, vote identifier and choice data, and the signature of that data using P.
 
+The use of data signatures (BCH's OP_CHECKDATASIGVERIFY) allows the vote to be safely placed in the transaction's satisfier script (also called scriptSig) even though the satisfier script is not signed as part of the transaction's signature.
 
 
 ## Merkle Tally Tree
@@ -137,7 +140,7 @@ Also note that actual construction of the multi-participant transaction may leak
 
 
 
-## Voting Topic and Data Commitments
+## Voting Topic and Data Commitments<sup>6</sup>
 
 * Ensures integrity of voter choices
 	* Cannot omit a choice, add extra choices, or swap choices to identifiers for a subset of voters
@@ -161,6 +164,8 @@ The voting registration authority creates a number of fake votes and commits to 
  * Key could be an aggregate
  * Problem: Entity controlling key reveal or last reveal of an aggregate key could choose not to reveal if they do not like the election results.
 
+Vote encryption would prevent miner blockchain attacks from denying votes for one candidate from entering the blockchain since the attacker cannot determine the contents of a vote until after the polls close and presumably the blockchain has advanced beyond the point which re-organization is affordable.
+
 ## ZK-SNARKs
 
 TBD
@@ -170,4 +175,5 @@ TBD
 [1]:  The Sybil Attack: https://www.microsoft.com/en-us/research/publication/the-sybil-attack/
 [2]: CoinJoin: https://bitcointalk.org/?topic=279249
 [3]: CoinShuffle:  https://www.darrentapp.com/pdfs/coinshuffle.pdf,  https://github.com/cashshuffle/spec
-[5]: Commutative Merkle trees: https://medium.com/@g.andrew.stone/tree-signature-variations-using-commutative-hash-trees-4a8a47d4f8ce
+[5]: Commutative Merkle Trees: https://medium.com/@g.andrew.stone/tree-signature-variations-using-commutative-hash-trees-4a8a47d4f8ce
+[6]: TBD: Dagur & Jorgen voting project & paper
