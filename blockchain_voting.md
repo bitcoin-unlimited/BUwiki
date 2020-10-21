@@ -7,31 +7,27 @@
 
 ## A Blockchain as a public record
 * Permanent public record of vote
-* Allows permissionless, independent and potentially open source vote tallies
+* Allows permissionless independent and potentially open source vote tallies
 * Orders repeat votes (allowing unambiguous discarding of one), or prevents repeats
 * Provides registration & communication mechanism
 * Public record of number of registrations & participants
-* Blockchains cannot stand alone as the voter registration authority (Sybil attack)<sup>1</sup>
 
-A blockchain represents a public commitment of ordered data.  This data repository can be used to record votes in a variety of ways.  Any interested party can access the blockchain to discover all votes, so long as they know how to differentiate votes from other blockchain activity.
+* Cannot be the voter registration authority (Sybil attack)<sup>1</sup>
 
-Note that blockchain reorganizations or mining denial-of-service attacks can be used to remove or ignore transactions and therefore votes, preventing their inclusion in the blockchain's main chain.  But these attacks cannot be used to change a participant's vote.
+A blockchain represents a public commitment of ordered data.  This data repository can be used to record votes in a variety of ways.  Any interested party can access the blockchain to discover all votes, so long as they know how votes are identified.  
 
-These attacks could affect an election that specifies a moment in time when polls close.  However, reorganizations leave strong historical evidence of misbehavior in terms of proof-of-work, and denial-of-service attacks leave strong cotemporal evidence (e.g. any participant actively monitoring the network during the voting will see vote records posted to the network but not included in the blockchain).
+Note that blockchain reorganizations or mining denial-of-service attacks can be used to remove transactions from the blockchain's main chain, but cannot be used to change a participant's vote.
+
+These activities could affect any election that specifies a moment when polls close.  However, reorganizations leave strong historical evidence of misbehavior in terms of proof-of-work, and denial-of-service attacks leave strong cotemporal evidence (e.g. any participant actively monitoring the network during the voting will see vote records posted to the network but not included in the blockchain).
 
 ## Blockchain Vote Recording Techniques
- * Data Carried: Encoded as data in an arbitrary, otherwise unrelated transaction
- * Token: A token payment to a choice of destinations, each destination represents one choice.
- * A hybrid where a token represents permission-to-vote, but the actual vote is data carried in a transaction the melts or returns the token to the voting authority.
-
-### Vote Via Data Carrying 
-One construction<sup>6</sup> of a data carrying vote allows any entity to construct an arbitrary transaction that sends to a specific output contract.  Spending this output in a new transaction is the act of voting.  To satisfy the contract, the voter must push a public key P registered by the voting authority, a signature of the transaction using P, vote identifier and choice data, and the signature of that data using P.
-
-The use of data signatures (BCH's OP_CHECKDATASIGVERIFY) allows the vote to be safely placed in the transaction's satisfier script (also called scriptSig) even though the satisfier script is not signed as part of the transaction's signature.
+ * Data carried in an arbitrary, otherwise unrelated transaction
+ * A token payment to a choice of destinations, each destination represents one choice.
 
 
-## Merkle Tally Tree
-*tallies votes in a manner that admits succinct inclusion proofs*
+
+
+## Merkle Tree Based Vote Tallies
 
 * Merkle inclusion proof can prove that a particular vote was counted in O(log N) data
 * But cannot prove no "ballot stuffing"
@@ -68,53 +64,37 @@ The following diagram illustrates the merkle tree of votes.  Vote tallies appear
 ```mermaid  
 graph TD
 R("Root[5,3]") -- 0 --> B["B[3,1]"]
-R -- 1 --> C["C[2,2]"]
-B -- 0 --> D["D[2,0]"]
-B -- 1 --> E["E[1,1]"]
+R -- 1 --> C["C[2,2]_"]
+B -- 0 --> D["D[2,0]_"]
+B -- 1 --> E["E[1,1]_"]
 C -- 0 --> F
 C -- 1 --> G
 D -- 0 --> H
 D -- 1 --> I
-E -- 0 --> J["J[1,0]"]
-E -- 1 --> K["K[0,1]"]
+E -- 0 --> J["J[1,0]_"]
+E -- 1 --> K["K[0,1]_"]
 F -- 0 --> L
 F -- 1 --> M
 G -- 0 --> N
 G -- 1 --> O
-H --> V0{"V0"}
-I --> V1{"V1"}
-J --> V2{"V2[1,0]"}
-K --> V3{"V3[0,1]"}
-L --> V4{"V4"}
-M --> V5{"V5"}
-N --> V6{"V6"}
-O --> V7{"V7"}
+H --> V0{"$V_0$"}
+I --> V1{"V<sub>1</sub>"}
+J --> V2{"V<sub>2</sub>[1,0]_"}
+K --> V3{"V<sub>3</sub>[0,1]_"}
+L --> V4{"V<sub>4</sub>"}
+M --> V5{"V<sub>5</sub>"}
+N --> V6{"V<sub>6</sub>"}
+O --> V7{"V<sub>7</sub>"}
 classDef proof fill:#cff,stroke:#333,stroke-width:3px;
 class V2,K,D,C proof;
+
 ```
 
 So the Merkle proof is "$V_2[1,0]$, K[0,1], D[2,0], and C[2,2] at index 2".
 
-As with normal Merkle trees, specifying index 2 is required to communicate the data concatenation order at each level.  To explain, note that the Merkle proof execution for the provided example begins as follows:
+Specifying index 2 is very important.  Note that the path from the root to child nodes are labelled with a 0 or 1.  Traversing any path and interpreting these a bits in a number results in the zero based leaf index of the vote in the tree.  The merkle proof of $V_2$ must also include this index (2 or 010 binary) to communicate to the prover the concatenation order of the hash at each tree level (e.g. H(current val, next) or H(next, current val)).  For example the 2nd hash operation (combining J and K) executes H(current value J | K[0,1]) because the first bit is 0, but the 3rd hash operation (combining D and E) executes H( D[2,0] | current value E)  -- note the different order -- because the 2nd bit in the index is a 1.  Therefore the index number of the merkle leaf communicates the prover in what order the proof elements must be combined.  
 
-$$
- x \leftarrow H(V_2[1,0])  \tag{a1}
-$$
-
-$$
-x \leftarrow H(x | K[0,1])  \tag{a2}
-$$
-
-$$
-x \leftarrow H(D[2,0] | x), ... \tag{a3}
-$$
-But how did the algorithm "know" to switch the order of concatenation in the last operation?  The answer is by using the element index.
-
-To explain, note that the path from the root to child nodes are labelled with a 0 or 1.  Traversing any path and interpreting these a bits in a number results in the zero based element index of the vote in the tree, in this case its index 2 or 010 binary.  Starting with the least significant bit, use each bit to communicate to the prover the concatenation order (e.g. H(current val, next) or H(next, current val)) of the hash at each tree level, ignoring the bottom-most level which does not concatenate any elements.  For example the 2nd hash operation (a2, combining J and K) executes H(current value J | K[0,1]) because the first bit is 0, but the 3rd hash operation (a3, combining D and E) executes H( D[2,0] | current value E)  -- note the different order -- because the next bit in the index is a 1.  Therefore the index number of the merkle leaf communicates the prover in what order the proof elements must be combined.  
-
-An incorrectly specified index would result in the prover hashing data in the wrong order, yielding a different merkle root and therefore a failed merkle proof.   So a correct merkle proof also proves a vote's position in the tree.
-
-Actually, this additional index data can be eliminated if the hash function is commutative<sup>5</sup>, if there is no other use for it.  A simple commutative hash function CH based on cryptographic hash H is CH(x,y) = H(sort(x,y))
+Actually, this additional data can be eliminated if the hash function is commutative<sup>5</sup>.  A simple commutative hash function CH based on cryptographic hash H is CH(x,y) = H(sort(x,y))
 
 
 ## Tokens
@@ -140,7 +120,7 @@ Also note that actual construction of the multi-participant transaction may leak
 
 
 
-## Voting Topic and Data Commitments<sup>6</sup>
+## Voting Topic and Data Commitments
 
 * Ensures integrity of voter choices
 	* Cannot omit a choice, add extra choices, or swap choices to identifiers for a subset of voters
@@ -164,8 +144,6 @@ The voting registration authority creates a number of fake votes and commits to 
  * Key could be an aggregate
  * Problem: Entity controlling key reveal or last reveal of an aggregate key could choose not to reveal if they do not like the election results.
 
-Vote encryption would prevent miner blockchain attacks from denying votes for one candidate from entering the blockchain since the attacker cannot determine the contents of a vote until after the polls close and presumably the blockchain has advanced beyond the point which re-organization is affordable.
-
 ## ZK-SNARKs
 
 TBD
@@ -175,5 +153,4 @@ TBD
 [1]:  The Sybil Attack: https://www.microsoft.com/en-us/research/publication/the-sybil-attack/
 [2]: CoinJoin: https://bitcointalk.org/?topic=279249
 [3]: CoinShuffle:  https://www.darrentapp.com/pdfs/coinshuffle.pdf,  https://github.com/cashshuffle/spec
-[5]: Commutative Merkle Trees: https://medium.com/@g.andrew.stone/tree-signature-variations-using-commutative-hash-trees-4a8a47d4f8ce
-[6]: TBD: Dagur & Jorgen voting project & paper
+[5]: Commutative Merkle trees: https://medium.com/@g.andrew.stone/tree-signature-variations-using-commutative-hash-trees-4a8a47d4f8ce
