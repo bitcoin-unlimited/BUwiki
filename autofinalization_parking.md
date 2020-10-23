@@ -1,4 +1,4 @@
-# "Auto-finalization" and Fork "Parking" Considered Harmful
+# Attacks Against Auto-finalization and Fork Parking
 
 <center>Andrew Stone, Bitcoin Unlimited</center>
 <center>Oct 23, 2020</center>
@@ -50,7 +50,7 @@ ExtraParkingWork = \left\{ \begin{array}{l}
 
 ## Background
 
-The auto-finalization and parking logic was added to the Bitcoin ABC client in response to the Bitcoin Cash/Bitcoin SV fork.  At that time, there was fear that a short-term economically irrational actor would continually reorganize the Bitcoin Cash fork with empty blocks (or execute other attacks).  Doing so would block all transactions from confirming on-chain, encouraging abandonment of the fork.  By finalizing blocks 10 deep, no deeper reorganization can occur.  But it was observed that this is not good enough since an attacker could simply release its reorganizations every 8 or 9 blocks, although it does prevent doublespend attacks (since exchanges would not release funds until finalization occurred).  Parking was proposed to discourage this activity, since an attacker would have to produce twice as much work to cause a reorganization, except for the first 3 blocks.  One might expect that an attacker simply reorganize every 2 or 3 blocks, since the parking algorithm requires much less extra work for forks of those lengths.  However even with majority hash power, there is a probability that the attacker will fail to create the longest chain, and this probability increases as the depth decreases.  So the honest minority would be able to get blocks confirmed and given BCH's utilization these few blocks could confirm all existing transactions.  For example, if the honest miners have only 20% of the hash power, they will win a 3 block race 5.2% of the time but a 9 block race only 0.1% of the time<sup>1,7</sup>.
+The auto-finalization and parking logic was added to the Bitcoin ABC client in response to the Bitcoin Cash/Bitcoin SV fork.  At that time, there was fear that a short-term economically irrational actor would continually reorganize the Bitcoin Cash fork with empty blocks (or execute other attacks).  Doing so would block all transactions from confirming on-chain, encouraging abandonment of the fork.  By finalizing blocks 10 deep, no deeper reorganization can occur.  But it was observed that this is not good enough since an attacker could simply release its reorganizations every 8 or 9 blocks, although it does prevent doublespend attacks (since exchanges would not release funds until finalization occurred).  Parking was proposed to discourage this activity, since an attacker would have to produce twice as much work to cause a reorganization, except for the first 3 blocks.  One might expect that an attacker simply reorganize every 2 or 3 blocks, since the parking algorithm requires much less extra work for forks of those lengths.  However even with majority hash power, there is a probability that the attacker will fail to create the longest chain, and this probability increases as the depth decreases.  So the honest minority would be able to get blocks confirmed and given BCH's utilization these few blocks could confirm all existing transactions.  For example, if the honest miners have only 20% of the hash power, they will win a 3 block race 5.2% of the time but a 9 block race only 0.1% of the time<sup>1</sup>.
 
 No such attack materialized.  
 
@@ -371,5 +371,3 @@ def main():
 Process: https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwiF2IHPxsbsAhX-l3IEHUKoDuAQFjADegQIARAC&url=https%3A%2F%2Fgroups.csail.mit.edu%2Ftds%2Fpapers%2FLynch%2Fjacm85.pdf&usg=AOvVaw3cwr00WJuxyxJUTcm4rELk
 
 [6]: The Byzantine General's Problem: https://www.microsoft.com/en-us/research/publication/byzantine-generals-problem/?from=http%3A%2F%2Fresearch.microsoft.com%2Fen-us%2Fum%2Fpeople%2Flamport%2Fpubs%2Fbyz.pdf
-
-[7]: Double spend probability calcuations in Python: TBD
