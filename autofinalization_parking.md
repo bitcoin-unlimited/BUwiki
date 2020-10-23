@@ -18,7 +18,7 @@ The consensus achieved by the parking and auto-finalization technologies in Bitc
 
 These differences are noted here for precision but may simply be an implementation convenience.
 
-**Autofinalization** is a process where the mainchain block that is at the **autofinalization depth** (which is 10 on BCH) is marked as the "final" block.
+**Auto-finalization** is a process where the mainchain block that is at the **auto-finalization depth** (which is 10 on BCH) is marked as the "final" block.
 
 **Parking** is a modification to the rule that determines the main chain proposed by Satoshi<sup>1</sup> "Nodes always consider the longest chain to be the correct one and will keep working on extending it."  The parking technique observes that a full node that is not in "initial block download" mode has a fork that it currently sees as the main chain (M), and a candidate fork ( C ) that it is considering switching to.  A full node that implements parking will not switch to C unless it exceeds the work in M by an amount that varies depending on the length of the fork M:
 $$
@@ -50,11 +50,11 @@ ExtraParkingWork = \left\{ \begin{array}{l}
 
 ## Background
 
-The autofinalization and parking logic was added to the Bitcoin ABC client in response to the Bitcoin Cash/Bitcoin SV fork.  At that time, there was fear that a short-term economically irrational actor would continually reorganize the Bitcoin Cash fork with empty blocks (or execute other attacks).  Doing so would block all transactions from confirming on-chain, encouraging abandonment of the fork.  By finalizing blocks 10 deep, no deeper reorganization can occur.  But it was observed that this is not good enough since an attacker could simply release its reorganizations every 8 or 9 blocks, although it does prevent doublespend attacks (since exchanges would not release funds until finalization occurred).  Parking was proposed to discourage this activity, since an attacker would have to produce twice as much work to cause a reorganization, except for the first 3 blocks.  One might expect that an attacker simply reorganize every 2 or 3 blocks, since the parking algorithm requires much less extra work for forks of those lengths.  However even with majority hash power, there is a probability that the attacker will fail to create the longest chain, and this probability increases as the depth decreases.  So the honest minority would be able to get blocks confirmed and given BCH's utilization these few blocks could confirm all existing transactions.  For example, if the honest miners have only 20% of the hash power, they will win a 3 block race 5.2% of the time but a 9 block race only 0.1% of the time<sup>1,7</sup>.
+The auto-finalization and parking logic was added to the Bitcoin ABC client in response to the Bitcoin Cash/Bitcoin SV fork.  At that time, there was fear that a short-term economically irrational actor would continually reorganize the Bitcoin Cash fork with empty blocks (or execute other attacks).  Doing so would block all transactions from confirming on-chain, encouraging abandonment of the fork.  By finalizing blocks 10 deep, no deeper reorganization can occur.  But it was observed that this is not good enough since an attacker could simply release its reorganizations every 8 or 9 blocks, although it does prevent doublespend attacks (since exchanges would not release funds until finalization occurred).  Parking was proposed to discourage this activity, since an attacker would have to produce twice as much work to cause a reorganization, except for the first 3 blocks.  One might expect that an attacker simply reorganize every 2 or 3 blocks, since the parking algorithm requires much less extra work for forks of those lengths.  However even with majority hash power, there is a probability that the attacker will fail to create the longest chain, and this probability increases as the depth decreases.  So the honest minority would be able to get blocks confirmed and given BCH's utilization these few blocks could confirm all existing transactions.  For example, if the honest miners have only 20% of the hash power, they will win a 3 block race 5.2% of the time but a 9 block race only 0.1% of the time<sup>1,7</sup>.
 
 No such attack materialized.  
 
-## Persistent Forking Attacks Against Autofinalization
+## Persistent Forking Attacks Against Auto-finalization
 
 For completeness Eclipse/Partition Attacks and node synchronization failures are mentioned next.  However the main attack presented in this paper is the "fork matching" attack, described in section 3.
 
@@ -62,9 +62,9 @@ For completeness Eclipse/Partition Attacks and node synchronization failures are
 
 An eclipse or partition attack is an attack in which the target node or nodes cannot communicate outside of the eclipsed group, except via the attacker.
 
-If an attacker can maintain an eclipse or partition for the autofinalization depth number of blocks, the isolated nodes will persistently fork from the other nodes.
+If an attacker can maintain an eclipse or partition for the auto-finalization depth number of blocks, the isolated nodes will persistently fork from the other nodes.
 
-Autofinalization therefore imports the networking architecture and source code into the forking attack surface of the cryptocurrency, whereas it was previously only a problem for doublespend attacks.
+Auto-finalization therefore imports the networking architecture and source code into the forking attack surface of the cryptocurrency, whereas it was previously only a problem for doublespend attacks.
 
 ### Node Synchronization Failure
 
@@ -74,7 +74,7 @@ This would be a very expensive attack to maintain, but would force BCH developer
 
 ### Fork Matching Attack
 
-This attack can still cause a persistent fork in a connected network -- that is, no eclipse or partition attack is necessary.  In summary, the attacker will cause a fork and maintain it for the autofinalization depth number of blocks, whereupon the first forked blocks are finalized in every node, resulting in a persistent fork.
+This attack can still cause a persistent fork in a connected network -- that is, no eclipse or partition attack is necessary.  In summary, the attacker will cause a fork and maintain it for the auto-finalization depth number of blocks, whereupon the first forked blocks are finalized in every node, resulting in a persistent fork.
 
 Let us first examine the attack against nodes that implement finalization but not parking.
 
@@ -88,13 +88,13 @@ In the first step the attacker triggers a fork F off of main chain M.  This is a
 
 #### Repeat
 
-The attacker now attempts to mine a number of blocks equal to the blockchain's autofinalization depth $F_1$ to $F_{f}$.  As main chain blocks are discovered by the rest of the network, the attacker propagates its blocks directly to its targets.  This ensures that the target nodes see the attackers block first, but that (in general) the rest of the network does not.
+The attacker now attempts to mine a number of blocks equal to the blockchain's auto-finalization depth $F_1$ to $F_{f}$.  As main chain blocks are discovered by the rest of the network, the attacker propagates its blocks directly to its targets.  This ensures that the target nodes see the attackers block first, but that (in general) the rest of the network does not.
 
 A node does not switch from its current chain to an equal work chain, so as long as block propagation is controlled, the fork can be maintained.
 
 There is a risk that the target nodes will propagate the fork to untargeted nodes, converting those nodes from M to F.  There is also a risk that some of the target nodes will see the main chain block first, converting them from F to M.  These risks may be acceptable depending on the attacker's goals.
 
-Once the fork has been maintained for the autofinalization depth, the fork will become persistent and the attack can stop.
+Once the fork has been maintained for the auto-finalization depth, the fork will become persistent and the attack can stop.
 
 #### Problems
 
@@ -107,13 +107,13 @@ $$
 spoil \ probability = 1 - (1-p)^n  \tag5
 $$
 
-For example, targeting 5% of the hash power will be spoiled 40% of the time with an autofinalization depth of 10.  However, note that in cryptocurrencies like BCH, which command a small fraction of available hash power, it would not be difficult for a miner to direct a significant quantity of hash to both M and F<sup>F2</sup>, dramatically reducing the targeted hash power's percentage.
+For example, targeting 5% of the hash power will be spoiled 40% of the time with an auto-finalization depth of 10.  However, note that in cryptocurrencies like BCH, which command a small fraction of available hash power, it would not be difficult for a miner to direct a significant quantity of hash to both M and F<sup>F2</sup>, dramatically reducing the targeted hash power's percentage.
 
 **P4 "ASERT interference"**: Since ASERT recalculates difficulty for every block, is it near impossible to have the exact same POW on two forks?  If so the fork will heal.  Or will the "absolutely scheduled" nature of ASERT generally result in the same difficulty?  It turns out that it does not matter for "parking" full nodes so the analysis of this problem stops here.
 
 #### "Attack Foiled" Analysis
 
-This attack differs from the traditional doublespend because the attacker must remain ahead of the main chain throughout the entire attack interval of autofinalization depth (AFD) blocks. 
+This attack differs from the traditional doublespend because the attacker must remain ahead of the main chain throughout the entire attack interval of auto-finalization depth (AFD) blocks. 
 
 Let:
 
@@ -167,7 +167,7 @@ W(N, Mlen, Flen) = \left\{ \begin{array}{l}
  \end{array} \right.
 $$
 
-This can be calculated and plotted for a variety of autofinalization depths and attacker hash, resulting in the following graph (see Appendix 1 for jupyter code):
+This can be calculated and plotted for a variety of auto-finalization depths and attacker hash, resulting in the following graph (see Appendix 1 for jupyter code):
 
 <img src="/finalizationMatchingAttack.png" width=600></img>
 
@@ -191,13 +191,13 @@ A majority hash attack is much more likely to fail early, costing less money, th
 
 A P3 failure results in no loss of money.
 
-## Persistent Forking Attacks Against Parking Autofinalization Nodes
+## Persistent Forking Attacks Against Parking Auto-finalization Nodes
 
 We can now consider how fork "parking" affects the main attack described in this paper; the "fork matching" attack.  Recall that "parking" causes nodes to resist switching forks unless the other fork's work exceeds the current one by a variable amount as described earlier.
 
 ### Attack is Possible with Lower Hash or Succeeds With Greater Probability
 
-Note that "parking" significantly relaxes the finish criteria.  If our attacker is working on the last block of F (at the autofinalization depth - 1), M must be over 2*(autofinalization depth - 1) blocks ahead to trigger F nodes to move back to M.  This relationship is true for prior blocks as well, to fork depth 2.  Ignoring the first 2 blocks, the F chain can grow half as fast as the M chain and still succeed.
+Note that "parking" significantly relaxes the finish criteria.  If our attacker is working on the last block of F (at the auto-finalization depth - 1), M must be over 2*(auto-finalization depth - 1) blocks ahead to trigger F nodes to move back to M.  This relationship is true for prior blocks as well, to fork depth 2.  Ignoring the first 2 blocks, the F chain can grow half as fast as the M chain and still succeed.
 
 ### P2: "Attack Mistiming", Relaxed
 
@@ -223,7 +223,7 @@ Parking allows significantly less applied hash power to result in greater attack
 
 The existence of theoretical results such as [5] and [6] that prove consensus impossible under certain constraints were deftly avoided by Satoshi because Bitcoin actually never achieves consensus.  Instead it achieves a probability of consensus that increases as the statement's depth in the chain increases.  And in practice it eventually becomes economically infeasible for the statement to be changed.
 
-The consensus achieved by Bitcoin Cash's parking and autofinalization technologies discourages intentional chain reorganization and completely prevents it beyond 10 blocks.  But it is inconsistent with consensus theory and that strongly implies that these technologies are not innovations in consensus but rather a tradeoff.  This tradeoff was neither identified or analyzed by the authors of these technologies, as far as I am aware.  This paper furnishes that analysis and shows how these technologies fail to achieve consensus and analyse the possibility of intentionally triggering such a failure.  
+The consensus achieved by Bitcoin Cash's parking and auto-finalization technologies discourages intentional chain reorganization and completely prevents it beyond 10 blocks.  But it is inconsistent with consensus theory and that strongly implies that these technologies are not innovations in consensus but rather a tradeoff.  This tradeoff was neither identified or analyzed by the authors of these technologies, as far as I am aware.  This paper furnishes that analysis and shows how these technologies fail to achieve consensus and analyse the possibility of intentionally triggering such a failure.  
 
 Instead of intentional chain reorganization, attackers can create intentional chain "deorganization", achieving much the same outcome in terms of doublespends or general mayhem.  The question we may now want to ask is whether the risk of persistent consensus failure is worth the price of traditional doublespend reorganization resistance?
 
