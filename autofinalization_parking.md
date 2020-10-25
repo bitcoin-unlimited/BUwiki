@@ -10,9 +10,9 @@ The consensus achieved by the parking and auto-finalization technologies in Bitc
 
 ## Definitions
 
-**Persistent fork** in this paper means a failure of the consensus algorithm to achieve consensus, requiring an extra-algorithmic correction.  In practice, this would mean a fork of the blockchain that first requires human intervention first to come to consensus by picking one of the two forks, and then again at every affected node to manually force a blockchain reorganization onto the chosen fork.
+**Persistent fork** in this paper means a failure of the consensus algorithm to achieve consensus, requiring an extra-algorithmic correction.  In practice, this would mean a fork of the blockchain that first requires human consensus to pick one of the two forks, and then human intervention at every node that followed the wrong fork to manually force a blockchain reorganization.
 
-**Finalization** is a technique to create non-persistent blockchain checkpoints.  All forks that do not contain the finalized block are marked invalid persistently<sup>f1</sup>.   Full nodes can be directed to consider one particular block, F, "final".  F is stored in RAM and any blocks that are not on F's chain are marked as invalid.  This is not quite a checkpoint for two reasons: 
+**Finalization** is a technique to create non-persistent blockchain checkpoints.  All forks that do not contain the finalized block are marked invalid persistently.   Full nodes can be directed to consider one particular block, F, "final".  F is stored in RAM and any blocks that are not on F's chain are marked as invalid.  This is not quite a checkpoint for two reasons: 
  * If the full node is restarted, F is forgotten.
  * Only one block is considered final at a time.
 
@@ -219,16 +219,37 @@ A significant problem is that the F chain must to stay even with or be ahead of 
 
 Parking allows significantly less applied hash power to result in greater attack success probability, especially at lower hash levels. To repeat the data points presented earlier, 50% hash now has a 48% success rate (double), 66% an 83% success rate and 75% has a 94% success rate (about the same).  
 
+## Attack Probability Comparison
+
+The follow graph plots the success probability for the traditional double spend and the fork matching attacks with and without 10 block finalization and BCH-algorithm parking.  For double spend attacks, an embargo period of 10 blocks was chosen because it makes sense that exchanges would take advantage of the 10 block finalization.
+
+Green is the standard double spend attack with a 10 block embargo period on a chain without finalization or parking.  As first described in [1], since the attacker can theoretically mine forever, any attacker with > 50% of the hash power is guaranteed to succeed.
+
+Blue is a "double spend attack"<sup>[f1]</sup> on a chain with finalization.  Because of the finalization, the attack must succeed before the 10th main chain block is mined.  This means that even if the attacker has majority hash power, it may get unlucky and be out-mined by the main chain.  This is why the top of the curve smoothly approaches 1 as opposed to the Green line.
+
+Yellow is a double spend attack on a chain with finalization and parking.  As expected, it is significantly harder to succeed if the attacker must provide twice as much work as the main chain!
+
+Red is a 10 block Fork Matching attack against a chain with finalization and parking.  Interestingly, it has the highest success probability for minority hash attackers with about 20% to 35% of the hash.  This is likely because parking's extra required difficulty significantly helps the attack.
+
+Orange is a 10 block Fork Matching attack against a chain with finalization only.  As expected, it is harder for minority hash attackers than the red.
+
+<img src="/AAFP_AttackComparison.png" width=600></img>
+
+
 ## Conclusion
 
-The existence of theoretical results such as [5] and [6] that prove consensus impossible under certain constraints were deftly avoided by Satoshi because Bitcoin actually never achieves consensus.  Instead it achieves a probability of consensus that increases as the statement's depth in the chain increases.  And in practice it eventually becomes economically infeasible for the statement to be changed.
+Since a fork matching attack is effectively a persistent double spend attack, this last graph is concerning.  In an attempt to eliminate double spend reorganizations, the ability to create persistent double spends was introduced.  This is arguably worse, it will certainly be a lot harder to "clean up the mess" if such an attack is executed -- likely requiring some centralized decision making.
 
-The consensus achieved by Bitcoin Cash's parking and auto-finalization technologies discourages intentional chain reorganization and completely prevents it beyond 10 blocks.  But it is inconsistent with consensus theory and that strongly implies that these technologies are not innovations in consensus but rather a tradeoff.  This tradeoff was neither identified or analyzed by the authors of these technologies, as far as I am aware.  This paper furnishes that analysis and shows how these technologies fail to achieve consensus and analyse the possibility of intentionally triggering such a failure.  
+More abstractly, the existence of theoretical results such as [5] and [6] that prove consensus impossible under certain constraints were deftly avoided by Satoshi because Bitcoin actually never achieves consensus.  Instead it achieves a probability of consensus that increases as the statement's depth in the chain increases.  And in practice it eventually becomes economically infeasible for the statement to be changed.
+
+The "consensus" achieved by Bitcoin Cash's parking and auto-finalization technologies discourages intentional chain reorganization and completely prevents it beyond 10 blocks.  But it is inconsistent with consensus theory and that strongly implies that these technologies are not innovations in consensus but rather a tradeoff.  This tradeoff was neither identified or analyzed by the authors of these technologies, as far as I am aware.  This paper furnishes that analysis and shows how these technologies can fail to achieve consensus and open avenues to execute the attacks they were intending to fix.
 
 Instead of intentional chain reorganization, attackers can create intentional chain "deorganization", achieving much the same outcome in terms of double spends or general mayhem.  The question we may now want to ask is whether the risk of persistent consensus failure is worth the price of traditional double spend reorganization resistance?
 
 
 ## Footnotes
+[F1] The name "double spend attack" does not make much sense in this context since exchanges would use an embargo period greater than the finalization.  So it would not be possible to execute an actual double spend (because the exchange would not release the goods before the reorganization).  But this attack can reorganize the blockchain for other purposes, such as DoS.
+  
 [F2] Note that mining both the main chain and fork would also allow the attacker to deliver both M and F blocks directly to targets simultaneously, reducing the chance of propagation problems.  It could also delay blocks it discovers on M.
 
 ## Appendix 1
