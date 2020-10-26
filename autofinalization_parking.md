@@ -169,7 +169,8 @@ $$
 
 This can be calculated and plotted for a variety of auto-finalization depths and attacker hash, resulting in the following graph (see Appendix 1 for jupyter code):
 
-<img src="/finalizationMatchingAttack.png" width=600></img>
+<img src="/finalizationMatchingAttack.png" width=800></img>
+*figure 1*
 
 Visually, this system is fairly robust against minority hash attackers at BCH's 10 auto-finalization depth.  Quantitatively, the likelihood of a successful attack by a 50% miner is only 25%.  However, the situation changes rapidly above about 60% hash, with an attacker with 2/3rds of the hash power resulting in a 82% chance of success and a 3/4ths miner having an 94% likelihood of forcing a persistent fork.
 
@@ -215,7 +216,8 @@ Similarly to the way attack mistiming becomes more lenient due to chain parking,
 
 A significant problem is that the F chain must to stay even with or be ahead of the M chain every time a M block is found.  This is a significantly more strict requirement than, for example, that the F chain eventually be even with the M chain (as is needed for the classic double spend attack).  Parking relaxes this requirement to some degree.  By block 3, the F chain can fall 1 block behind.  And by block M > 3 the F chain can fall M blocks behind without triggering a chain switch.  The probability analysis was rerun with the BCH parking rules, yielding the following graph
 
-<img src="/finalizationParkingMatchingAttack.png" width=600></img>
+<img src="/finalizationParkingMatchingAttack.png" width=800></img>
+*figure 2*
 
 Parking allows significantly less applied hash power to result in greater attack success probability, especially at lower hash levels. To repeat the data points presented earlier, 50% hash now has a 48% success rate (double), 66% an 83% success rate and 75% has a 94% success rate (about the same).  
 
@@ -233,7 +235,8 @@ Red is a 10 block Fork Matching attack against a chain with finalization and par
 
 Orange is a 10 block Fork Matching attack against a chain with finalization only.  As expected, it is harder for minority hash attackers than the red.
 
-<img src="/AAFP_AttackComparison.png" width=600></img>
+<img src="/AAFP_AttackComparison.png" width=800></img>
+*figure 3*
 
 
 ## Conclusion
@@ -254,19 +257,56 @@ Instead of intentional chain reorganization, attackers can create intentional ch
 
 ## Appendix 1
 
-### Probability Calculation for Fork Matching Attack Against Auto-finalization
-
+### Probability Calculations for the Figures
 ```python
+#!/usr/bin/python3
+# Blockchain reorganization probability calculator
+# Copyright 2020 G. Andrew Stone
+# MIT Licensed (https://opensource.org/licenses/MIT)
+
+# This file calculates and plots:
+# 1. Satoshi (tie) double spend attack (chain reorganization) probabilities
+# 2. Winning (1 extra block) double spend attack probabilities
+# 3. Limited depth double spend attack probabilities
+# 4. Chain matching attack probabilities verses finalization and/or parking blockchains
+
 import math
+
+def dspart(z,q,k):
+    p = 1.0 - q
+    lam = (z+1)*q/p
+    a = (lam**k)/(math.factorial(k)*(math.e**lam))
+    b = 1.0 - ((q/p)**(z+1-k))
+    return a*b
+
+def doublespendAttack(z,q):
+    if (q>0.5):
+        return 1.0
+    sm = 0.0
+    for k in range(0,z+2): # +2 because range is not end inclusive, and it must be +1 because the attacker chain must exceed the honest
+        t = dspart(z,q,k)
+        sm += t
+    return 1.0 - sm
+
+def doublespendAttackTie(z,q):
+    if (q>0.5):
+        return 1.0
+    sm = 0.0
+    for k in range(0,z+1): # +1 because range is not end inclusive
+        t = dspart(z,q,k)
+        sm += t
+    return 1.0 - sm
 
 def poisson(success, lam):
     return (  (lam**success)/(math.factorial(success)*(math.e**lam)) )
 
+# The likelihood of poisson from success to infinity
 def poissonNabove(success, lam):
     acc = 0.0
-    for i in range(0,success):
+    for i in range(0,success):  # goes from 0 to success-1 inclusive
         acc += poisson(i,lam)
     return 1-acc
+
 
 calced2={}
 def FinParkFork(attackerHash, Mlen, Flen, finalizationDepth, park):
@@ -284,7 +324,6 @@ def FinParkFork(attackerHash, Mlen, Flen, finalizationDepth, park):
     # for other fork depths, attacker cannot fall behind more than double
         elif (Flen*2 < Mlen):
             return 0.0
-
     elif (Flen < Mlen):  # without parking, fork cannot ever fall behind
         return 0.0
 
@@ -305,12 +344,44 @@ def FinParkFork(attackerHash, Mlen, Flen, finalizationDepth, park):
     calced2[(float(attackerHash),Mlen,Flen,finalizationDepth,park)] = acc
     return acc
 
+calced3={}
+def limitedDoubleSpendAttack(attackerHash, embargo, maxDepth, Mlen, Flen, park):
+    if park is True: # we are assuming the embargo is > 3 so the early parking rules do not matter
+        if Flen > Mlen*2 and Flen > embargo:
+            return 1.0
+        calcDepth = maxDepth*2
+    else:
+        if Flen > Mlen and Flen > embargo:
+            return 1.0
+        calcDepth = maxDepth
+
+    if (Mlen >= maxDepth): # Too late!
+        return 0.0
+
+    # Look in the cache for values we've already found
+    if (float(attackerHash),embargo,Mlen,Flen,maxDepth,park) in calced3:
+        return calced3[(float(attackerHash),embargo,Mlen,Flen,maxDepth,park)]
+
+    honestHash = 1-attackerHash
+    interval = attackerHash/honestHash
+
+    acc = 0.0
+    for i in range(0,calcDepth-Flen):
+        # Model the F chain finding i blocks while the M chain finds 1
+        acc += poisson(i,interval)*limitedDoubleSpendAttack(attackerHash, embargo, maxDepth, Mlen+1, Flen+i, park)
+    # Model the F chain finding more than what it needs to win in this one interval
+    acc += poissonNabove(calcDepth-Flen, interval)
+
+    calced3[(float(attackerHash),embargo,Mlen,Flen,maxDepth,park)] = acc
+    return acc
+
+
 import numpy as np
 import matplotlib.pyplot as pyplot
 
-def plotitP():
+def plotFig1():
     x = np.linspace(start=0.0, stop=0.99, num=100)
-    fig = pyplot.figure(2)
+    fig = pyplot.figure(1)
     plt = fig.add_subplot()
     plt.grid(color=(0.8,0.8,0.8))
     plt.set_xlabel('Attacker hash proportion', fontsize=15)
@@ -325,6 +396,7 @@ def plotitP():
     y1 = [ FinParkFork(i,0,0,5,False) for i in x]
     plt.plot(x, y1, color=(.9,.8,.7))
 
+
     y3 = [ FinParkFork(i,0,0,20,False) for i in x]
     plt.plot(x, y3, color=(.8,.7,.8))
     y4 = [ FinParkFork(i,0,0,40,False) for i in x]
@@ -333,13 +405,12 @@ def plotitP():
     y = [ FinParkFork(i,0,0,10,False) for i in x]
     plt.plot(x, y, color=(.9,0,0))
 
-    fig.suptitle("P: Success Probability for the Matching Fork Attack\nat 1,2,5,10(red),20,and 40 block autofinalizations", fontsize=16)
+    fig.suptitle("Success Probability for the Matching Fork Attack\nat 1,2,5,10(red),20,and 40 block autofinalizations", fontsize=16)
     fig.show()
-    
 
-def plotitParked():
+def plotFig2():
     x = np.linspace(start=0.0, stop=0.99, num=100)
-    fig = pyplot.figure(3)
+    fig = pyplot.figure(2)
     plt = fig.add_subplot()
     plt.grid(color=(0.8,0.8,0.8))
     plt.set_xlabel('Attacker hash proportion', fontsize=15)
@@ -364,16 +435,55 @@ def plotitParked():
 
     fig.suptitle("Success Probability for the Matching Fork Attack\nat 1,2,5,10(red),20,and 40 block parked autofinalizations", fontsize=16)
     fig.show()
-    
-def main():
+
+def plotFig3_differentAttacks():
+    x = np.linspace(start=0.0, stop=0.99, num=100)
+    fig = pyplot.figure(3)
+    plt = fig.add_subplot()
+    plt.grid(color=(0.8,0.8,0.8))
+    plt.set_xlabel('Attacker hash proportion', fontsize=15)
+    plt.set_ylabel('Success probability', fontsize=15)
+
+    # Green: standard doublespend attack, with a 10 block embargo period
+    z = [ doublespendAttack(10,i) for i in x]
+    plt.plot(x, z, color=(0,.9,0))
+
+    # Blue: 10 block doublespend attack with 10 block embargo period
+    embargo = 10
+    ldsa = [ limitedDoubleSpendAttack(i, embargo, 10, 0, 0, False) for i in x]
+    plt.plot(x, ldsa, color=(0,0,.9))
+
+    # Yellow: 10 block DS with 10 block embargo & parking
+    ldsa = [ limitedDoubleSpendAttack(i, embargo, 10, 0, 0, True) for i in x]
+    plt.plot(x, ldsa, color=(0.9,0.9,0))
+
+    # Red: 10 block Fork Matching attack against finalization & parking
+    y = [ FinParkFork(i,0,0,10,True) for i in x]
+    plt.plot(x, y, color=(.9,0,0))
+
+    # Orange: 10 block Fork Matching attack against finalization only
+    yy = [ FinParkFork(i,0,0,10, False) for i in x]
+    plt.plot(x, yy, color=(.9,.5,.2))
+
+    fig.suptitle("Attack Comparison", fontsize=16)
+    fig.show()
+
+def Test():
     print("F  50% at 10: ", FinParkFork(0.5,0,0,10,False))
     print("F  66% at 10: ", FinParkFork(2.0/3.0,0,0,10,False))
     print("F  75% at 10: ", FinParkFork(0.75,0,0,10,False))
     print("PF 50% at 10: ", FinParkFork(0.5,0,0,10,True))
     print("PF 66% at 10: ", FinParkFork(2.0/3.0,0,0,10,True))
     print("PF 75% at 10: ", FinParkFork(0.75,0,0,10,True))
-    plotit()
-    plotitParked()
+
+    plotFig1()
+    plotFig2()
+    plotFig3_differentAttacks()
+
+if __name__ == "__main__":
+    Test()
+    import code
+    code.interact()
 ```
 
 
