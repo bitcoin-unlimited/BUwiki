@@ -56,6 +56,10 @@ No such attack materialized.
 
 ## Persistent Forking Attacks Against Auto-finalization
 
+The well known double spend attack has been used to steal millions of dollars<sup>7,8</sup>.  It actually comprises two components: the actual double spend transaction, and a blockchain reorganization that occurs because a privately generated fork is released.  A persistent fork can be used in place of the release of the privately generated fork in a double spend attack because eventually people need to "heal" the fork by choosing one of the chains as the "main" chain and manually reorganize the nodes on the other chain.  Although there is some uncertainty as to which chain people would choose, an attacker could run double spends on both forks to different services, or in other ways make one chain more palatable than the other.  For example, they could organize things so choosing the "fraud" chain awards all mining fees to the attacker, or confirm no other transactions, providing the general public an opportunity to run double spends against old, rewound transactions.
+
+But a simpler attack might be to short the cryptocurrency on multiple exchanges and trigger persistent forks since the disruption is likely to cause significant loss of confidence.
+
 For completeness Eclipse/Partition Attacks and node synchronization failures are mentioned next.  However the main attack presented in this paper is the "fork matching" attack, described in section 3.
 
 ### Eclipse/Partition Attack
@@ -180,17 +184,18 @@ These majority hash attacks are very relevant to a minority hash coin like BCH s
 
 Let us assume that hash power is readily available to be diverted to the attack.  This is generally true for any "minor" blockchain -- that is any chain that shares its proof-of-work algorithm with another chain that consumes the majority of the available hash power, and is true for BCH which is the only chain that the author is aware of that uses auto-finalization and fork parking.  Without this assumption there is an unquantifiable cost to fabricate, deploy and manage the additional hash power required to execute this attack.
 
-In BCH, the cost to mount the attack is the cost of production of 10 blocks.  At the time of this writing, if we assume miners are breaking even, this would be approximately $10 * 6.25 * 250$ or $15000$ USD.  This author feels that this is a very small amount compared to the profits that might be gained by leveraged short positions in BCH and executing one or multiple fork attacks.  Additionally, forcing a persistent fork, then abandoning it, can be used to double spend, similar to a blockchain reorganization attack (in theory anyway; in practice, an observant exchange might halt operations on the forked chain).
+In BCH, the cost to mount the attack is the cost of production of 10 blocks.  At the time of this writing, if we assume miners are breaking even, this would be approximately $10 * 6.25 * 250$ or $15000$ USD.  This author feels that this is a very small amount compared to the profits that might be gained by leveraged short positions in BCH and executing one or multiple fork attacks.  Additionally, forcing a persistent fork on a minority of services then abandoning it, can be used to double spend as described earlier.
 
-It is unclear how BCH would "heal" a persistent fork.  If the attacker's chain is chosen as the main chain, there would be no loss, except as caused by BCH price declines and the miner's forced holding of the mined 62.5 BCH for 100 blocks.
+It is unclear how BCH would "heal" a persistent fork.  If the attacker's chain is chosen as the main chain, there would be no loss to the attacker, except as caused by BCH price declines and the miner's forced holding of the mined 62.5 BCH for 100 blocks.  If the attacker's chain is not chosen, all blocks are orphaned, so the cost is $14000 USD.
 
 A P1 failure results in the loss of between 1 and 9 orphan blocks or between $1000 and $14000 USD.
 
 A P2/P4 failure may result in the loss of between $1000 and $14000 USD, or no loss if the attacker's fork is chosen as the main chain.
 
-A majority hash attack is much more likely to fail early, costing less money, than it is to fail later, since the more blocks mined, the more the majority chain tends to pull ahead of the minority.
-
 A P3 failure results in no loss of money.
+
+A majority hash attack is much more likely to fail early than it is to fail later (especially with parking), since the more blocks mined, the more the majority chain tends to pull ahead of the minority.  This means that failed attacks are more likely to incur losses on the lower end of the specified ranges.
+
 
 ## Persistent Forking Attacks Against Parking Auto-finalization Nodes
 
@@ -490,15 +495,19 @@ if __name__ == "__main__":
 
 ## References
 
-[1]: The Bitcoin white paper: https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwjk8IrmmcbsAhXQhHIEHX00BOsQFjAAegQIBBAC&url=https%3A%2F%2Fbitcoin.org%2Fbitcoin.pdf&usg=AOvVaw05-4mYD7EyyKjwcHh8i0Vw
+[1]: [Satoshi Nakamoto.  The Bitcoin white paper](https://bitcoin.org/bitcoin.pdf)
 
 [2]: Parking as implemented in Bitcoin Cash Node in file validation.cpp function CBlockIndex *CChainState::FindMostWorkChain()
 
-[3]: https://read.cash/@PeterRizun/exploring-long-chains-of-unconfirmed-transactions-and-their-resistance-to-double-spend-fraud-abaecca9
+[3]: [Peter Rizun.  Exploring Long Chains of Unconfirmed Transactions and Their Resistance to Double-spend Fraud](https://read.cash/@PeterRizun/exploring-long-chains-of-unconfirmed-transactions-and-their-resistance-to-double-spend-fraud-abaecca9)
 
-[4]: The Majority is Not Enough: Bitcoin Mining is Vulnerable: https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwjW38vRs8bsAhWhl3IEHUB9BDcQFjABegQIBxAC&url=https%3A%2F%2Fwww.cs.cornell.edu%2F~ie53%2Fpublications%2FbtcProcFC.pdf&usg=AOvVaw3k8Sf3q_85cWxCUA0JcBBa
+[4]: [Ittay Eyal and Emin Gün Sirer.  The Majority is Not Enough: Bitcoin Mining is Vulnerable](https://arxiv.org/abs/1311.0243)
 
-[5]: Impossibility of Distributed Consensus with One Faulty
-Process: https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwiF2IHPxsbsAhX-l3IEHUKoDuAQFjADegQIARAC&url=https%3A%2F%2Fgroups.csail.mit.edu%2Ftds%2Fpapers%2FLynch%2Fjacm85.pdf&usg=AOvVaw3cwr00WJuxyxJUTcm4rELk
+[5]: [Fischer, Lynch, Patterson.  Impossibility of Distributed Consensus with One Faulty
+Process](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwiF2IHPxsbsAhX-l3IEHUKoDuAQFjADegQIARAC&url=https%3A%2F%2Fgroups.csail.mit.edu%2Ftds%2Fpapers%2FLynch%2Fjacm85.pdf&usg=AOvVaw3cwr00WJuxyxJUTcm4rELk)
 
-[6]: The Byzantine General's Problem: https://www.microsoft.com/en-us/research/publication/byzantine-generals-problem/?from=http%3A%2F%2Fresearch.microsoft.com%2Fen-us%2Fum%2Fpeople%2Flamport%2Fpubs%2Fbyz.pdf
+[6]: [Lamport, Shostak, Pease.  The Byzantine General's Problem](https://www.microsoft.com/en-us/research/publication/byzantine-generals-problem/?from=http%3A%2F%2Fresearch.microsoft.com%2Fen-us%2Fum%2Fpeople%2Flamport%2Fpubs%2Fbyz.pdf)
+
+[7]: [$5.6 Million Double Spent: ETC Team Finally Acknowledges the 51% Attack on Network](https://news.bitcoin.com/5-6-million-stolen-as-etc-team-finally-acknowledge-the-51-attack-on-network/)
+
+[8]: [Coinbase: Ethereum Classic Double Spending Involved More Than $1.1 Million in Crypto](https://cointelegraph.com/news/coinbase-ethereum-classic-double-spending-involved-more-than-11-million-in-crypto)
