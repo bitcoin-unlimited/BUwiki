@@ -1,9 +1,13 @@
 <div class="cwikmeta">  
 {  
-"title": "Blockchain Voting Techniques"  
+"title": "Blockchain Voting Techniques",
+"related":["/voting_impossible_triangle"]
 } </div>
 
 # Blockchain Voting Techniques
+<center>Andrew Stone, Bitcoin Unlimited.  Oct 2020</center>
+
+<center><em>A toolbox of technologies that can be used to solve problems around elections.</em></center>
 
 ## A Blockchain as a public record
 * Permanent public record of vote
@@ -34,7 +38,7 @@ The use of data signatures (BCH's OP_CHECKDATASIGVERIFY) allows the vote to be s
 *tallies votes in a manner that admits succinct inclusion proofs*
 
 * Merkle inclusion proof can prove that a particular vote was counted in O(log N) data
-* But cannot prove no "ballot stuffing"
+* If the total participation is known, a merkle inclusion proof also proves no "ballot stuffing" 
 
 Extend a normal merkle tree at each node N with vote tallies of the sum of all the votes in the subtree rooted at N.  The node hashes must concatenate the child hashes as in a normal Merkle tree and the vote tallies to ensure that the tallies cannot be modified without forcing the higher Merkle node hashes to change.  The merkle tree root therefore contains the election results.  
 
@@ -116,6 +120,24 @@ An incorrectly specified index would result in the prover hashing data in the wr
 
 Actually, this additional index data can be eliminated if the hash function is commutative<sup>5</sup>, if there is no other use for it.  A simple commutative hash function CH based on cryptographic hash H is CH(x,y) = H(sort(x,y))
 
+### Merkle Tally Tree Inclusion Proof properties
+
+Since the total vote count is committed in the merkle tally tree, the merkle inclusion proof also commits to the total vote count.  This prevents extra-depth attacks (although this is already prevented if merkle trees are correctly formulated -- each vote's hash MUST be included as the tree leaf, rather than the vote's raw bytes.  
+
+The commitment to the total vote count also prevents ballot stuffing if participants independently know the vote count.  
+
+However, its is possible to create a dishonest merkle tally tree (or partial tree), and derive a correct-looking merkle inclusion proof that claims false tallies (by replacing some voters' votes) in branches that the proof does not provide.  But this merkle inclusion proof CANNOT have the same merkle root as the honest tree, and repeated queries for various merkle inclusion proofs on the dishonest tree will probabilistically reveal the dishonesty, since the creator will not be able to provide the full merkle path to non-existent votes.
+
+As a vote progresses, a "merkle mountain range" style approach can be used to show that a voter's vote is part of an ongoing tally.  In the merkle mountain range, multiple merkle power-of-two trees are constructed, and whenever 2 trees contain the same # of elements, those two trees are joined together by making them the children of a new tree of 1 greater depth.
+
+### Sorted Merkle Tally Trees<sup>7</sup> 
+
+If vote hashes are sorted prior to inclusion in a merkle tally tree, the "merkle mountain range" approach cannot be used.  However, there are several interesting properties.
+
+* Vote non-inclusion proofs are possible by constructing a proof to two adjacent leaves that bracket the missing vote in sorted order.
+* It is "suspicious" to dishonestly claim that a tree T0 is actually a subtree of the real tree T1, because all the votes in T1's other children would need to be sorted greater than or less than the votes in T0 (which, as the honest tree, presumably covers approximately the full range of hash values).  With a large voting pool, this would be so statistically anomalous that it would never happen in practice.
+* Similarly, a tree that does not cover approximately the full range of hash values can be identified as a subtree of the full vote, rather than the full tree.
+
 
 ## Tokens
 * Issued 1 to each voter by the registration authority
@@ -177,3 +199,4 @@ TBD
 [3]: CoinShuffle:  https://www.darrentapp.com/pdfs/coinshuffle.pdf,  https://github.com/cashshuffle/spec
 [5]: Commutative Merkle Trees: https://medium.com/@g.andrew.stone/tree-signature-variations-using-commutative-hash-trees-4a8a47d4f8ce
 [6]: TBD: Dagur & Jorgen voting project & paper
+[7]: In conversation with Dagur Valberg Johannsson
