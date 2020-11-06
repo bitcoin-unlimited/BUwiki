@@ -1,5 +1,7 @@
 # Trusted Delegated Payment Protocol
-*Advanced wallet interaction with trusted applications or websites*
+<center>Andrew Stone, Bitcoin Unlimited. Oct 2020</center>
+
+<center><em>Advanced wallet interaction with trusted applications or websites</em></center>
 
 ## Introduction 
  

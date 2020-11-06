@@ -10,26 +10,24 @@ This site integrates the ongoing BCH specification effort with Bitcoin Unlimited
 
 ## Protocols
 
+[BCH Identity Protocol](/identity__protocol)
+[Delegated Payment Protocol](/delegated_payment_protocol) (Trickle Pay)
+[Full Node (P2P) Protocol](/ref/protocol)
 [Light Client (Electron Cash) Protocol](/electrs__protocol)
 
-[BCH Identity Protocol](/identity__protocol)
-
-[Delegated Payment Protocol](/delegated_payment_protocol) (Trickle Pay)
-
-[Full Node (P2P) Protocol](/ref/protocol)
 ## Software
-
-[Bitcoin Unlimited Cash Full Node](bu_bitcoind)
-
+[Bitcoin Unlimited Cash Full Node](/bu_bitcoind.md)
+[Wally Wallet (Bitcoin Cash Android Wallet)](/wally)
 [Cwik (This site's software)](cwik) 
 
 ## Articles
 [Blockchain Voting Techniques](/blockchain_voting.md)
 [Voting's Impossible Triangle](/voting_impossible_triangle.md)
+[Attacks Against Autofinalization and Parking](/autofinalization_parking.md)
 
 ## Miscellaneous
 
-### [Glossary](glossary)
+### [Glossary](/glossary.md)
 
 ### Concepts
 [Blockchain](blockchain.md)
