@@ -4,26 +4,29 @@
 "related":[]
 }</div>
 
-# [Bitcoin Cash Specification Reference](ref/home)
+## Articles
+[Blockchain Voting Techniques](/blockchain_voting.md)
+[Voting's Impossible Triangle](/voting_impossible_triangle.md)
+[Attacks Against Autofinalization and Parking](/autofinalization_parking.md)
 
-This site integrates the ongoing BCH specification effort with Bitcoin Unlimited specific documentation so that the Bitcoin Unlimited docs can seamlessly reference the specification.
+## Bitcoin Cash Specification Reference
+[Bitcoin Cash Specification](ref/home)
+
+## Bitcoin Unlimited Improvement Proposals (BUIPs)
+
+[BUIP Status](/buip/summary.md)
 
 ## Protocols
-
-[BCH Identity Protocol](/identity__protocol)
-[Delegated Payment Protocol](/delegated_payment_protocol) (Trickle Pay)
-[Full Node (P2P) Protocol](/ref/protocol)
-[Light Client (Electron Cash) Protocol](/electrs__protocol)
+[BCH Identity Protocol](/identity__protocol.md)
+[Delegated Payment Protocol](/delegated_payment_protocol.md) (Trickle Pay)
+[Full Node (P2P) Protocol](/ref/protocol.md)
+[Light Client (Electron Cash) Protocol](/electrs__protocol.md)
 
 ## Software
 [Bitcoin Unlimited Cash Full Node](/bu_bitcoind.md)
 [Wally Wallet (Bitcoin Cash Android Wallet)](/wally)
 [Cwik (This site's software)](cwik) 
 
-## Articles
-[Blockchain Voting Techniques](/blockchain_voting.md)
-[Voting's Impossible Triangle](/voting_impossible_triangle.md)
-[Attacks Against Autofinalization and Parking](/autofinalization_parking.md)
 
 ## Miscellaneous
 
