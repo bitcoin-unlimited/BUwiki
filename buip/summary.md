@@ -5,11 +5,12 @@
 
 This is a list of interesting and active BUIPs.   Some older completed or obsolete BUIPs have been removed.  Please edit this page to add technical BUIPs that you are interested in.
 
-| BUIP | title | status | delegate | materials | synopsis |
+| BUIP | title | status | delegate | materials | notes |
 |-------------|--------------|-------------|----------------|------------|---------|
 | BUIP033 | Parallel Validation | complete | Peter Tschipper | | deployed in BU full node
 | BUIP057 | Add BIP135 Support (version bits) | complete | | | deployed in BU full node
-| BUIP118/119 | CashAccounts | not started | open | [spec](https://gitlab.com/cash-accounts/specification/blob/master/SPECIFICATION.md) | waiting for a contributor
+| BUIP077 | Group Tokenization | ongoing | Andrew Stone | [spec](https://docs.google.com/document/d/1X-yrqBJNj6oGPku49krZqTMGNNEWnUJBRFjX7fJXvTs/edit?usp=sharing)  | deployed in [nextchain](http://nextchain.cash)
+| BUIP118/119 | CashAccounts | complete | open | [spec](https://gitlab.com/cash-accounts/specification/blob/master/SPECIFICATION.md), [test](https://github.com/BitcoinUnlimited/BitcoinUnlimited/blob/dev/qa/rpc-tests/electrum_cashaccount.py), [improved spec (not implemented)](https://github.com/BitcoinUnlimited/ElectrsCash/pull/23) | It was decided to deploy this in ElectrsCash rather than the full node wallet
 | BUIP120 | immutable stateless storage | not started | open | see Peter Rizun's CashDrive  | waiting for a contributor
 | BUIP129 | Finish and Productize the BU voting system | ongoing  | Dagur  | [Beta product](https://voter.cash)  | Working web site and app
 | BUIP131/151 | Bobtail Prototype | ongoing  | George Bissias |   | In development
@@ -23,7 +24,7 @@ General development activities by Bitcoin Unlimited members do not need a BUIP. 
 
 This is a list of interesting technical activities undertaken by BU developers but have not become BUIPs.
 
-| title | status | delegate | materials | synopsis |
+| title | status | delegate | materials | notes |
 |-------------|--------------|-------------|----------------|------------|---------|
 | Unconfirmed TX limits | ongoing | Peter Tschipper | | Limits in the thousands are supported.  Effort ongoing to scale any transaction DAG to mempool limits.
 | libbitcoincash | stable | Andrew Stone | | Shared library that provides key wallet functionality.  Currently C++, Python, Java/Kotlin support
