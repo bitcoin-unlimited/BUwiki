@@ -1,9 +1,13 @@
 <div class="cwikmeta">  
 {  
-"title": "Voting's Impossible Triangle"  
+"title": "Voting's Impossible Triangle",
+"related":["/blockchain_voting"]
+"
 } </div>
 
 # Voting's Impossible Triangle
+<center>Andrew Stone, Bitcoin Unlimited.  Oct 2020</center>
+
 *The ideal attributes of democratic voting procedures are in conflict, necessitating tradeoffs*
 
 <img align="right" src="/election_impossible_triangle.svg" width=400></img>
