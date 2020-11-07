@@ -20,12 +20,14 @@
 [BCH Identity Protocol](/identity__protocol.md)
 [Delegated Payment Protocol](/delegated_payment_protocol.md) (Trickle Pay)
 [Full Node (P2P) Protocol](/ref/protocol.md)
-[Light Client (Electron Cash) Protocol](/electrs__protocol.md)
+[Light Client (Electron Cash) Protocol](https://electrum.readthedocs.io/en/latest/protocol.html), [kotlin implementation](https://gitlab.com/wallywallet/libbitcoincashkotlin/-/blob/master/libbitcoincash/src/main/kotlin/info/bitcoinunlimited/electrumclient.kt)
 
 ## Software
 [Bitcoin Unlimited Cash Full Node](/bu_bitcoind.md)
+[Cwik (This site's software)](/cwik.md) 
+[ElectrsCash](https://gitlab.com/bitcoinunlimited/ElectrsCash)
+[BCH RPC Explorer (Blockchain explorer web site)](https://github.com/sickpig/bch-rpc-explorer)
 [Wally Wallet (Bitcoin Cash Android Wallet)](/wally)
-[Cwik (This site's software)](cwik) 
 
 
 ## Miscellaneous
