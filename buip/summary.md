@@ -18,7 +18,7 @@ This is a list of interesting and active BUIPs.   Some older completed or obsole
 | BUIP121/145 | Bitcoin Cash Specification | ongoing | Josh Green (Bitcoin Verde) and Andrew Stone | [web site](http://reference.cash) | Usable as a resource.  More details being added.
 | BUIP152 | Wally Wallet | beta | Andrew Stone | [here](/wally) | working SPV p2p & electrum wallet
 
-# Technical Activity Status
+# Other Activity
 
 General development activities by Bitcoin Unlimited members do not need a BUIP.  For those unfamiliar with the articles, the BU Lead Developer has broad powers to move development forward.  BUIPs have 2 purposes; 1. to ensure that a feature will be incorporated into BU before spending the time to develop it, and 2. to block an initiative by the Lead Developer a member disagrees with.  However, in general the Lead Developer seeks permission from the membership via BUIP for any major change (i.e. hard fork) so the membership does not need to resort to 2.
 
@@ -26,10 +26,12 @@ This is a list of interesting technical activities undertaken by BU developers b
 
 | title | status | delegate | materials | notes |
 |-------------|--------------|-------------|----------------|------------|---------|
-| Unconfirmed TX limits | ongoing | Peter Tschipper | | Limits in the thousands are supported.  Effort ongoing to scale any transaction DAG to mempool limits.
-| libbitcoincash | stable | Andrew Stone | | Shared library that provides key wallet functionality.  Currently C++, Python, Java/Kotlin support
-| libbitcoincashkotlin | stable | Andrew Stone | [code](https://gitlab.com/wallywallet/libbitcoincashkotlin) | Shared library that provides full SPV wallet functionality in Kotlin
-| Wally Wallet | Beta | Andrew Stone | |
-| Txunami | stable | Andrew Stone | | High performance testnet transaction generator
-| BCH explorer | stable | Andrea Suisani | [web site](explorer.bitcoinunlimited.net) | Bitcoin Cash blockchain explorer
+| BCH explorer | stable | Andrea Suisani | [web site](explorer.bitcoinunlimited.net) | Bitcoin Cash blockchain explorer |
 | ElectrsCash | stable/integrated | Dagur | [code](https://github.com/BitcoinUnlimited/ElectrsCash) | Electrum protocol server integrated into BU full node
+| libbitcoincash | stable | Andrew Stone | | Shared library, built from the BU full node source code, that provides key wallet functionality.  Currently C++, Python, Java/Kotlin support
+| libbitcoincashkotlin | stable | Andrew Stone | [code](https://gitlab.com/wallywallet/libbitcoincashkotlin) | Shared library that provides full SPV wallet functionality in Kotlin
+| NextChain testnet | development | Andrew Stone | [web site](http:://www.nextchain.cash) | Group tokens, OP_EXEC, OP_PUSH_TX_DATA, OP_PLACE, Big Integers, covenants, MAST
+| Txunami | stable | Andrew Stone | [code](https://github.com/gandrewstone/txunami)| High performance testnet transaction generator |
+| Unconfirmed TX limits | ongoing | Peter Tschipper | | Limits in the thousands are supported.  Effort ongoing to scale any transaction DAG to mempool limits. 
+| Wally Wallet | Beta | Andrew Stone | [info](/wally) | Android BCH SPV wallet with a focus on ecosystem development and adoption.
+
