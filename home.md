@@ -13,8 +13,9 @@
 [Bitcoin Cash Specification](ref/home)
 
 ## Bitcoin Unlimited Improvement Proposals (BUIPs)
+[Complete BUIP List](/buipref/README.md)
 
-[BUIP Status](/buip/summary.md)
+[Development-Related BUIP Status](/buip/summary.md)
 
 ## Protocols
 [BCH Identity Protocol](/identity__protocol.md)

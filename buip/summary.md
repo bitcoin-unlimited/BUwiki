@@ -7,16 +7,17 @@ This is a list of interesting and active BUIPs.   Some older completed or obsole
 
 | BUIP | title | status | delegate | materials | notes |
 |-------------|--------------|-------------|----------------|------------|---------|
-| BUIP033 | Parallel Validation | complete | Peter Tschipper | | deployed in BU full node
-| BUIP057 | Add BIP135 Support (version bits) | complete | | | deployed in BU full node
-| BUIP077 | Group Tokenization | ongoing | Andrew Stone | [spec](https://docs.google.com/document/d/1X-yrqBJNj6oGPku49krZqTMGNNEWnUJBRFjX7fJXvTs/edit?usp=sharing)  | deployed in [nextchain](http://nextchain.cash)
-| BUIP118/119 | CashAccounts | complete | open | [spec](https://gitlab.com/cash-accounts/specification/blob/master/SPECIFICATION.md), [test](https://github.com/BitcoinUnlimited/BitcoinUnlimited/blob/dev/qa/rpc-tests/electrum_cashaccount.py), [improved spec (not implemented)](https://github.com/BitcoinUnlimited/ElectrsCash/pull/23) | It was decided to deploy this in ElectrsCash rather than the full node wallet
-| BUIP120 | immutable stateless storage | not started | open | see Peter Rizun's CashDrive  | waiting for a contributor
-| BUIP129 | Finish and Productize the BU voting system | ongoing  | Dagur  | [Beta product](https://voter.cash)  | Working web site and app
-| BUIP131/151 | Bobtail Prototype | ongoing  | George Bissias |   | In development
-| BUIP135 | Fund DoubleSpend Proofs | complete | Andrew Stone | | DS proofs deployed into BU full node
-| BUIP121/145 | Bitcoin Cash Specification | ongoing | Josh Green (Bitcoin Verde) and Andrew Stone | [web site](http://reference.cash) | Usable as a resource.  More details being added.
-| BUIP152 | Wally Wallet | beta | Andrew Stone | [here](/wally) | working SPV p2p & electrum wallet
+| [BUIP033](/buipref/033.md) | Parallel Validation | complete | Peter Tschipper | | deployed in BU full node
+| [BUIP057](/buipref/057.md) | Add BIP135 Support (version bits) | complete | | | deployed in BU full node
+| [BUIP077](/buipref/077.md) | Group Tokenization | ongoing | Andrew Stone | [spec](https://docs.google.com/document/d/1X-yrqBJNj6oGPku49krZqTMGNNEWnUJBRFjX7fJXvTs/edit?usp=sharing)  | deployed in [nextchain](http://nextchain.cash)
+| [BUIP098](/buipref/098.md) | BCH/BSV compromise | complete | Andrew Stone | | miners and community chose to split rather than vote
+| [BUIP118](/buipref/118.md)/[119](/buipref/119.md) | CashAccounts | complete | open | [spec](https://gitlab.com/cash-accounts/specification/blob/master/SPECIFICATION.md), [test](https://github.com/BitcoinUnlimited/BitcoinUnlimited/blob/dev/qa/rpc-tests/electrum_cashaccount.py), [improved spec (not implemented)](https://github.com/BitcoinUnlimited/ElectrsCash/pull/23) | It was decided to deploy this in ElectrsCash rather than the full node wallet
+| [BUIP120](/buipref/120.md) | immutable stateless storage | not started | open | see Peter Rizun's CashDrive  | waiting for a contributor
+| [BUIP129](/buipref/129.md) | Finish and Productize the BU voting system | ongoing  | Dagur  | [Beta product](https://voter.cash)  | Working web site and app
+| [BUIP131](/buipref/131.md)/[151](/buipref/151.md) | Bobtail Prototype | ongoing  | George Bissias |   | In development
+| [BUIP135](/buipref/135.md) | Fund DoubleSpend Proofs | complete | Andrew Stone | | DS proofs deployed into BU full node
+| [BUIP121](/buipref/121.md)/[145](/buipref/145.md) | Bitcoin Cash Specification | ongoing | Josh Green (Bitcoin Verde) and Andrew Stone | [web site](http://reference.cash) | Usable as a resource.  More details being added.
+| [BUIP152](/buipref/152.md) | Wally Wallet | beta | Andrew Stone | [here](/wally) | working SPV p2p & electrum wallet
 
 # Other Activity
 
@@ -34,4 +35,3 @@ This is a list of interesting technical activities undertaken by BU developers b
 | Txunami | stable | Andrew Stone | [code](https://github.com/gandrewstone/txunami)| High performance testnet transaction generator |
 | Unconfirmed TX limits | ongoing | Peter Tschipper | | Limits in the thousands are supported.  Effort ongoing to scale any transaction DAG to mempool limits. 
 | Wally Wallet | Beta | Andrew Stone | [info](/wally) | Android BCH SPV wallet with a focus on ecosystem development and adoption.
-
