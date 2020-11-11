@@ -19,7 +19,7 @@ This is a list of interesting and active BUIPs.   Some older completed or obsole
 | [BUIP121](/buipref/121.md)/[145](/buipref/145.md) | Bitcoin Cash Specification | ongoing | Josh Green (Bitcoin Verde) and Andrew Stone | [web site](http://reference.cash) | Usable as a resource.  More details being added.
 | [BUIP152](/buipref/152.md) | Wally Wallet | beta | Andrew Stone | [here](/wally) | working SPV p2p & electrum wallet
 
-# Other Activity
+## Other Technical Activity
 
 General development activities by Bitcoin Unlimited members do not need a BUIP.  For those unfamiliar with the articles, the BU Lead Developer has broad powers to move development forward.  BUIPs have 2 purposes; 1. to ensure that a feature will be incorporated into BU before spending the time to develop it, and 2. to block an initiative by the Lead Developer a member disagrees with.  However, in general the Lead Developer seeks permission from the membership via BUIP for any major change (i.e. hard fork) so the membership does not need to resort to 2.
 
