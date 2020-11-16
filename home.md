@@ -5,9 +5,11 @@
 }</div>
 
 ## Articles
-[Blockchain Voting Techniques](/blockchain_voting.md)
-[Voting's Impossible Triangle](/voting_impossible_triangle.md)
 [Attacks Against Autofinalization and Parking](/autofinalization_parking.md)
+[Blockchain Voting Techniques](/blockchain_voting.md)
+[Object Property Commitments](/object_property_commitment.md) ([original location](https://medium.com/@g.andrew.stone/forkless-object-property-commitments-implemented-at-the-bitcoin-p2p-layer-5a53e778ddff))
+[Voting's Impossible Triangle](/voting_impossible_triangle.md)
+
 
 ## Bitcoin Cash Specification Reference
 [Bitcoin Cash Specification](ref/home)
