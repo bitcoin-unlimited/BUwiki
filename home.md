@@ -5,11 +5,21 @@
 }</div>
 
 ## Articles
-[Attacks Against Autofinalization and Parking](/autofinalization_parking.md)
-[Blockchain Voting Techniques](/blockchain_voting.md)
-[Object Property Commitments](/object_property_commitment.md) ([original location](https://medium.com/@g.andrew.stone/forkless-object-property-commitments-implemented-at-the-bitcoin-p2p-layer-5a53e778ddff))
-[Voting's Impossible Triangle](/voting_impossible_triangle.md)
 
+### Analysis
+[Attacks Against Autofinalization and Parking](/autofinalization_parking.md) (Oct 23, 2020)
+[The Blockchain Difficulty Paradox](/blockchain_difficulty_paradox.md) (Oct 10, 2017)
+
+
+### Transactions and Scripts
+[Chainrefs](/chainrefs.md) ([original location](https://medium.com/@g.andrew.stone/transaction-input-size-optimization-152cdad1b76f)) (Sep 19, 2017)
+[Extended Bitcoin Script Language](/extendedBitcoinScript.md) (Oct 16, 2018)
+[Object Property Commitments](/object_property_commitment.md) ([original location](https://medium.com/@g.andrew.stone/forkless-object-property-commitments-implemented-at-the-bitcoin-p2p-layer-5a53e778ddff)) (Oct 19, 2018)
+[Why Bitcoin Script is Nearly Useless (justification for OP_PUSH_TX_DATA)](/op_push_tx_data_justification.md) ([original location](https://medium.com/@g.andrew.stone/why-bitcoin-cash-script-is-nearly-useless-and-what-to-do-about-it-b47adbfeceec)) (Nov 22, 2018)
+
+### Voting
+[Blockchain Voting Techniques](/blockchain_voting.md) (Sep, 2020)
+[Voting's Impossible Triangle](/voting_impossible_triangle.md) (Sep, 2020)
 
 ## Bitcoin Cash Specification Reference
 [Bitcoin Cash Specification](ref/home)
