@@ -19,7 +19,7 @@ These differences are noted here for precision but may simply be an implementati
 
 **Auto-finalization** is a process where the main chain block that is at the **auto-finalization depth** (which is 10 on BCH) is marked as the "final" block.
 
-**Parking** is a modification to the rule that determines the main chain proposed by Satoshi<sup>1</sup> "Nodes always consider the longest chain to be the correct one and will keep working on extending it."  The parking technique observes that a full node that is not in "initial block download" mode has a fork that it currently sees as the main chain (M), and a candidate fork ( C ) that it is considering switching to.  A full node that implements parking will not switch to C unless it exceeds the work in M by an amount that varies depending on the length of the fork M:
+**Parking** is a modification to the rule that determines the main chain proposed by Satoshi<sup>1</sup> "Nodes always consider the longest chain to be the correct one and will keep working on extending it."  The parking technique observes that a full node that is not in "initial block download" mode has a fork that it currently sees as the main chain (M), and a candidate fork ( C ) that it is considering switching to.  A full node that implements parking will not switch to C unless it exceeds the work in M by an amount that varies depending on the length of the fork M, called extra parking work (EPW):
 $$
 forkBlock = LastCommonBlock(M,C)  \tag1
 $$
@@ -29,7 +29,7 @@ mainForkLength = Height(M) - Height(forkBlock))  \tag2
 $$
 
 $$
-ExtraParkingWork = \left\{ \begin{array}{l}
+EPW = \left\{ \begin{array}{l}
      \frac{Work(M) - Work(forkBlock)}{2} \ if \ mainForkLength \ is \ 1 \\
      \frac{Work(M-1) - Work(forkBlock)}2 \ if \ mainForkLength \  is \ 2 \ or \ 3 \\
      Work(M) - Work(forkBlock) \ otherwise \\
@@ -39,7 +39,7 @@ $$
 
 If we make the simplifying "steady state mining" assumption that each block requires approximately the same amount of work w, then this equation simplifies to:
 $$
-ExtraParkingWork = \left\{ \begin{array}{l}
+EPW = \left\{ \begin{array}{l}
      \frac{w}{2} \ if \ mainForkLength \ is \ 1 \ or \ 2 \\
      w \ if \ mainForkLength \  is \ 3 \\
      w * mainForkLength \ otherwise \\
@@ -163,10 +163,11 @@ $$
 To fully express the model, we need to introduce variables denoting the main and fork lengths (Mlen and Flen):
 
 $$
-W(N, Mlen, Flen) = \left\{ \begin{array}{l}
+W(N, Mlen, Flen) = \\
+\left\{ \begin{array}{l}
      0 \ if \ Flen < Mlen, \\
      1 \ if \ Flen >= N, \ otherwise \\
-       (\sum\limits_{i=1}^{N-1-Flen} P(X=i \ successes, q/p)W(N-i, Mlen+1, Flen+i)) + \sum\limits_{i=N-Flen}^\infty P(X=i \ successes, q/p) \\  
+       (\sum\limits_{i=1}^{N-1-Flen} P(X=i, q/p)W(N-i, Mlen+1, Flen+i)) + \sum\limits_{i=N-Flen}^\infty P(X=i, q/p) \\  
  \end{array} \right.
 $$
 
