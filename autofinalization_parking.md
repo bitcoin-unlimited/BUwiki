@@ -72,7 +72,7 @@ Auto-finalization therefore imports the networking architecture and its source c
 
 ### Node Synchronization Failure
 
-The effect of chain parking is that most nodes do not switch to the most-work chain.  A synchronizing node has "current" chain, so will choose the most work chain -- that is the one that is parked.  If this fork is greater than 10 blocks, and is maintained, it will be chosen by all new nodes in the system and by all SPV wallets.  
+The effect of chain parking is that most nodes do not switch to the most-work chain.  A synchronizing node has a "current" chain, so will choose the most work chain -- that is the one that is parked by the rest of the network that "saw" this chain appear post-finalization.  If this most-work chain fork is greater than 10 blocks, and is maintained, it will be chosen by all new nodes in the system and by all SPV wallets.
 
 This would be a very expensive attack to maintain, but would force BCH developers to hard code a checkpoint into every full node and SPV wallet to rejects the attacker's chain.
 
