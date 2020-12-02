@@ -1,10 +1,7 @@
 # Attacks Against Auto-finalization and Fork Parking
 **Andrew Stone, Bitcoin Unlimited, g.andrew.stone@gmail.com**
-**author 2, somewhere, someEmail@gmail.com**
-**author3, somewhere else, anotheremail@protonmail.com**
 
-
-*Blockchain consensus algorithms that use automatic trailing checkpoints (finalization) and additional proof-of-work requirements (parking) in their consensus algorithms are susceptible to persistent forks.  The probability of attacker success is analyzed and compared to other algorithms.  While autofinalization is shown to be a tradeoff that makes reorganization attacks easier at the expense of allowing persistent forks, parking makes creating persistent forks much easier, and only reduces the likelihood of reorganization of pre-finalized blocks.*
+*Blockchain consensus algorithms that use automatic trailing checkpoints (finalization) and additional proof-of-work requirements (parking) in their consensus algorithms are susceptible to persistent forks.  The probability of attacker success is analyzed and compared to other algorithms.  While autofinalization is shown to be a tradeoff that makes doublespend reorganization attacks harder at the expense of allowing persistent forks, parking makes creating persistent forks much easier, and only reduces the likelihood of reorganization of pre-finalized blocks.*
 
 ## Introduction
 The consensus achieved by the parking and auto-finalization technologies in Bitcoin Cash prevents intentional chain reorganization.  But they are inconsistent with consensus theory and that strongly implies that these technologies are not innovations in consensus but rather trade correctness for convenience.  This paper provides an analysis that describes specific attacks against auto-finalization and parking and shows the cost and likelihood that a malicious miner could successfully execute them.  
