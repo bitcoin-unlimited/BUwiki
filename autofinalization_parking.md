@@ -72,9 +72,15 @@ Auto-finalization therefore imports the networking architecture and its source c
 
 ### Node Synchronization Failure
 
-The effect of chain parking is that most nodes do not switch to the most-work chain.  A synchronizing node has a "current" chain, so will choose the most work chain -- that is the one that is parked by the rest of the network that "saw" this chain appear post-finalization.  If this most-work chain fork is greater than 10 blocks, and is maintained, it will be chosen by all new nodes in the system and by all SPV wallets.
+The effect of chain parking is that nodes do not immediately switch to the most-work chain.  Instead they stick with the "current" chain.  This "current" chain is the most-work chain in the set that the node's connections are advertising.  If this fork length is greater than the auto-finalization depth (10 blocks on BCH), it will be "finalized" and so persistently prevent switching.
 
-This would be a very expensive attack to maintain, but would force BCH developers to hard code a checkpoint into every full node and SPV wallet to rejects the attacker's chain.
+There are two avenues of attack.  In the first, the attacker creates a deep reorganization most-work chain.  None of the existing nodes will switch to it due to their finalization rules.  However, all new nodes in the system will synchronize to it (if visible during synchronization) and all SPV wallets will choose it.
+
+This would be an expensive attack to maintain, but would force BCH developers to hard code a checkpoint into every full node and SPV wallet to rejects the attacker's chain.
+
+In the second attack, the attacker creates a lower-work fork 1 block longer than the auto-finalization depth anywhere (or in multiple places to gain multiple attempts) in the chain.  It then attempts to push this fork into synchronizing nodes, causing finalization into this "dead-end".  If the synchronizing node is also successfully eclipse attacked, the attack will succeed since the node will not be aware of any greater work chain.  Otherwise the success of the attack will fail given a careful implementation of synchronization that first validates the POW in most-work chain's full header path, and second rejects any attempts to inject blocks into the node that are not on this path.
+
+These problems were demonstrated during the BCHABC fork on Dec 1, 2020<sup>F3</sup>.  [This section document was updated on Dec 2 to include this evidence]
 
 ### Fork Matching Attack
 
@@ -259,6 +265,90 @@ Instead of intentional chain reorganization, attackers can create intentional ch
 [F1] The name "double spend attack" does not make much sense in this context since exchanges would use an embargo period greater than the finalization.  So it would not be possible to execute an actual double spend (because the exchange would not release the goods before the reorganization).  But this attack can reorganize the blockchain for other purposes, such as DoS.
   
 [F2] Note that mining both the main chain and fork would also allow the attacker to deliver both M and F blocks directly to targets simultaneously, reducing the chance of propagation problems.  It could also delay blocks it discovers on M.
+
+[F3] Leading up to December 1, 2020, the BCHABC blockchain had been suffering a DOS attack from an anonymous miner that would mine mostly empty blocks and orphan blocks that did not pay 100% of the coinbase to ABC.  In concert with ABC (as evidenced by explorer.bitcoinabc.org) a miner created a significant lower-work fork off of a 5 block chain that was created on Nov 30 (height 662687), but orphaned.  On Dec 1, the BCHABC blockchain therefore had 2 significant consensus-compatible forks, which we can call BCHAA (most work) and BCHAB (less work).  It is presumed that the ABC release's networking code "preferred" BCHAB by initially connecting to BCHAB following nodes.  During this time, network connectivity was inconsistent because connections to BCH would also consume connection slots.  During 3 attempts to synchronize by 2 independent users, 2 nodes followed BCHAB and 1 followed BCHAA.  
+
+The following log shows how parking and finalization caused the lesser-work chain to be followed even though the node became aware of the greater-work chain (** indicates annotations):
+```
+2020-12-01T22:38:48Z UpdateTip: new best=00000000000000003cdfa4fb383f133cc22596eea61cb2bb4a2501cf20238f09 height=662686 version=0x20000000 log2_work=88.40692 tx=295435142 date='2020-11-30T18:30:46Z' progress=0.998904 cache=401.1MiB(2327112txo)
+2020-12-01T22:38:48Z UpdateTip: new best=0000000000000000311ffccd67cba247a6db0a67fa2576174334fce036c48f84 height=662687 version=0x20000000 log2_work=88.40692 tx=295435154 date='2020-11-30T18:32:42Z' progress=0.998905 cache=401.1MiB(2327125txo)
+2020-12-01T22:38:48Z UpdateTip: new best=000000000000000012b04da060e505a2c5917a8e9f2b329744880085a26ceda7 height=662688 version=0x20002000 log2_work=88.40692 tx=295435163 date='2020-11-30T18:36:57Z' progress=0.998908 cache=401.1MiB(2327136txo)
+2020-12-01T22:38:48Z UpdateTip: new best=000000000000000024eaa803e4afb9db982dc2ad654a4d9576b838efb9740262 height=662689 version=0x20000000 log2_work=88.40692 tx=295435234 date='2020-11-30T18:42:34Z' progress=0.998912 cache=401.2MiB(2327346txo)
+2020-12-01T22:38:48Z UpdateTip: new best=0000000000000000421f887e044db3791f520f8e8ef95fdb55c7116a8b843d89 height=662690 version=0x20000000 log2_work=88.406921 tx=295435237 date='2020-11-30T18:43:48Z' progress=0.998913 cache=401.2MiB(2327352txo)
+2020-12-01T22:38:48Z UpdateTip: new best=00000000000000000b11d5c6599bb1ad4fa973355e508a7f25aef1b75aaefa7d height=662691 version=0x20c00000 log2_work=88.406921 tx=295435259 date='2020-11-30T18:51:16Z' progress=0.998917 cache=401.2MiB(2327382txo)
+2020-12-01T22:38:48Z Pre-allocating up to position 0x700000 in rev01132.dat
+2020-12-01T22:38:49Z UpdateTip: new best=0000000000000000212132b87c5d88d85796440bf7d74c5e50d770d87838784e height=662692 version=0x20000000 log2_work=88.406921 tx=295439836 date='2020-12-01T09:58:18Z' progress=0.999506 cache=401.3MiB(2328268txo)
+2020-12-01T22:38:49Z Leaving InitialBlockDownload (latching to false)
+2020-12-01T22:38:49Z UpdateTip: new best=00000000000000001f52576f7ebd17935a0591d8166ccc29b4776b3783f663bb height=662693 version=0x20800000 log2_work=88.406921 tx=295444566 date='2020-12-01T10:27:51Z' progress=0.999525 cache=401.3MiB(2328281txo)
+2020-12-01T22:38:49Z UpdateTip: new best=00000000000000003574991e117505e6e35fa539d5923a29beff6531edb0f9c3 height=662694 version=0x2000e000 log2_work=88.406921 tx=295449299 date='2020-12-01T14:48:52Z' progress=0.999695 cache=401.3MiB(2328425txo)
+2020-12-01T22:38:49Z UpdateTip: new best=00000000000000004ecde44b1f16bcd729bc7f3ae78e3448f44615c1729bdbf8 height=662695 version=0x20000000 log2_work=88.406921 tx=295454026 date='2020-12-01T15:05:26Z' progress=0.999705 cache=401.3MiB(2328441txo)
+2020-12-01T22:38:49Z UpdateTip: new best=0000000000000000572b776c430b6228cb7cc8f5bee4df0132fa2ddd6a3bd025 height=662696 version=0x20000000 log2_work=88.406922 tx=295458755 date='2020-12-01T15:28:58Z' progress=0.999721 cache=401.3MiB(2328450txo)
+2020-12-01T22:38:49Z UpdateTip: new best=000000000000000036f7e43405e0ce74bbca586eec7b45cb03201514b70ea61a height=662697 version=0x20c00000 log2_work=88.406922 tx=295463484 date='2020-12-01T15:45:29Z' progress=0.999731 cache=401.3MiB(2328461txo)
+2020-12-01T22:38:49Z UpdateTip: new best=00000000000000002028199ed3fc89ce05be464b8aa3454c7977b06cece3d663 height=662698 version=0x20400000 log2_work=88.406922 tx=295468217 date='2020-12-01T16:12:57Z' progress=0.999749 cache=401.3MiB(2328478txo)
+2020-12-01T22:38:49Z Pre-allocating up to position 0x800000 in rev01132.dat
+2020-12-01T22:38:49Z UpdateTip: new best=000000000000000057dab39787431f06f01db7aacb33f22ac56775b160ae3848 height=662699 version=0x20000000 log2_work=88.406922 tx=295472946 date='2020-12-01T16:20:20Z' progress=0.999754 cache=401.3MiB(2328485txo)
+2020-12-01T22:38:50Z UpdateTip: new best=000000000000000034d6eb357da13820d8cdbbd6a1b4b8044aee93ba9b293c77 height=662700 version=0x20000000 log2_work=88.406922 tx=295477674 date='2020-12-01T16:30:24Z' progress=0.999761 cache=401.3MiB(2328491txo)
+2020-12-01T22:38:50Z UpdateTip: new best=00000000000000001d0653aa36ed906093b4039a4cc432757cab9127491f6f33 height=662701 version=0x20000000 log2_work=88.406922 tx=295482401 date='2020-12-01T16:31:13Z' progress=0.999761 cache=401.3MiB(2328495txo)
+2020-12-01T22:38:50Z UpdateTip: new best=000000000000000035e71a8234c5a9384a83b3ac8f111393ec07ee5cd8d9d88c height=662702 version=0x20800000 log2_work=88.406923 tx=295487127 date='2020-12-01T16:40:42Z' progress=0.999767 cache=401.3MiB(2328497txo)
+2020-12-01T22:38:50Z UpdateTip: new best=00000000000000003c75f89e752bc18c62bcc89823680276f216217c40343693 height=662703 version=0x20c00000 log2_work=88.406923 tx=295491859 date='2020-12-01T16:52:06Z' progress=0.999775 cache=401.3MiB(2328507txo)
+2020-12-01T22:38:50Z UpdateTip: new best=000000000000000030d7c51fd01e65fcb64d5ecfb8a17dd115f2a8c4c1991499 height=662704 version=0x20000000 log2_work=88.406923 tx=295496591 date='2020-12-01T17:14:29Z' progress=0.999789 cache=401.3MiB(2328517txo)
+2020-12-01T22:38:50Z UpdateTip: new best=00000000000000004fc834b1150d2b690b50530d59d80a61c9909e54934d56a5 height=662705 version=0x20000000 log2_work=88.406923 tx=295501317 date='2020-12-01T17:23:12Z' progress=0.999795 cache=401.3MiB(2328524txo)
+2020-12-01T22:38:51Z UpdateTip: new best=000000000000000055e97a5a605a05ad729f366f4c8c036737b2cc17cd09f82f height=662706 version=0x3fff0000 log2_work=88.406923 tx=295506047 date='2020-12-01T17:35:34Z' progress=0.999803 cache=401.3MiB(2328542txo)
+
+** this 662,687 in the largest POW fork chain **
+2020-12-01T22:38:51Z Park block 00000000000000000709b858a6a0c8610e604e77072ef4407763afb0780ce712 as it would cause a deep reorg.
+2020-12-01T22:38:51Z UpdateTip: new best=000000000000000006736ee57bcd3a2e45a4230d5923cb69e5e1e855a82508c9 height=662707 version=0x20000000 log2_work=88.406923 tx=295510774 date='2020-12-01T17:38:35Z' progress=0.999805 cache=401.3MiB(2328546txo)
+2020-12-01T22:38:51Z UpdateTip: new best=0000000000000000229363232760bc77d9879c37d57646df5f6a3e2f35a987f2 height=662708 version=0x20000000 log2_work=88.406924 tx=295515500 date='2020-12-01T17:40:28Z' progress=0.999806 cache=401.3MiB(2328548txo)
+2020-12-01T22:38:51Z Park block 00000000000000002cf08a4a14920aa0930b46c4e9092533adf570e7250db2b0 as it would cause a deep reorg.
+2020-12-01T22:38:51Z UpdateTip: new best=00000000000000001322fddd281205d82fdfe459a992af6ab4cf87dad3d69338 height=662709 version=0x20400000 log2_work=88.406924 tx=295520223 date='2020-12-01T17:45:40Z' progress=0.999810 cache=401.3MiB(2328570txo)
+2020-12-01T22:38:51Z UpdateTip: new best=000000000000000046b8dc899d847732f6548b6692ae28c6a94aeb4dffdb3a56 height=662710 version=0x20000000 log2_work=88.406924 tx=295524950 date='2020-12-01T17:53:49Z' progress=0.999815 cache=401.3MiB(2328573txo)
+2020-12-01T22:38:51Z Park block 00000000000000004262b9f56c93d72a6f8e221f08c252e035aab5331f671f0a as it would cause a deep reorg.
+2020-12-01T22:38:51Z UpdateTip: new best=00000000000000003ea89a75da1da763806264ca42d39f6e96f0dbf6cae8792f height=662711 version=0x20000000 log2_work=88.406924 tx=295529677 date='2020-12-01T17:56:02Z' progress=0.999816 cache=401.3MiB(2328578txo)
+2020-12-01T22:38:51Z UpdateTip: new best=0000000000000000429e448460c0ee6800db0012f856d8082a639900617abc39 height=662712 version=0x20800000 log2_work=88.406924 tx=295534412 date='2020-12-01T18:30:21Z' progress=0.999839 cache=401.3MiB(2328614txo)
+2020-12-01T22:38:51Z Park block 00000000000000003abc448d72e69babb9a13659aa14df995b13e76ff5b97612 as it would cause a deep reorg.
+2020-12-01T22:38:52Z UpdateTip: new best=000000000000000047d42e0dc3b3431ef874c7ed68379762f77815fd8ecbac37 height=662713 version=0x20000000 log2_work=88.406924 tx=295539139 date='2020-12-01T18:32:35Z' progress=0.999840 cache=401.3MiB(2328616txo)
+2020-12-01T22:38:52Z Pre-allocating up to position 0x900000 in rev01132.dat
+2020-12-01T22:38:52Z UpdateTip: new best=00000000000000000bcaf061b6acae7f2ba5126dbfbcee57fc47bc231c0ef679 height=662714 version=0x20000000 log2_work=88.406925 tx=295543865 date='2020-12-01T18:33:00Z' progress=0.999840 cache=401.3MiB(2328618txo)
+2020-12-01T22:38:52Z Park block 00000000000000003fcb4ad579e937c831d6f39610bcc6714bed13de8392c7b4 as it would cause a deep reorg.
+2020-12-01T22:38:52Z UpdateTip: new best=00000000000000000261419163b30ef83854739da348b96d59156b788d1916fc height=662715 version=0x27d4e000 log2_work=88.406925 tx=295548595 date='2020-12-01T18:48:32Z' progress=0.999850 cache=401.3MiB(2328628txo)
+2020-12-01T22:38:52Z UpdateTip: new best=000000000000000024b1b59b7d065b6e1a651d57b979ce6a7d0953045b5ca809 height=662716 version=0x20000000 log2_work=88.406925 tx=295552433 date='2020-12-01T19:15:29Z' progress=0.999868 cache=401.8MiB(2332504txo)
+2020-12-01T22:38:52Z Park block 00000000000000003bdaacb7ec7f86049f2b4e0dc24031c8980daacb06bfdc8f as it would cause a deep reorg.
+2020-12-01T22:38:52Z UpdateTip: new best=000000000000000037733987b917fa31d6a29d98f7b7c0552dd29edab05b0657 height=662717 version=0x20000000 log2_work=88.406925 tx=295552481 date='2020-12-01T19:36:34Z' progress=0.999882 cache=401.8MiB(2332521txo)
+2020-12-01T22:38:52Z UpdateTip: new best=000000000000000038fd2290e132e392567448355b66981d053e9331823edb5a height=662718 version=0x20800000 log2_work=88.406925 tx=295552486 date='2020-12-01T19:37:30Z' progress=0.999882 cache=401.8MiB(2332728txo)
+2020-12-01T22:38:52Z UpdateTip: new best=00000000000000000fd22489326d22fa4bef1c29714cc24d9fc24e58b0d1370d height=662719 version=0x20000000 log2_work=88.406925 tx=295552520 date='2020-12-01T19:50:41Z' progress=0.999891 cache=401.8MiB(2332764txo)
+2020-12-01T22:38:52Z UpdateTip: new best=00000000000000003f82accf9bba20407036a480a62bd12cf6dcfed717fb333d height=662720 version=0x20c00000 log2_work=88.406926 tx=295552527 date='2020-12-01T19:54:10Z' progress=0.999893 cache=401.8MiB(2332767txo)
+2020-12-01T22:38:52Z UpdateTip: new best=00000000000000001c2a71c0f432f3cc4a0f7b98378bfc46d0ca176533e2b6df height=662721 version=0x20000000 log2_work=88.406926 tx=295552544 date='2020-12-01T19:56:45Z' progress=0.999895 cache=401.8MiB(2332781txo)
+2020-12-01T22:38:52Z UpdateTip: new best=000000000000000030587c87406ab2d87c665c33bb0787436d7ea3fa310107ba height=662722 version=0x20000000 log2_work=88.406926 tx=295552547 date='2020-12-01T19:57:18Z' progress=0.999895 cache=401.8MiB(2332783txo)
+2020-12-01T22:38:52Z UpdateTip: new best=00000000000000002e3e2f4ec86fd2c78ec158d1c3f80f01d581f34c2b8bc7f4 height=662723 version=0x20000000 log2_work=88.406926 tx=295552567 date='2020-12-01T20:04:22Z' progress=0.999900 cache=401.8MiB(2332790txo)
+2020-12-01T22:38:52Z UpdateTip: new best=00000000000000004c402051bb2c7e3b707a32a9ef46caf6b64880d61dd68e31 height=662724 version=0x20a00000 log2_work=88.406926 tx=295552582 date='2020-12-01T20:11:29Z' progress=0.999904 cache=401.8MiB(2332863txo)
+2020-12-01T22:38:52Z UpdateTip: new best=000000000000000038f822ea0ff410dd46cbb34a15718b30d4fc64c447532dfa height=662725 version=0x20000000 log2_work=88.406926 tx=295552584 date='2020-12-01T20:11:47Z' progress=0.999904 cache=401.8MiB(2332865txo)
+2020-12-01T22:38:52Z UpdateTip: new best=0000000000000000373e32c0e86c53cf67e52c87dd44ca163fe87e4a536a736d height=662726 version=0x21f9e000 log2_work=88.406927 tx=295552609 date='2020-12-01T20:21:58Z' progress=0.999911 cache=401.8MiB(2332884txo)
+2020-12-01T22:38:52Z UpdateTip: new best=000000000000000036d4885b9c3d95fe40ecbcaf1e2d285fb9eb4ed218c28924 height=662727 version=0x20000000 log2_work=88.406927 tx=295552672 date='2020-12-01T20:36:45Z' progress=0.999921 cache=401.9MiB(2332963txo)
+2020-12-01T22:38:52Z UpdateTip: new best=000000000000000055bff8ca0427cae84d216f2801bf1f339794f99e3159569d height=662728 version=0x20000000 log2_work=88.406927 tx=295552725 date='2020-12-01T20:51:56Z' progress=0.999931 cache=401.9MiB(2333046txo)
+2020-12-01T22:38:52Z UpdateTip: new best=000000000000000039c070a969fc765f2031932d9d7c1f64a941d9a026615a1c height=662729 version=0x3665c000 log2_work=88.406927 tx=295552789 date='2020-12-01T21:15:24Z' progress=0.999946 cache=401.9MiB(2333144txo)
+2020-12-01T22:38:52Z Park block 000000000000000021aa2bc72cafb2cb4b462820676f6f997ca770a3491f2d20 as it would cause a deep reorg.
+2020-12-01T22:38:52Z UpdateTip: new best=00000000000000005aed86b69eb9adc40b1e076007a840e3ce76f03d73fb3a56 height=662730 version=0x20c00000 log2_work=88.406927 tx=295552791 date='2020-12-01T21:15:46Z' progress=0.999946 cache=401.9MiB(2333146txo)
+2020-12-01T22:38:52Z UpdateTip: new best=00000000000000000f43113d74f426be53cc46ece2978d91e37e914abb5fc8e3 height=662731 version=0x20000000 log2_work=88.406927 tx=295552861 date='2020-12-01T21:47:53Z' progress=0.999967 cache=401.9MiB(2333208txo)
+2020-12-01T22:38:52Z UpdateTip: new best=00000000000000004dca285e690ce3182654f7afb006cc07757ef5f1fe6e32aa height=662732 version=0x20800000 log2_work=88.406928 tx=295552947 date='2020-12-01T22:26:30Z' progress=0.999992 cache=401.9MiB(2333297txo)
+2020-12-01T22:38:52Z Park block 000000000000000038b752df8d0de6f6dd23f54a20a6d1f66d91c5143e6c7dbc as it would cause a deep reorg.
+2020-12-01T22:38:52Z UpdateTip: new best=00000000000000001ea3a6be94733d6bca00b1bbbabc3b5d92ce4a09f140a3c8 height=662733 version=0x20000000 log2_work=88.406928 tx=295552950 date='2020-12-01T22:26:58Z' progress=0.999992 cache=401.9MiB(2333317txo)
+2020-12-01T22:38:52Z Park block 00000000000000003d7cf73caa7a7b7c4327789e0fd6d77236857969fcd4f2c1 as it would cause a deep reorg.
+2020-12-01T22:38:52Z Park block 000000000000000002f93d655cf8dff674091eee848fcd33e520b940cd6cb43c as it would cause a deep reorg.
+2020-12-01T22:38:52Z Park block 00000000000000002132e6597460cc9847daf8dad575afb1a3af343f15c6affb as it would cause a deep reorg.
+2020-12-01T22:38:52Z Park block 0000000000000000052063889768c9edefe073733241444d57be155e5a005735 as it would cause a deep reorg.
+2020-12-01T22:38:52Z Park block 00000000000000003aa7e890cf55d26aa81352270ab17f59c0a35c951c58282a as it would cause a deep reorg.
+
+** Finalization causes the most POW chain to be invalidated **
+2020-12-01T22:38:52Z Mark block 000000000000000003e7ea491122031d5508d60ccd78665fd8000efb37eb1e85 invalid because it forks prior to the finalization point 662723.
+2020-12-01T22:38:52Z InvalidChainFound: invalid block=000000000000000003e7ea491122031d5508d60ccd78665fd8000efb37eb1e85  height=662858  log2_work=88.406959  date=2020-12-01T20:07:07Z
+2020-12-01T22:38:52Z InvalidChainFound:  current best=00000000000000001ea3a6be94733d6bca00b1bbbabc3b5d92ce4a09f140a3c8  height=662733  log2_work=88.406928  date=2020-12-01T22:26:58Z
+
+** Finalization invalidation prevents the switch to the > POW chain during synchronization **
+2020-12-01T22:38:52Z Considered switching to better tip 000000000000000003e7ea491122031d5508d60ccd78665fd8000efb37eb1e85 but that chain contains an invalid block.
+2020-12-01T22:38:52Z CheckForkWarningConditions: Warning: Large fork found
+  forking the chain at height 662686 (00000000000000003cdfa4fb383f133cc22596eea61cb2bb4a2501cf20238f09)
+  lasting to height 662858 (000000000000000003e7ea491122031d5508d60ccd78665fd8000efb37eb1e85).
+```
 
 ## Appendix 1
 
