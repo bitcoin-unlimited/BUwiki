@@ -1,11 +1,12 @@
 # Attacks Against Auto-finalization and Fork Parking
+**Andrew Stone, Bitcoin Unlimited, g.andrew.stone@gmail.com**
+**author 2, somewhere, someEmail@gmail.com**
+**author3, somewhere else, anotheremail@protonmail.com**
 
-<center>Andrew Stone, Bitcoin Unlimited</center>
-<center>Oct 23, 2020</center>
 
-*An analysis of attack methods and costs to produce persistent forks on blockchains that use automatic trailing checkpoints (finalization) and additional proof-of-work requirements (parking) in their consensus algorithm*
+*Blockchain consensus algorithms that use automatic trailing checkpoints (finalization) and additional proof-of-work requirements (parking) in their consensus algorithms are susceptible to persistent forks.  The probability of attacker success is analyzed and compared to other algorithms.  While autofinalization is shown to be a tradeoff that makes reorganization attacks easier at the expense of allowing persistent forks, parking makes creating persistent forks much easier, and only reduces the likelihood of reorganization of pre-finalized blocks.*
 
-## Abstract
+## Introduction
 The consensus achieved by the parking and auto-finalization technologies in Bitcoin Cash prevents intentional chain reorganization.  But they are inconsistent with consensus theory and that strongly implies that these technologies are not innovations in consensus but rather trade correctness for convenience.  This paper provides an analysis that describes specific attacks against auto-finalization and parking and shows the cost and likelihood that a malicious miner could successfully execute them.  
 
 ## Definitions
@@ -20,7 +21,7 @@ These differences are noted here for precision but may simply be an implementati
 
 **Auto-finalization** is a process where the main chain block that is at the **auto-finalization depth** (which is 10 on BCH) is marked as the "final" block.
 
-**Parking** is a modification to the rule that determines the main chain proposed by Satoshi<sup>1</sup> "Nodes always consider the longest chain to be the correct one and will keep working on extending it."  The parking technique observes that a full node that is not in "initial block download" mode has a fork that it currently sees as the main chain (M), and a candidate fork ( C ) that it is considering switching to.  A full node that implements parking will not switch to C unless it exceeds the work in M by an amount that varies depending on the length of the fork M:
+**Parking** is a modification to the rule that determines the main chain proposed by Satoshi<sup>1</sup> "Nodes always consider the longest chain to be the correct one and will keep working on extending it."  The parking technique observes that a full node that is not in "initial block download" mode has a fork that it currently sees as the main chain (M), and a candidate fork ( C ) that it is considering switching to.  A full node that implements parking will not switch to C unless it exceeds the work in M by an amount that varies depending on the length of the fork M, called extra parking work (EPW):
 $$
 forkBlock = LastCommonBlock(M,C)  \tag1
 $$
@@ -30,7 +31,7 @@ mainForkLength = Height(M) - Height(forkBlock))  \tag2
 $$
 
 $$
-ExtraParkingWork = \left\{ \begin{array}{l}
+EPW = \left\{ \begin{array}{l}
      \frac{Work(M) - Work(forkBlock)}{2} \ if \ mainForkLength \ is \ 1 \\
      \frac{Work(M-1) - Work(forkBlock)}2 \ if \ mainForkLength \  is \ 2 \ or \ 3 \\
      Work(M) - Work(forkBlock) \ otherwise \\
@@ -40,7 +41,7 @@ $$
 
 If we make the simplifying "steady state mining" assumption that each block requires approximately the same amount of work w, then this equation simplifies to:
 $$
-ExtraParkingWork = \left\{ \begin{array}{l}
+EPW = \left\{ \begin{array}{l}
      \frac{w}{2} \ if \ mainForkLength \ is \ 1 \ or \ 2 \\
      w \ if \ mainForkLength \  is \ 3 \\
      w * mainForkLength \ otherwise \\
@@ -170,10 +171,11 @@ $$
 To fully express the model, we need to introduce variables denoting the main and fork lengths (Mlen and Flen):
 
 $$
-W(N, Mlen, Flen) = \left\{ \begin{array}{l}
+W(N, Mlen, Flen) = \\
+\left\{ \begin{array}{l}
      0 \ if \ Flen < Mlen, \\
      1 \ if \ Flen >= N, \ otherwise \\
-       (\sum\limits_{i=1}^{N-1-Flen} P(X=i \ successes, q/p)W(N-i, Mlen+1, Flen+i)) + \sum\limits_{i=N-Flen}^\infty P(X=i \ successes, q/p) \\  
+       (\sum\limits_{i=1}^{N-1-Flen} P(X=i, q/p)W(N-i, Mlen+1, Flen+i)) + \sum\limits_{i=N-Flen}^\infty P(X=i, q/p) \\  
  \end{array} \right.
 $$
 
