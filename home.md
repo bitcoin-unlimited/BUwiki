@@ -42,6 +42,10 @@
 [BCH RPC Explorer (Blockchain explorer web site)](https://github.com/sickpig/bch-rpc-explorer)
 [Wally Wallet (Bitcoin Cash Android Wallet)](/wally)
 
+## Potential Projects
+
+[Object Property Commitment Announcements (INVs)](/projects/object_property_invs.md)
+[Partial Block Requests](/projects/partial_block_requests.md)
 
 ## Miscellaneous
 
