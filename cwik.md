@@ -11,6 +11,7 @@
  - Pages are stored in a source control system (git)
  - Edits are signed by cryptocurrency tokens
  - Integrated with source code documentation generators
+ - Automatic pdf generation and enhanced markdown makes pages useable for document production.
 
 ## Enhanced Markdown
 Here are some examples:
