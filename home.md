@@ -29,6 +29,9 @@
 
 [Development-Related BUIP Status](/buip/summary.md)
 
+## Proposals
+[Group Tokenization](/grouptokenization/home.md)
+
 ## Protocols
 [BCH Identity Protocol](/identity__protocol.md)
 [Delegated Payment Protocol](/delegated_payment_protocol.md) (Trickle Pay)
