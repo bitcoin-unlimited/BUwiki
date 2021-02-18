@@ -49,9 +49,13 @@ MINT = 1ULL << 62, *Can mint tokens*
 MELT = 1ULL << 61, *Can melt (destroy) tokens*
 BATON = 1ULL << 60, *Can create authority outputs*
 RESCRIPT = 1ULL << 59, *Can change the output script*
-SUBGROUP = 1ULL << 58,
+SUBGROUP = 1ULL << 58, *Can operate on subgroups*
     
-ALL_PERM_BITS = AUTHORITY | MINT | MELT | CCHILD | RESCRIPT | SUBGROUP
+ACTIVE_FLAG_BITS = AUTHORITY | MINT | MELT | BATON | RESCRIPT | SUBGROUP
+ALL_FLAG_BITS = (0xffffULL << (64 - 16))
+RESERVED_FLAG_BITS = ACTIVE_FLAG_BITS & ~ALL_FLAG_BITS
+
+Reserved flag bits 57 to 48 are reserved for future hard fork group features and must be zero.  Bits 0 through 47 are used as a nonce in the Group genesis UTXO, but must be zero in other authority UTXOs.
 
 #### GroupId flags
 
@@ -69,7 +73,6 @@ For example, if the "groupId"  is a byte array, the COVENANT bit is groupId[31]&
 Subgroups are groups with a parent group.  Parent authorities can execute operations on subgroups.  Subgroup Identifiers are the byte concatenation of the 32 byte parent group identifier and arbitrary additional bytes, limited by the maximum stack element size.  Subgroups do not have their own flags; they have the same flags at the same location as their parent group.
 
 Therefore to determine the parent group identifier from a subgroup identifier, simply take the first 32 bytes.
-
 
 
 ### 3.1.2 Transaction Group Enforcement
@@ -109,29 +112,32 @@ Note: These deserialization rules mean that the only way to specify an Authority
 
 Note: If OP_GROUP appears as a proper script prefix, both these rules and the script machine rules apply. If OP_GROUP is used in any other place within the script, only the script machine rules are applied.  This means that its valid to have an OP_GROUP in some other location within a script whose arguments have any length.  Even though this makes specification more complex, it makes validation simpler.
 
-#### Subgroup Authority Baton Rules
+#### Setup
 
-Construct 3 64 bit bitmaps (per group that appears in the transaction's inputs and outputs): perms, outPerms and subgroupPerms.  Initialize them to 0.
+Construct 3 64 bit bitmaps (per group that appears in the transaction's inputs and outputs): perms, batonPerms and subgroupPerms.  Initialize them to 0.
+
+#### Subgroup Authority Baton Rules
 
 * for every input authority perms = perms | Flags *(Figure out the permissions available for group operations)*
 * For every input authority with the Baton and Subgroup bits set, subgroupPerms = subgroupPerms | Flags *(Figure out all permissions that can be granted to subgroup authorities due to group authorities)*
 
-* For every subgroup, look up its corresponding group.  Set the subgroup's outPerms to the group's subgroupPerms. *(Record in the subgroup the allowable permissions inherited by the parent's authorities)*
+* For every subgroup, look up its corresponding group.  Set the subgroup's batonPerms to the group's subgroupPerms. *(Record in the subgroup the allowable permissions inherited by the parent's authorities)*
 * For every subgroup, look up its corresponding group.  Set the subgroup.perms = subgroup.perms | group.perms *(Any group authority has the same powers over its subgroup)*
 
 #### Group Genesis Rule
-* If there is > 1 group that has output authorities but outPerms==0, return INVALID *(We only allow one group Genesis per transaction)*
-* For the output authority that has a 0 outPerms:
+* If there is > 1 group that has output authorities but batonPerms==0, return INVALID *(We only allow one group Genesis per transaction)*
+* For the output authority that has a 0 batonPerms:
 	* If the transaction has other grouped (authority or normal) outputs (for this group), return INVALID
 	* find the SHA256 of the following data:
 		* The transaction's first input "prevout" (hash and index) using standard Bitcoin serialization.
 		* The scriptPubKey of the first OP_RETURN output (skip if there is no OP_RETURN output)
 		* The Flags field
-* If the above SHA256 matches the GroupId field<sup>4</sup>, set all flags in the GroupId outPerms bitmap 
+* If the above SHA256 matches the GroupId field<sup>4</sup>, this is a valid genesis UTXO.  Allow this authority UTXO even though the permission is claims are not enabled via an input authority.
+* If a subgroup output exists, return INVALID *(do not allow subgroup operations in the same transaction as the group genesis)*
 
-This formulation means that a transaction can contain only create one new group.  Also, no other outputs in this transaction can use this group (because the groups "perms" flag is 0).  This is an arbitrary limitation made for simplicity.
+This formulation means that a transaction can contain only create one new group.  Also, no other outputs in this transaction can use this group (because the groups "perms" flag is 0) or subgroups of this group.  Isolating the genesis UTXO in this manner is an arbitrary limitation intended to improve implementation consistency by reducing edge cases.
 
-It is possible for a subgroup to have no input UTXOs but have outputs because the parent group authority might operate on the subgroup.  An incorrect implementation might misinterpret this as an invalid group genesis output.   As described above, using outPerms is one way to realize that such an output is not a genesis.  Another (normative) way is that the GroupId for any subgroup must be greater than 32 bytes.
+It is possible for a subgroup to have no input UTXOs but have outputs because the parent group authority might operate on the subgroup.  An incorrect implementation might misinterpret this as an invalid group genesis output.   As described above, using batonPerms is one way to realize that such an output is not a genesis.  Another (normative) way is that the GroupId for any subgroup must be greater than 32 bytes.
 
 Note that the genesis authority Flags field may not have all permission bits set.  The group creator may want to restrict certain permissions from genesis.
 
@@ -139,10 +145,11 @@ Note that if a covenanted group is created without a RESCRIPT authority, the fir
  
 #### Authority Baton Rules
 
-* For every input authority with the Baton bit set, outPerms = outPerms | Flags *(figure out what authorities can be passed to child authorities, note that outPerms may start with bits set in subgroups due to the parent group permission inheritance rules specified earlier)*
+* For every input authority with the Baton bit set, batonPerms = batonPerms | Flags *(figure out what authorities can be passed to child authorities, note that batonPerms may start with bits set in subgroups due to the parent group permission inheritance rules specified earlier)*
 
- * For every output authority it MUST be true that  Flags & ~outPerms == 0.  *(Enforce permissions when passing the baton from input to output -- no bit can be set in Flags, unless it is set in outPerms)*
- * For every non-genesis output authority it MUST be true that  Flags & ~ALL_PERM_BITS == 0.  *(Enforce that unused bits are zero, for later use)*
+ * For every output authority it MUST be true that  Flags & ~batonPerms == 0.  *(Enforce permissions when passing the baton from input to output -- no bit can be set in Flags, unless it is set in batonPerms)*
+ * For every non-genesis output authority it MUST be true that  Flags & ~ALL_FLAG_BITS == 0.  *(Enforce that unused bits are zero, for later use)*
+ * For every output authority it MUST be true that  Flags & ~RESERVED_FLAG_BITS == 0.  *(Enforce that reserved flag bits are zero, for later use)*
 
  
 #### Token Quantity Rules
@@ -153,7 +160,7 @@ Note that the prior rules that modify the permission sets must be executed befor
 
 * The sum of the input Quantities MUST not exceed the maximum int64_t value (REQ3.1.2.2). *(note this is a **signed** 64 bit integer or 0x7FFFF FFFF FFFF FFFF)*
 * The sum of the output Quantities MUST not exceed the maximum int64_t value (REQ3.1.2.3). *(note this is a **signed** 64 bit integer or 0x7FFFF FFFF FFFF FFFF)*
-* The sum of the input Quantities MUST equal the sum of the output Quantities, unless the group's outPerms has the MINT or MELT bit set.
+* The sum of the input Quantities MUST equal the sum of the output Quantities, unless the group's perms has the MINT or MELT bit set.
 * If the group's perms has the MINT bit set, the sum of the output Quantities MUST be >= the sum of the input Quantities.
 * If the group's perms has the MELT bit set, the sum of the output Quantities MUST be <= the sum of the output Quantities.
 
