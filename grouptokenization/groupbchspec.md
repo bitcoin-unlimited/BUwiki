@@ -63,7 +63,7 @@ Group Identifiers are 32 byte values<sup>2</sup>.  The last 2 bytes of a group i
 
 COVENANT = bit 0,  *This group enforces the structure of output scripts*
 HOLDS_BCH = bit 1,  *This Group holds BCH instead of tokens*
-RESERVED_N = bits 2 through 15, MUST be 0.
+GROUP_RESERVED_BITS = bits 2 through 15, MUST be 0.
 
 For example, if the "groupId"  is a byte array, the COVENANT bit is groupId[31]&1.
 
@@ -114,28 +114,37 @@ Note: If OP_GROUP appears as a proper script prefix, both these rules and the sc
 
 #### Setup
 
-Construct 3 64 bit bitmaps (per group that appears in the transaction's inputs and outputs): perms, batonPerms and subgroupPerms.  Initialize them to 0.
+Construct 4 64 bit bitmaps (per group that appears in the transaction's inputs and outputs): perms, batonPerms, subgroupPerms and subgroupBatonPerms.  Initialize them to 0.
 
-#### Subgroup Authority Baton Rules
+#### Authority Permission Accumulation
 
 * for every input authority perms = perms | Flags *(Figure out the permissions available for group operations)*
-* For every input authority with the Baton and Subgroup bits set, subgroupPerms = subgroupPerms | Flags *(Figure out all permissions that can be granted to subgroup authorities due to group authorities)*
+* For every input authority with the Baton bit set, batonPerms = batonPerms | Flags *(figure out what authorities can be passed to child authorities)*
+* For every input authority with the Subgroup bits set, subgroupPerms = subgroupPerms | Flags *(Figure out all permissions available on the subgroup due to group authorities)*
+* For every input authority with the Baton and Subgroup bits set, subgroupBatonPerms = subgroupBatonPerms | Flags *(Figure out all permissions that can be granted to subgroup authorities due to group authorities)*
 
-* For every subgroup, look up its corresponding group.  Set the subgroup's batonPerms to the group's subgroupPerms. *(Record in the subgroup the allowable permissions inherited by the parent's authorities)*
-* For every subgroup, look up its corresponding group.  Set the subgroup.perms = subgroup.perms | group.perms *(Any group authority has the same powers over its subgroup)*
+Note that the SUBGROUP authority bit means that the other permission bits in this authority apply to both this group and any of its subgroups, not exclusively to subgroups.  Authorities can be targeted exclusively to a subgroup via the "baton" system by creating a child authority with the subgroup's ID.
 
-#### Group Genesis Rule
-* If there is > 1 group that has output authorities but batonPerms==0, return INVALID *(We only allow one group Genesis per transaction)*
-* For the output authority that has a 0 batonPerms:
-	* If the transaction has other grouped (authority or normal) outputs (for this group), return INVALID
-	* find the SHA256 of the following data:
-		* The transaction's first input "prevout" (hash and index) using standard Bitcoin serialization.
-		* The scriptPubKey of the first OP_RETURN output (skip if there is no OP_RETURN output)
-		* The Flags field
-* If the above SHA256 matches the GroupId field<sup>4</sup>, this is a valid genesis UTXO.  Allow this authority UTXO even though the permission is claims are not enabled via an input authority.
-* If a subgroup output exists, return INVALID *(do not allow subgroup operations in the same transaction as the group genesis)*
 
-This formulation means that a transaction can contain only create one new group.  Also, no other outputs in this transaction can use this group (because the groups "perms" flag is 0) or subgroups of this group.  Isolating the genesis UTXO in this manner is an arbitrary limitation intended to improve implementation consistency by reducing edge cases.
+#### Subgroup Permission Accumulation
+
+* For every subgroup, look up its corresponding group.  Set subgroup.batonPerms = subgroup.batonPerms | (the group's subgroupBatonPerms& ~SUBGROUP). *(Extend SUBGROUP-tagged authority permissions to the subgroup.  But do not extend subgrouping permissions itself, because there's no such thing as recursive subgroups)*
+* For every subgroup, look up its corresponding group.  Set the subgroup.perms = subgroup.perms | group.subgroupPerms *(Extend SUBGROUP-tagged permissions to subgroups)*
+
+#### 3.1.2.1 Group Genesis Rule
+* If there is > 1 group (excluding subgroups) that has output authorities but batonPerms==0, return INVALID *(We only allow one group Genesis per transaction)* (REQ3.1.2.1.1) 
+* For that output authority:
+	* If the transaction has other grouped (authority or normal) outputs for this group, return INVALID *(the genesis authority is the only use of this group allowed in this transaction)* (REQ3.1.2.1.2) 
+	* Ensure that the RESERVED_FLAG_BITS are 0 (REQ3.1.2.1.3) 
+	* Ensure that the GROUP_RESERVED_BITS are 0 (REQ3.1.2.1.4) 
+	* Find the SHA256 of the following data:
+		* The transaction's first input "prevout" (hash and index) using standard Bitcoin serialization. *(for entropy)*
+		* The scriptPubKey of the first OP_RETURN output (skip if there is no OP_RETURN output) *(commit to the human and wallet-level information and contract)*
+		* The Flags field *(this contains a nonce)*
+* If the above SHA256 matches the GroupId field<sup>4</sup>, this is a valid genesis UTXO.  Allow this authority UTXO even though the permission it claims are not enabled via an input authority. (REQ3.1.2.1.5) 
+* If a subgroup (of this group) output exists, return INVALID *(do not allow subgroup operations in the same transaction as the group genesis)* (REQ3.1.2.1.6)
+
+This formulation means that a transaction can contain only create one new group.  Also, no other outputs in this transaction can use this group or subgroups of this group (if implementations set all the permissions running flags to 0 this property will be enforced by other rules).  Isolating the genesis UTXO in this manner is an arbitrary limitation intended to improve implementation consistency by reducing edge cases.
 
 It is possible for a subgroup to have no input UTXOs but have outputs because the parent group authority might operate on the subgroup.  An incorrect implementation might misinterpret this as an invalid group genesis output.   As described above, using batonPerms is one way to realize that such an output is not a genesis.  Another (normative) way is that the GroupId for any subgroup must be greater than 32 bytes.
 
@@ -143,34 +152,31 @@ Note that the genesis authority Flags field may not have all permission bits set
 
 Note that if a covenanted group is created without a RESCRIPT authority, the first MINT transaction can never be valid because there is no input script from which to pull the covenant.  The genesis transaction is valid, but this group is probably useless.
  
-#### Authority Baton Rules
+#### 3.1.2.2 Authority Baton Rules
 
-* For every input authority with the Baton bit set, batonPerms = batonPerms | Flags *(figure out what authorities can be passed to child authorities, note that batonPerms may start with bits set in subgroups due to the parent group permission inheritance rules specified earlier)*
+ * For every output authority it MUST be true that  Flags & ~batonPerms == 0.  *(Enforce permissions when passing the baton from input to output -- no bit can be set in Flags, unless it is set in batonPerms)* (REQ3.1.2.2.1)
+ * For every non-genesis output authority it MUST be true that  Flags & ~ALL_FLAG_BITS == 0.  *(Enforce that unused bits are zero, for later use)* (REQ3.1.2.2.2)
+ * For every output (genesis and non-genesis) authority it MUST be true that  Flags & ~RESERVED_FLAG_BITS == 0.  *(Enforce that reserved flag bits are zero, for later use)* (REQ3.1.2.2.3)
 
- * For every output authority it MUST be true that  Flags & ~batonPerms == 0.  *(Enforce permissions when passing the baton from input to output -- no bit can be set in Flags, unless it is set in batonPerms)*
- * For every non-genesis output authority it MUST be true that  Flags & ~ALL_FLAG_BITS == 0.  *(Enforce that unused bits are zero, for later use)*
- * For every output authority it MUST be true that  Flags & ~RESERVED_FLAG_BITS == 0.  *(Enforce that reserved flag bits are zero, for later use)*
+#### 3.1.2.3 Token Quantity Rules
 
- 
-#### Token Quantity Rules
+* If the GroupId HOLDS_BCH flag is set, Quantity MUST be 0.  Copy the BCH amount field in every non-authority input and output (grouped) UTXO into the respective Quantity field (REQ3.1.2.3.1). *(This enables grouped BCH, rather than grouped tokens)*
 
-Note that the prior rules that modify the permission sets must be executed before these rules to ensure that the complete permission set is available.
-
-* If the GroupId HOLDS_BCH flag is set, Quantity MUST be 0.  Copy the BCH amount field in every non-authority input and output (grouped) UTXO into the respective Quantity field (REQ3.1.2.1). *(This enables grouped BCH, rather than grouped tokens)*
-
-* The sum of the input Quantities MUST not exceed the maximum int64_t value (REQ3.1.2.2). *(note this is a **signed** 64 bit integer or 0x7FFFF FFFF FFFF FFFF)*
-* The sum of the output Quantities MUST not exceed the maximum int64_t value (REQ3.1.2.3). *(note this is a **signed** 64 bit integer or 0x7FFFF FFFF FFFF FFFF)*
-* The sum of the input Quantities MUST equal the sum of the output Quantities, unless the group's perms has the MINT or MELT bit set.
-* If the group's perms has the MINT bit set, the sum of the output Quantities MUST be >= the sum of the input Quantities.
-* If the group's perms has the MELT bit set, the sum of the output Quantities MUST be <= the sum of the output Quantities.
+* The sum of the input Quantities MUST not exceed the maximum int64_t value (REQ3.1.2.3.2). *(note this is a **signed** 64 bit integer or 0x7FFFF FFFF FFFF FFFF)*
+* The sum of the output Quantities MUST not exceed the maximum int64_t value (REQ3.1.2.3.3). *(note this is a **signed** 64 bit integer or 0x7FFFF FFFF FFFF FFFF)*
+* The sum of the input Quantities MUST equal the sum of the output Quantities, unless the group's perms has the MINT or MELT bit set. (REQ3.1.2.3.4)
+* If the group's perms has the MINT bit set, the sum of the output Quantities MUST be >= the sum of the input Quantities. (REQ3.1.2.3.5)
+* If the group's perms has the MELT bit set, the sum of the output Quantities MUST be <= the sum of the output Quantities. (REQ3.1.2.3.6)
 
 Note that if the group HOLDS_BCH, the MINT and MELT operations are not actually creating or destroying BCH.  Instead these operations act as entry or exit points, allowing BCH to flow into or out of the group.  Conservation of BCH in the transaction is guaranteed because the existing logic that balances BCH in a transaction is untouched.
 
 Note that the total ordinality of the group's tokens may exceed a signed 64 bit integer.  In this case a single transaction cannot manipulate all of them...
 
-#### Covenant Enforcement
+#### 3.1.2.4 Covenant Enforcement
 
-For every grouped output, if the group has the COVENANT bits set and the group.perm's RESCRIPT bit is clear, all output "scriptpubkey" scripts MUST equal the first grouped non-authority input's prevout "scriptpubkey" script.   If this object (the first grouped non-authority) does not exist return INVALID. *(Enforce that covenanted groups use the same constraint script as the first input from that same group<sup>3</sup>.  Efficient implementations should discover this script while iterating through the inputs during a previous step)*
+For every grouped output, if the group has the COVENANT bits set and the group.perm's RESCRIPT bit is clear, all output "scriptpubkey" scripts MUST equal the first grouped non-authority input's prevout "scriptpubkey" script (REQ3.1.2.4.1).   If this object (the first grouped non-authority) does not exist return INVALID (REQ3.1.2.4.2). 
+
+*(This enforces that covenanted groups use the same constraint script as the first input from that same group<sup>3</sup>.  Efficient implementations should discover this script while iterating through the inputs during a previous step)*
 
 
 
