@@ -6,6 +6,8 @@
 
 ## Articles
 
+[Blockchain Energy Use: A Reporter's Guide](/blockchain_energy_use.md)
+
 ### Analysis
 [Attacks Against Autofinalization and Parking](/autofinalization_parking.md) (Oct 23, 2020)
 [The Blockchain Difficulty Paradox](/blockchain_difficulty_paradox.md) (Oct 10, 2017)
