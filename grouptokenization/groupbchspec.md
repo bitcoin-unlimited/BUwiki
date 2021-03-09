@@ -178,7 +178,9 @@ Note that the total ordinality of the group's tokens may exceed a signed 64 bit 
 
 #### 3.1.2.4 Covenant Enforcement
 
-For every grouped output, if the group has the COVENANT bits set and the group.perm's RESCRIPT bit is clear, all output "scriptpubkey" scripts MUST equal the first grouped non-authority input's prevout "scriptpubkey" script, beginning after the first OP_GROUP instruction (REQ3.2.4.1).  Note that it is equivalent to compare the cryptographic hashes of these script suffixes rather than the script itself.  If this object (the first grouped non-authority) does not exist return INVALID (REQ3.2.4.2). 
+Covenants allow spending constraints to be carried from parent to child (to grandchild, etc) transactions.  Any group with the COVENANT bit set enforces covenants by requiring that grouped output scripts match the first grouped prevout script.  To specify an initial script, or offer a script upgrade to holders, an authority with the RESCRIPT bit set can be spent.  This causes the covenant enforcement to be ignored, allowing any output script to be used.
+
+Formally, for every grouped output, if the group has the COVENANT bits set and the group.perm's RESCRIPT bit is clear, all output "scriptpubkey" scripts MUST equal the first grouped non-authority input's prevout "scriptpubkey" script, beginning after the first OP_GROUP instruction (REQ3.2.4.1).  Note that it is equivalent to compare the cryptographic hashes of these script suffixes rather than the script itself.  If this object (the first grouped non-authority) does not exist return INVALID (REQ3.2.4.2). 
 
 *(This enforces that covenanted groups use the same constraint script as the first input from that same group<sup>3</sup>.  Efficient implementations should discover this script while iterating through the inputs during a previous step)*
 
