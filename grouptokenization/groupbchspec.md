@@ -23,6 +23,8 @@ Within a transaction, grouped outputs follow the existing output serialization f
 
 OP_GROUP may appear anywhere within a script.
 
+OP_GROUP is a new opcode defined as the byte 0xee (REQ1.1.0).
+
 Execution of the OP_GROUP opcode MUST pop 2 objects from the main stack (REQ1.1.1). 
 
 If there are fewer than 2 objects on the stack, execution MUST fail (REQ1.1.2).
