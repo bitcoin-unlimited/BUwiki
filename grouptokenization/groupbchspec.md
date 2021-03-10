@@ -44,7 +44,11 @@ The following is an example "C" implementation of the OP_GROUP instruction:
 
 All existing transaction validation rules are unchanged.
 
-A UTXO is defined as "grouped" if it contains a serialized script following the format specified in section 1.2, and has the two specified attributes (GroupId and QuantityOrFlags).  An OP_GROUP instruction that appears in any other place in the serialized script is ignored.  If the "QuantityOrFlags" most significant bit is clear (the number is positive), this field should be interpreted as a quantity.  If the MSB is set, this is an "authority baton UTXO" and this field should be interpreted as Flags (described below).
+A UTXO is defined as "grouped" if it contains a serialized script following the format specified in section 1.2. An OP_GROUP instruction that appears in any other place in the serialized script does not make a UTXO "grouped".  
+
+In other words, for Group semantics to apply to a UTXO, the "real" script must be **prefixed** by OP_GROUP instruction and its arguments.  OP_GROUP is therefore semantically an attribute of the UTXO that is actually used *outside* of the script interpreter.  Inside the interpreter, its has no meaning except to pop 2 elements off of the stack.  It is structured in this manner to minimize changes to the transaction format, and therefore changes required by the BCH ecosystem.  A non-tokenized, un-upgraded light wallet will understand the transaction and will even be able to spend non-grouped UTXOs from a transaction that has grouped UTXOs.  But it will not understand the Grouped UTXOs.  This is a feature that prevents unupgraded light wallets from accidentally spending potentially valuable tokens for their dust BCH.
+
+If the "QuantityOrFlags" most significant bit is clear (the number is positive), this field should be interpreted as a quantity.  If the MSB is set, this is an "authority baton UTXO" and this field should be interpreted as Flags (described below).
 
 ### Flags
 
