@@ -23,9 +23,13 @@ Second the [BIP70 payment protocol](https://github.com/bitcoin/bips/blob/master/
 
 ## Protocol Envelopes
 
-This specification will use a URI format to describe the data contents, however, this protocol can and should be encapsulated by the envelope most appropriate for the application.  In particular it can be carried via HTTPS or an Android Intent.
+This specification will use a URI format to describe the data contents, however, this protocol can and should be encapsulated by the envelope most appropriate for the application.  In particular it can be carried via QR code, HTTPS, or an Android Intent.
 
 Intents are a technique that allow an Android application to communicate (and access functionality) with each other. Intents can be mapped to a URI since they contain the same basic elements. In particular URI parameters can be added to an intent via the extended data key value pair dictionary. 
+
+### Default Replies
+
+Certain protocols do not naturally allow for replies, such as QR codes.  If a reply protocol is unspecified, the default is a HTTPS POST to the entity name and path specified in the request.  For example replying to a tdpp://foo.com/tx message should POST to https://foo.com/tx.
 
 ## Entity Wallet Trust
 
@@ -49,6 +53,15 @@ This policy MUST be applied to other message formats, to keep the processing uni
 
 The signature is transmitted in the standard bitcoin signature encoding, which is a 64 character format beyond the scope of this document (see EncodeBase64() or use libbitcoincashkotlin.Codec.encode64).
 
+### Optional Fields
+
+#### How to Reply
+The following fields are available in every request and define how to reply to messages.  This reply data is only meaningful if the request protocol does not have an inherent means to reply.
+
+**cookie**: Data that the requester expects returned in the reply to match requests with replies.
+**rproto**: Reply protocol (e.g. https)
+**rpath**: Reply path.  can contain either a fqdn and path or just a path (e.g. //foo.com/replyspot, or /replyspot)
+
 ### Registration
 
 The registration phase allows an entity to set up a trust relationship with a wallet that will allow that entity to direct limited automatic (no user interaction) payments.
@@ -62,7 +75,7 @@ Additional undefined fields **MUST** be ignored (but included in any signature c
 
 #### Format 
 
-tdpp://**entityName**/reg?[topic=**topic**]&[uoa=**uoa**]&[addr=**addr**]&[maxper=**amount**]&[maxday=**amount**]&[maxweek=**amount**]&[maxmonth=**amount**]&[descper=**desc**]&[descday=**desc**]&[descweek=**desc**]&[descmonth=**desc**]&[sig=**sig**]
+> tdpp://**entityName**/reg?[topic=**topic**]&[uoa=**uoa**]&[addr=**addr**]&[maxper=**amount**]&[maxday=**amount**]&[maxweek=**amount**]&[maxmonth=**amount**]&[descper=**desc**]&[descday=**desc**]&[descweek=**desc**]&[descmonth=**desc**]&[sig=**sig**]
 
 #### Fields  
 
@@ -82,6 +95,7 @@ tdpp://**entityName**/reg?[topic=**topic**]&[uoa=**uoa**]&[addr=**addr**]&[maxpe
 
 An entity should either generate a single pubkey/privkey pair when the app is installed or a new pub/private key per relationship. It is insecure to hard-code a single private key into the app. In Android, the “Room” and “KeyStore” databases are private to the application [CHECK].
 
+*TODO* Asset request permissions
   
 #### Registration Response
 
@@ -102,7 +116,7 @@ This request format provides a simple payment interface.  Note that the fee is c
 
 Additional undefined fields **MUST** be ignored, but included in any signature check.
 
-tdpp://**entityName**/sendto?[amtN=**amount**]&[addrN=**address**]&[sig=**sig**]
+> tdpp://**entityName**/sendto?[amtN=**amount**]&[addrN=**address**]&[sig=**sig**]
 
 **entityName**: Identifies the prior registration.
 
@@ -118,7 +132,7 @@ The wallet will send amtN to addrN, e.g. amt1 to addr1.
 
 Donate 1 BCH to Bitcoin Unlimited.
 
-tdpp://www.myapp.com/sendto?amt0=100000000&addr0=bitcoincash:pq6snv5fcx2fp6dlzg7s0m9zs8yqh74335tzvvfcmq&sig=[TODO SIG FORMAT]
+> tdpp://www.myapp.com/sendto?amt0=100000000&addr0=bitcoincash:pq6snv5fcx2fp6dlzg7s0m9zs8yqh74335tzvvfcmq&sig=[TODO SIG FORMAT]
 
 #### Pay Address Response
 
@@ -133,11 +147,16 @@ Additional undefined fields **MUST** be ignored.
 
 This request format allows the app to handle bitcoin transaction details, yet delegate funding and/or signing to the wallet.
 
-tdpp://**appname**/tx?chain=**blockchain**&tx=**tx**&[flags=**flags**]&[sig=**sig**]
+
+> tdpp://**appname**/tx?chain=**blockchain**&tx=**tx**[&inamt=**inputAmounts**][&topic=**topic**][&flags=**flags**][&sig=**sig**]
 
 **chain**: [Mandatory, string]  The blockchain this transaction is for, as specified by the BIP21 URI prefix, for example: "bitcoincash" or "bitcoin".
 
-**tx**: [Mandatory, hexstring]  The transaction in network serialized hex string format.  This transaction may be complete and signed, or it may be incomplete in many ways.  It may supply or be missing inputs.  In other words, it may require additional inputs to meet the output quantity.  It may require an additional outputs, directed to this wallet, for change.  It may require signatures, but some inputs may be signed.
+**topic**: [optional, string] A registering entity may set up multiple tdpp relationships for unrelated items.  This string tells the user what this item is and differentiates them.
+
+**tx**: [Mandatory, hexstring]  The transaction in network serialized hex string format.  This transaction may be complete and signed, or it may be incomplete in many ways.  It may supply or be missing inputs.  In other words, it may require additional inputs to meet the output quantity.  It may require an additional outputs, directed to this wallet, for change.  It may require signatures, but some inputs may be signed.  The transaction may be unfinishable by the wallet.  That is, inputs that this wallet cannot sign may be unsigned.  In this case, nopost is implied, and the more-complete transaction should be sent back to the originator for final signatures.
+
+**inamt**: [Mandatory if size of provided tx inputs > 0, integer]: The sum of all specified inputs in satoshis.  This is provided so that the light wallet does not need to access all of unrelated inputs in order to determine how many satoshis it needs to provide as inputs or how many it can claim as an output.  Note that the requester could incorrectly report this field (accidentally or on purpose), which may result in a nonviable transaction or excessive transaction fees being paid.  But any overpayment could only happen within the autopay constraints or by explicit acceptance by the user.  If this is a problem, the light wallet may receive the inputs via a separate channel (e.g. electrum protocol).  TODO: allow the requester to provide the input tx (this could be a lot of data)
 
 **flags**: [optional, unsigned int bitmap]  An empty flags implies flags == 0
 0: nofund: do not add any inputs
@@ -165,7 +184,7 @@ Result code 204 means that the wallet's connection to the blockchain is interrup
 
 This request asks the wallet to complete a [JSON payment protocol](https://github.com/bitpay/jsonPaymentProtocol/blob/master/v2/specification.md) dialog.
 
-tdpp://**appname**/jsonpay?uri=**url**
+> tdpp://**appname**/jsonpay?uri=**url**
 
 **url**: The payment protocol initiation URL, as specified in JSON payment protocol document
 
@@ -174,3 +193,18 @@ tdpp://**appname**/jsonpay?uri=**url**
 **resultcode**: [integer] 200 = payment completed, 
 
 **jppmemo**: [string, optional] The "memo" field in the payment protocol response *SHOULD* be reported back to the calling entity, if it exists and is not empty.
+
+#### Asset Information Request
+
+To provide services, an app may need to know what assets are owned by the interacting wallet.  For privacy reasons, wallet owners have the option of sending a subset of assets or no assets in response to this request, similar to how the wallet owner can choose to sign transactions.
+
+> tdpp://**entityName**/assets?chain=**blockchain**[&topic=**topic**][&af=**scripttemplate**][&afx=**scripttemplateindex**]
+
+**scripttemplate**: [Optional, hexString] Asset filter script template.  Assets that match this script template are requested.  Multiple af options are possible.
+**scripttemplateindex**: [Optional, integer] Asset filter script template index.  Assets that match script template N (as installed during registration) are requested.  Multiple afx options are possible.
+**chain**: [Mandatory, string] The blockchain this transaction is for, as specified by the BIP21 URI prefix, for example: “bitcoincash” or “bitcoin”.
+
+#### Asset Information Reply
+
+An asset information reply returns a json-formatted string.  If the protocol is http, this is returned in the body of a POST message.
+
