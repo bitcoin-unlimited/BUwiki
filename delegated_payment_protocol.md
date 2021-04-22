@@ -223,3 +223,7 @@ To provide services, an app may need to know what assets are owned by the intera
 #### Asset Information Reply
 
 An asset information reply returns a json-formatted string.  If the protocol is http, this is returned in the body of a POST message.
+
+{ "script": "hex string of output script:hex string of redeem script", "txid":"hex string", "idx": integer output offset, "amt": integer satoshis }
+
+Note that the above information does not prove to the receiver that this UTXO asset is unspent or even exists.  It is necessary for the receiver to independently verify this if needed by accessing a blockchain data provider.
