@@ -62,6 +62,11 @@ The following fields are available in every request and define how to reply to m
 **rproto**: Reply protocol (e.g. https)
 **rpath**: Reply path.  can contain either a fqdn and path or just a path (e.g. //foo.com/replyspot, or /replyspot)
 
+#### Information
+The following fields are available in every request.
+
+**reason**: [optional, string] Text describing the purpose of this transaction, to be presented to the user during confirmation and stored in the transaction history.
+
 ### Registration
 
 The registration phase allows an entity to set up a trust relationship with a wallet that will allow that entity to direct limited automatic (no user interaction) payments.
@@ -148,20 +153,31 @@ Additional undefined fields **MUST** be ignored.
 This request format allows the app to handle bitcoin transaction details, yet delegate funding and/or signing to the wallet.
 
 
-> tdpp://**appname**/tx?chain=**blockchain**&tx=**tx**[&inamt=**inputAmounts**][&topic=**topic**][&flags=**flags**][&sig=**sig**]
+> tdpp://**appname**/tx?chain=**blockchain**&tx=**tx**[&inamt=**inputAmounts**][&topic=**topic**][&flags=**flags**][&sig=**sig**][&**commonFields**]
 
 **chain**: [Mandatory, string]  The blockchain this transaction is for, as specified by the BIP21 URI prefix, for example: "bitcoincash" or "bitcoin".
 
 **topic**: [optional, string] A registering entity may set up multiple tdpp relationships for unrelated items.  This string tells the user what this item is and differentiates them.
 
-**tx**: [Mandatory, hexstring]  The transaction in network serialized hex string format.  This transaction may be complete and signed, or it may be incomplete in many ways.  It may supply or be missing inputs.  In other words, it may require additional inputs to meet the output quantity.  It may require an additional outputs, directed to this wallet, for change.  It may require signatures, but some inputs may be signed.  The transaction may be unfinishable by the wallet.  That is, inputs that this wallet cannot sign may be unsigned.  In this case, nopost is implied, and the more-complete transaction should be sent back to the originator for final signatures.
+**tx**: [Mandatory, hexstring]  The transaction in network serialized hex string format.  This transaction may be complete and signed, or it may be incomplete in many ways:
+ 1. It may supply or be missing inputs.  In other words, it may require additional inputs to meet the output quantity.  
+ 2. It may require an additional outputs, directed to this wallet, for change.
+ 3. It may require signatures, but other inputs may be signed.
+ 4. It may supply template constraints.  These are incomplete output (constraint) scripts.  The wallet should scan all outputs for TMPL_SCRIPT, TMPL_PUBKEYHASH, or TMPL_PUBKEY opcodes and replace the opcode with actual data paying to a unique address or constraint script controlled by this wallet.
 
-**inamt**: [Mandatory if size of provided tx inputs > 0, integer]: The sum of all specified inputs in satoshis.  This is provided so that the light wallet does not need to access all of unrelated inputs in order to determine how many satoshis it needs to provide as inputs or how many it can claim as an output.  Note that the requester could incorrectly report this field (accidentally or on purpose), which may result in a nonviable transaction or excessive transaction fees being paid.  But any overpayment could only happen within the autopay constraints or by explicit acceptance by the user.  If this is a problem, the light wallet may receive the inputs via a separate channel (e.g. electrum protocol).  TODO: allow the requester to provide the input tx (this could be a lot of data)
+The transaction may be unfinishable by the wallet.  That is, inputs that this wallet cannot sign may be unsigned.  In this case, the nopost flag is implied, and the more-complete transaction should be sent back to the requester for final signatures.
+
+**inamt**: [Mandatory if size of provided tx inputs > 0, unless nofund flag set, integer]: The sum of all specified inputs in satoshis.  This is provided so that the light wallet does not need to access all of unrelated inputs in order to determine how many satoshis it needs to provide as inputs or how many it can claim as an output.  	
+
+Note that the requester could incorrectly report a too large amount in this field (accidentally or on purpose), which may result in a nonviable transaction or excessive transaction fees being paid.  But any overpayment could only happen within the autopay constraints or by explicit acceptance by the user.  If this is a problem, the light wallet may receive the inputs via a separate channel (e.g. electrum protocol).  TODO: allow the requester to provide the input tx (this could be a lot of data)
+
+Also note that the requester could report a too small amount in this field.  This indicates to this wallet that some other entity will supply the missing amount.  Generally this will only be done in conjunction with partial or unsigned transactions.  
 
 **flags**: [optional, unsigned int bitmap]  An empty flags implies flags == 0
-0: nofund: do not add any inputs
-1: nopost: do not post the transaction to the network (return the finished transaction to the entity)
-2: noshuffle:  do not change the order of inputs or outputs.  Change outputs must be added to the end.
+bit 0: nofund: do not add any inputs (but do sign any inputs that this wallet can sign)
+bit 1: nopost: do not post the transaction to the network (return the finished transaction to the entity)
+bit 2: noshuffle:  do not change the order of inputs or outputs.  Change outputs must be added to the end.
+bit 3: partial: After reworking the transaction as normal (adding any needed inputs/outputs),  use sighash 0thru and sighash offset so that all inputs sign all outputs.  If this functionality is non-existent, use sighash single.  The result of this is that additional inputs and outputs can be added to this transaction without requiring that this wallet resign the transaction.
 
 #### Pay Transaction Response
 
@@ -207,4 +223,3 @@ To provide services, an app may need to know what assets are owned by the intera
 #### Asset Information Reply
 
 An asset information reply returns a json-formatted string.  If the protocol is http, this is returned in the body of a POST message.
-
