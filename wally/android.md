@@ -2,9 +2,10 @@
 
 *This wallet is currently experimental.*  **Do not use with significant funds!** 
 
-[Wally Apr 22, 2021](/wally/Wally20210422.apk)
+[Wally May 10, 2021](/wally/Wally20210510.apk)
 
 ### Older releases
+[Wally Apr 22, 2021](/wally/Wally20210422.apk)
 [Wally Oct 8, 2020](/wally/Wally201008.apk)
 [Wally Oct 2, 2020](/wally/Wally201002.apk)
 [Wally Aug 27, 2020](/wally/Wally200827.apk)
