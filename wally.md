@@ -1,7 +1,7 @@
 # Wally Bitcoin Cash Wallet
 
-[Android wallet](/wally/Android.md)
-[Enterprise desktop wallet](/wally/Enterprise.md)
+[Android wallet](/wally/android.md)
+[Enterprise desktop wallet](/wally/enterprise.md)
 
 ## Media
 [Images](/wally/images.md)
